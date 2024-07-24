@@ -1,0 +1,16 @@
+.responsive-logo {
+    max-width: 100px; /* Adjust the max-width as needed */
+    height: auto;
+}
+@media (max-width: 768px) {
+    .responsive-logo {
+        max-width: 60px; /* Adjust the size for smaller screens */
+    }
+}
+
+.form {
+    min-height: 50px; 
+    font-size: 20px;
+}
+
+#map { height: 300px; }

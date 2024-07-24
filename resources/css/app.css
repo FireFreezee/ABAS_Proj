@@ -1,0 +1,23 @@
+.authentication-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.responsive-logo {
+    max-width: 100px; /* Adjust the max-width as needed */
+    height: auto;
+    margin: 0 auto; /* Center horizontally */
+}
+
+@media (max-width: 768px) {
+    .responsive-logo {
+        max-width: 80px; /* Adjust the size for smaller screens */
+    }
+}
+
+.form {
+    min-height: 50px; 
+    font-size: 20px;
+}
