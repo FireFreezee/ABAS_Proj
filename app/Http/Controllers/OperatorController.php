@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OperatorController extends Controller
 {
@@ -22,6 +23,30 @@ class OperatorController extends Controller
     public function create()
     {
         //
+    }
+
+    public function lokasisekolah()
+    {
+        $lok_sekolah = DB::table('koordinat__sekolahs')->where('id_koordinat_sekolah',1)->first();
+        dd($lok_sekolah);
+        return view('operator.operator', compact('lok_sekolah'));
+    }
+
+    public function updatelokasisekolah()
+    {
+        $lokasi_sekolah = $request->lokasi_sekolah;
+        $radius = $request->radius;
+
+        $update = DB::table('koordinat__sekolahs')->where('id',1)->update([
+            'lokasi_sekolah' => $lokasi_sekolah,
+            'radius' => $radius
+        ]);
+        
+        if ($update) {
+            return Redirect::back()->with(['success'=>'Data Berhasil Diupdate']);
+        }else {
+            return Redirect::back()->with(['warning'=>'Data Gagal Diupdate']);
+        }
     }
 
     /**

@@ -45,6 +45,7 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {
-    Route::resource('operator', App\Http\Controllers\operatorController::class);
+    Route::get('operator', [App\Http\Controllers\operatorController::class, 'lokasisekolah']);
+    Route::post('/operator/updatelokasisekolah', [App\Http\Controllers\operatorController::class, 'updatelokasisekolah']);
 });
 

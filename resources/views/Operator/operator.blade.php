@@ -30,6 +30,17 @@
         </div>
     </div>
     <div class="main-content">
+        @if (Session::get('success'))
+            <div class="alert alert-success" role="alert">
+                {{ Session::get('success')}}
+            </div>
+        @endif
+
+        @if (Session::get('warning'))
+            <div class="alert alert-warning" role="alert">
+                {{ Session::get('warning')}}
+            </div>
+        @endif
         <div class="row">
             <div class="col-md-6">
                 <div class="container-fluid">
@@ -75,16 +86,17 @@
                                     <div id="map"></div>
                                 </div>
                             </div>
-                            <form class="forms-sample">
-                                <div class="form-group">
+                            <form class="forms-sample" action="/operator/updatelokasisekolah" method="POST">
+                                @csrf
+                                {{-- <div class="form-group">
                                     <label for="exampleInputPassword1">Koordinat</label>
-                                    <input type="text" class="form-control" id="lokasi">
+                                    <input type="text" class="form-control" id="titik_koordinat" value="{{ $lokasi_sekolah->titik_koordinat }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputConfirmPassword1">Radius</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                                    <input type="text" class="form-control" id="jarak" value="{{ $lokasi_sekolah->jarak }}">
+                                </div> --}}
+                                <button type="submit" class="btn btn-primary mr-2">Update</button>
 
                             </form>
                         </div>
@@ -102,13 +114,13 @@
 
 
         function successCallback(position) {
-            lokasi.value = -6.89033536888645 + "," + 107.55833009635417;
-            var map = L.map('map').setView([-6.89033536888645, 107.55833009635417], 17);
+            lokasi.value = position.coords.latitude + "," + position.coords.longtitude;
+            var map = L.map('map').setView([position.coords.latitude, position.coords.longtitude], 17);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
-            var marker = L.marker([-6.89033536888645, 107.55833009635417]).addTo(map);
+            var marker = L.marker([position.coords.latitude, position.coords.longtitude]).addTo(map);
             var circle = L.circle([-6.89033536888645, 107.55833009635417], {
                 color: 'red',
                 fillColor: '#f03',
