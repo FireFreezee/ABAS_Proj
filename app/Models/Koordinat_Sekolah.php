@@ -10,8 +10,8 @@ class Koordinat_Sekolah extends Model
     use HasFactory;
 
     protected $fillable = [
-        'titik_koordinat',
-        'jarak',
+        'lokasi_sekolah',
+        'radius',
     ];
 
     public function koordinat()

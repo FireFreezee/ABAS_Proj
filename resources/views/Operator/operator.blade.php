@@ -60,7 +60,7 @@
                                         <input type="time" class="form-control form">
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="exampleInputPassword1">Password</label>
+                                        <label for="exampleInputPassword1">Jam Telat Masuk</label>
                                         <input type="time" class="form-control form">
                                     </div>
                                     <div class="form-group col-sm-6">
@@ -74,6 +74,7 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" id="lokasi">
             <div class="col-md-6">
                 <div class="container-fluid">
                     <div class="card">
@@ -88,14 +89,14 @@
                             </div>
                             <form class="forms-sample" action="/operator/updatelokasisekolah" method="POST">
                                 @csrf
-                                {{-- <div class="form-group">
+                                <div class="form-group">
                                     <label for="exampleInputPassword1">Koordinat</label>
-                                    <input type="text" class="form-control" id="titik_koordinat" value="{{ $lokasi_sekolah->titik_koordinat }}">
+                                    <input type="text" class="form-control" id="lokasi_sekolah" name="lokasi_sekolah" value="{{ $lok_sekolah->lokasi_sekolah }}" >
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputConfirmPassword1">Radius</label>
-                                    <input type="text" class="form-control" id="jarak" value="{{ $lokasi_sekolah->jarak }}">
-                                </div> --}}
+                                    <input type="text" class="form-control" id="radius" name="radius" value="{{ $lok_sekolah->radius }}" >
+                                </div>
                                 <button type="submit" class="btn btn-primary mr-2">Update</button>
 
                             </form>
@@ -114,18 +115,23 @@
 
 
         function successCallback(position) {
-            lokasi.value = position.coords.latitude + "," + position.coords.longtitude;
-            var map = L.map('map').setView([position.coords.latitude, position.coords.longtitude], 17);
+            lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+            var lokasi_sekolah = "{{ $lok_sekolah->lokasi_sekolah }}";
+            var lok = lokasi_sekolah.split(",");
+            var lat_sekolah = lok[0];
+            var long_sekolah = lok[1];
+            var map = L.map('map').setView([lat_sekolah, long_sekolah], 17);
+            var radius = "{{ $lok_sekolah->radius }}"
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
-            var marker = L.marker([position.coords.latitude, position.coords.longtitude]).addTo(map);
-            var circle = L.circle([-6.89033536888645, 107.55833009635417], {
+            var marker = L.marker([lat_sekolah, long_sekolah]).addTo(map);
+            var circle = L.circle([lat_sekolah, long_sekolah], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 200
+                radius: radius
             }).addTo(map);
         }
 
