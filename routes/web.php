@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\OperatorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +48,9 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {
-    Route::get('operator', [App\Http\Controllers\operatorController::class, 'lokasisekolah']);
-    Route::post('/operator/updatelokasisekolah', [App\Http\Controllers\operatorController::class, 'updatelokasisekolah']);
+    Route::get('operator', [App\Http\Controllers\operatorController::class, 'lokasisekolah'])->name('Dashboard');
+    Route::post('/operator/updatelokasisekolah', [App\Http\Controllers\operatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
+    Route::post('/operator/updatewaktu', [App\Http\Controllers\operatorController::class, 'updatewaktu'])->name('updatewaktu');
+    Route::get('/operator/data-walikelas', [\App\Http\Controllers\operatorController::class, 'dataWali'])->name('data-wali');
 });
 

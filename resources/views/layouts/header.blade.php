@@ -188,7 +188,7 @@
     <script src="{{ asset('assets/plugins/screenfull/dist/screenfull.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script>
@@ -201,6 +201,7 @@
     <script src="{{ asset('assets/js/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/charts.js') }}"></script>
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
         (function(b, o, i, l, e, r) {
