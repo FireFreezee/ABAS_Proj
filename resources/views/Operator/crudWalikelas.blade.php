@@ -33,6 +33,17 @@
         </div>
     </div>
     <div class="main-content">
+        @if (Session::get('success'))
+            <div class="alert alert-success" role="alert" onloadeddata="showSuccessToast()">
+                {{ Session::get('success') }}
+            </div>
+        @endif
+
+        @if (Session::get('warning'))
+            <div class="alert alert-warning" role="alert">
+                {{ Session::get('warning') }}
+            </div>
+        @endif
         <div class="container-fluid">
             <div class="page-header">
                 <div class="row align-items-end">
@@ -65,78 +76,51 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3>List Siswa</h3>
+                            <h3>List Walikelas</h3>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-end mb-3">
-                                <button type="button" class="btn btn-outline-primary btn-rounded mr-2" data-toggle="modal" data-target="#tambah">Tambah</button>
-                                <button type="button" class="btn btn-outline-primary btn-rounded" data-toggle="modal" data-target="#import">Import</button>
-                                <div class="modal fade" id="tambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterLabel">Modal title</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-body">
-                                            ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal fade" id="import" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterLabel">Modal title</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-body">
-                                            ...
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-rounded mr-2" data-toggle="modal"
+                                    data-target="#tambah"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                        height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path
+                                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                    </svg> Tambah</button>
+                                <button type="button" class="btn btn-outline-primary btn-rounded" data-toggle="modal"
+                                    data-target="#import">Import</button>
+
+
                             </div>
-                            <table id="data_table" class="table" style="text-align: center;">
-                                <thead>
+                            <table id="data_table" class="table">
+                                <thead style="text-align: center;">
                                     <tr>
                                         <th>NUPTK</th>
                                         <th>Nama</th>
                                         <th>JK</th>
                                         <th>Kelas</th>
                                         <th>Email</th>
-                                        <th>NIP</th>
-                                        <th>NIK</th>
                                         <th class="nosort">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($wali_kelas as $wali)
-                                        <tr>
+                                        <tr style="text-align: center;">
                                             <td>{{ $wali->nuptk }}</td>
                                             <td>{{ $wali->nama }}</td>
                                             <td>{{ $wali->jenis_kelamin }}</td>
-                                            <td>{{ $wali->kelas->tingkat }} {{ $wali->kelas->jurusan->nama_jurusan }} {{ $wali->kelas->nomor_kelas }}</td>
+                                            <td>{{ $wali->kelas ? $wali->kelas->tingkat : 'Tanpa Kelas' }}
+                                                {{ $wali->kelas ? $wali->kelas->jurusan->nama_jurusan : '' }}</td>
                                             <td>{{ $wali->user ? $wali->user->email : 'N/A' }}</td>
-                                            <td>{{ $wali->nip }}</td>
-                                            <td>{{ $wali->nik }}</td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a href="#"><i class="ik ik-eye"></i></a>
-                                                    <a href="#"><i class="ik ik-edit-2"></i></a>
-                                                    <a href="#"><i class="ik ik-trash-2"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#edit{{$wali->id}}"><i class="ik ik-edit-2"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#hapus{{ $wali->id }}"><i class="ik ik-trash-2"></i></a>
                                                 </div>
+
                                             </td>
                                         </tr>
+                                        @include('Operator.CRUDwaliModal')
                                     @endforeach
                                 </tbody>
                             </table>

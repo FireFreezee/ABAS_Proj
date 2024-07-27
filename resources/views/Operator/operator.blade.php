@@ -25,7 +25,7 @@
                                 Koordinat dan Waktu</span></a>
                     </div>
                     <div class="nav-item">
-                        <a href="{{ route('data-wali')}}"><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
+                        <a href="{{ route('data-wali') }}"><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
                     </div>
                 </nav>
             </div>
@@ -34,13 +34,13 @@
     <div class="main-content">
         @if (Session::get('success'))
             <div class="alert alert-success" role="alert">
-                {{ Session::get('success')}}
+                {{ Session::get('success') }}
             </div>
         @endif
 
         @if (Session::get('warning'))
             <div class="alert alert-warning" role="alert">
-                {{ Session::get('warning')}}
+                {{ Session::get('warning') }}
             </div>
         @endif
         <div class="row">
@@ -56,19 +56,23 @@
                                 <div class="row">
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputUsername1">Jam Masuk</label>
-                                        <input type="time" class="form-control form" id="jam_absen" name="jam_absen" value="{{ $waktu->jam_absen }}">
+                                        <input type="time" class="form-control form" id="jam_absen" name="jam_absen"
+                                            value="{{ $waktu->jam_absen }}">
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label for="exampleInputEmail1">Jam Pulang</label>
-                                        <input type="time" class="form-control form" id="jam_pulang" name="jam_pulang" value="{{ $waktu->jam_pulang }}">
+                                        <input type="time" class="form-control form" id="jam_pulang" name="jam_pulang"
+                                            value="{{ $waktu->jam_pulang }}">
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label for="exampleInputPassword1">Batas Absen Masuk</label>
-                                        <input type="time" class="form-control form" id="batas_absen_masuk" name="batas_absen_masuk" value="{{ $waktu->batas_absen_masuk }}">
+                                        <input type="time" class="form-control form" id="batas_absen_masuk"
+                                            name="batas_absen_masuk" value="{{ $waktu->batas_absen_masuk }}">
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label for="exampleInputConfirmPassword1">Batas Absen Pulang</label>
-                                        <input type="time" class="form-control form" id="batas_absen_pulang" name="batas_absen_pulang" value="{{ $waktu->batas_absen_pulang }}">
+                                        <input type="time" class="form-control form" id="batas_absen_pulang"
+                                            name="batas_absen_pulang" value="{{ $waktu->batas_absen_pulang }}">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary mr-2 ">Update</button>
@@ -94,11 +98,27 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Koordinat</label>
-                                    <input type="text" class="form-control" id="lokasi_sekolah" name="lokasi_sekolah" value="{{ $lok_sekolah->lokasi_sekolah }}" >
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <label class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                                              </svg></i></label>
+                                        </span>
+                                        <input type="text" class="form-control" id="lokasi_sekolah" name="lokasi_sekolah"
+                                            value="{{ $lok_sekolah->lokasi_sekolah }}">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputConfirmPassword1">Radius</label>
-                                    <input type="text" class="form-control" id="radius" name="radius" value="{{ $lok_sekolah->radius }}" >
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <label class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-broadcast" viewBox="0 0 16 16">
+                                                <path d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
+                                              </svg></i></label>
+                                        </span>
+                                        <input type="text" class="form-control" id="radius" name="radius"
+                                            value="{{ $lok_sekolah->radius }}">
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary mr-2">Update</button>
 

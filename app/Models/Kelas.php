@@ -15,6 +15,7 @@ class Kelas extends Model
     protected $fillable = [
         'id_jurusan',
         'nomor_kelas',
+        'nuptk',
         'tingkat',
     ];
 
@@ -25,7 +26,7 @@ class Kelas extends Model
 
     public function walikelas()
     {
-        return $this->hasOne(Wali_Kelas::class, 'id_kelas');
+        return $this->belongsTo(Wali_Kelas::class, 'nuptk');
     }
 
     public function siswa()

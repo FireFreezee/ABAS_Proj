@@ -16,22 +16,20 @@ class Wali_Kelas extends Model
 
     protected $fillable = [
         'nuptk',
-        'id_user',
+        'id',
         'nama',
         'jenis_kelamin',
-        'id_kelas',
         'nip',
-        'nik',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id');
     }
 
     public function kelas()
     {
-        return $this->belongsTo(Kelas::class, 'id_kelas');
+        return $this->hasOne(Kelas::class, 'nuptk');
     }
 
     public $timestamps = false;

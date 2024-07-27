@@ -16,6 +16,7 @@ class KelasSeeder extends Seeder
         kelas::create([
             'id_jurusan' => 9,
             'nomor_kelas' => 2,
+            'nuptk' => '1234567890123456',
             'tingkat' => '10',
             'jumlah_siswa' => 36,
         ]);
@@ -23,6 +24,7 @@ class KelasSeeder extends Seeder
         kelas::create([
             'id_jurusan' => 10,
             'nomor_kelas' => 1,
+            'nuptk' => '2345678901234567',
             'tingkat' => '11',
             'jumlah_siswa' => 35,
         ]);
@@ -30,6 +32,7 @@ class KelasSeeder extends Seeder
         kelas::create([
             'id_jurusan' => 10,
             'nomor_kelas' => 1,
+            'nuptk' => '3456789012345678',
             'tingkat' => '12',
             'jumlah_siswa' => 35,
         ]);
