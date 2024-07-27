@@ -9,6 +9,7 @@ class Koordinat_Sekolah extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'lokasi_sekolah',
         'radius',

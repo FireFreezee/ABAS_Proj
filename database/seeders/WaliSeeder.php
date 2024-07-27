@@ -17,6 +17,8 @@ class WaliSeeder extends Seeder
             'nuptk' => '1234567890123456',
             'id_user' => 5,
             'nama' => 'Engkus Kusnadi',
+            'id_kelas' => 1,
+            'jenis_kelamin' => 'laki laki',
             'nip' => '198005052022011001',
             'nik' => '3210123456789012',
         ]);
@@ -25,6 +27,8 @@ class WaliSeeder extends Seeder
             'nuptk' => '2345678901234567',
             'id_user' => 6,
             'nama' => 'Himatul Munawaroh',
+            'id_kelas' => 2,
+            'jenis_kelamin' => 'perempuan',
             'nip' => '198107062022021002',
             'nik' => '3210987654321098',
         ]);
@@ -33,6 +37,8 @@ class WaliSeeder extends Seeder
             'nuptk' => '3456789012345678',
             'id_user' => 7,
             'nama' => 'Ani Nuraeni',
+            'id_kelas' => 3,
+            'jenis_kelamin' => 'perempuan',
             'nip' => '198209072022031003',
             'nik' => '3210876543210987',
         ]);

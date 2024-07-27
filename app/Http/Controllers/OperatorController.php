@@ -21,7 +21,7 @@ class OperatorController extends Controller
 
     public function dataWali()
     {
-        $wali_kelas = Wali_Kelas::with('user')->get();
+        $wali_kelas = Wali_Kelas::with('user','kelas')->get();
         return view('Operator.crudWalikelas', compact('wali_kelas'));
     }
     /**

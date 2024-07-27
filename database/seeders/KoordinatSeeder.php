@@ -15,7 +15,7 @@ class KoordinatSeeder extends Seeder
     {
         koordinat_sekolah::create([
             'id_koordinat_sekolah' => '1',
-            'lokasi_sekolah' => '-6.9131982, 107.6090273',
+            'lokasi_sekolah' => '-6.89033536888645, 107.55833009635417',
             'radius' => 200.00
         ]);
     }

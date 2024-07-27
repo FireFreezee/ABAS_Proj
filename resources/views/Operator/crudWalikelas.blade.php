@@ -106,13 +106,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <table id="data_table" class="table">
+                            <table id="data_table" class="table" style="text-align: center;">
                                 <thead>
                                     <tr>
                                         <th>NUPTK</th>
                                         <th>Nama</th>
                                         <th>JK</th>
+                                        <th>Kelas</th>
                                         <th>Email</th>
+                                        <th>NIP</th>
+                                        <th>NIK</th>
                                         <th class="nosort">&nbsp;</th>
                                     </tr>
                                 </thead>
@@ -122,7 +125,10 @@
                                             <td>{{ $wali->nuptk }}</td>
                                             <td>{{ $wali->nama }}</td>
                                             <td>{{ $wali->jenis_kelamin }}</td>
+                                            <td>{{ $wali->kelas->tingkat }} {{ $wali->kelas->jurusan->nama_jurusan }} {{ $wali->kelas->nomor_kelas }}</td>
                                             <td>{{ $wali->user ? $wali->user->email : 'N/A' }}</td>
+                                            <td>{{ $wali->nip }}</td>
+                                            <td>{{ $wali->nik }}</td>
                                             <td>
                                                 <div class="table-actions">
                                                     <a href="#"><i class="ik ik-eye"></i></a>

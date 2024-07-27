@@ -10,8 +10,10 @@ class Waktu_Absen extends Model
     use HasFactory;
 
     protected $fillable = [
-        'jam_masuk',
+        'jam_absen',
+        'batas_absen_masuk',
         'jam_pulang',
+        'batas_absen_pulang'
     ];
 
     public function waktu_absen()

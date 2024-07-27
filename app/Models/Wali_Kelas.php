@@ -19,6 +19,7 @@ class Wali_Kelas extends Model
         'id_user',
         'nama',
         'jenis_kelamin',
+        'id_kelas',
         'nip',
         'nik',
     ];
@@ -30,7 +31,7 @@ class Wali_Kelas extends Model
 
     public function kelas()
     {
-        return $this->belongsTo(kelas::class, 'id_kelas');
+        return $this->belongsTo(Kelas::class, 'id_kelas');
     }
 
     public $timestamps = false;
