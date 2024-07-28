@@ -29,12 +29,10 @@
                                     Walikelas</span></a>
                         </div>
                         <div class="nav-item">
-                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-users"></i><span>Tambah/Edit
-                                    Jurusan</span></a>
+                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit Jurusan</span></a>
                         </div>
-                        <div class="nav-item active">
-                            <a href="{{ route('data-kelas') }}"><i class="ik ik-users"></i><span>Tambah/Edit
-                                    Kelas</span></a>
+                        <div class="nav-item">
+                            <a href="{{ route('data-kelas') }}"><i class="ik ik-book-open"></i><span>Tambah/Edit Kelas</span></a>
                         </div>
                     </nav>
                 </div>
