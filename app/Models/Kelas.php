@@ -26,12 +26,12 @@ class Kelas extends Model
 
     public function walikelas()
     {
-        return $this->belongsTo(Wali_Kelas::class, 'nuptk');
+        return $this->belongsTo(Wali_Kelas::class, 'nuptk', 'nuptk');
     }
 
     public function siswa()
     {
-        return $this->hasMany(Siswa::class, 'id_kelas');
+        return $this->hasMany(Siswa::class, 'id_kelas', 'id_kelas');
     }
 
     public $timestamps = false;

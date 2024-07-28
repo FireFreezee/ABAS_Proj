@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jurusan;
+use App\Models\Kelas;
+use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Wali_Kelas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class OperatorController extends Controller
@@ -85,7 +89,7 @@ class OperatorController extends Controller
     public function dataWali()
     {
         $jenisKelamin = ['laki laki', 'perempuan'];
-        $wali_kelas = Wali_Kelas::with('user')->get();
+        $wali_kelas = Wali_Kelas::with('user', 'kelas', 'jurusan')->get();
         return view('Operator.crudWalikelas', compact('wali_kelas', 'jenisKelamin'));
     }
     /**
@@ -103,8 +107,7 @@ class OperatorController extends Controller
 
             Wali_Kelas::insert([
                 'nuptk' => $request->nuptk,
-                'nama' => $request->name,
-                'id_user' => $user->id,
+                'id' => $user->id,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nip' => $request->nip,
             ]);
@@ -117,8 +120,7 @@ class OperatorController extends Controller
 
             Wali_Kelas::insert([
                 'nuptk' => $request->nuptk,
-                'nama' => $request->name,
-                'id_user' => $user->id,
+                'id' => $user->id,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nip' => $request->nip,
             ]);
@@ -127,20 +129,185 @@ class OperatorController extends Controller
         return redirect()->route('data-wali')->with('success', 'Wali Kelas berhasil ditambahkan!');
     }
 
-    public function hapuswali($id)
+    public function editwali(Request $r)
     {
-        $wali = Wali_Kelas::findOrFail($id);
-        $user = User::findOrFail($wali->id);
+        //DB wali
+        DB::table('wali__kelas')->where('id', $r->id)->update([
+            'nuptk' => $r->nuptk,
+            'jenis_kelamin' => $r->jenis_kelamin,
+            'nip' => $r->nip,
+        ]);
 
-        // Hapus Wali_Kelas
-        $wali->delete();
 
-        // Hapus User
-        $user->delete();
+        //DB user
+        DB::table('users')->where('id', $r->id)->update([
+            'name' => $r->name,
+            'email' => $r->email,
+            'password' => password_hash($r->password, PASSWORD_DEFAULT),
+        ]);
 
-        // Redirect atau beri response sesuai kebutuhan
-        return redirect()->route('data_table')->with('success', 'Data berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
     }
+
+
+    public function hapuswali(Request $request, $id)
+    {
+        $w = Wali_Kelas::find($id);
+        $w->delete();
+
+        $w = user::find($id);
+        $w->delete();
+
+        return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function jurusan()
+    {
+        $jurusan = Jurusan::all();
+        return view('Operator.crudJurusan', compact('jurusan'));
+    }
+
+    public function tambahJurusan(Request $request)
+    {
+        Jurusan::insert([
+            'id_jurusan' => $request->id_jurusan,
+            'nama_jurusan' => $request->nama_jurusan,
+        ]);
+
+        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
+    }
+
+    public function editJurusan(Request $r)
+    {
+        DB::table('jurusans')->where('id_jurusan', $r->id_jurusan)->update([
+            'nama_jurusan' => $r->nama_jurusan,
+        ]);
+
+        return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
+    }
+
+    public function hapusJurusan($id)
+    {
+        $j = Jurusan::find($id);
+        $j->delete();
+
+        return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function kelas()
+    {
+        $kelas = Kelas::with('walikelas')->get();
+        $jurusan = Jurusan::all();
+        $walikelas = Wali_Kelas::all();
+        return view('Operator.crudKelas', compact('kelas', 'jurusan', 'walikelas'));
+    }
+
+    public function tambahKelas(Request $request)
+    {
+        Kelas::insert([
+            'id_jurusan' => $request->id_jurusan,
+            'nomor_kelas' => $request->nomor_kelas,
+            'nuptk' => $request->nuptk,
+            'tingkat' => $request->tingkat,
+            'jumlah_siswa' => $request->jumlah_siswa,
+        ]);
+
+        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
+    }
+
+    public function editKelas(Request $r)
+    {
+        DB::table('kelas')->where('id_kelas', $r->id_kelas)->update([
+            'id_jurusan' => $r->id_jurusan,
+            'nomor_kelas' => $r->nomor_kelas,
+            'nuptk' => $r->nuptk,
+            'tingkat' => $r->tingkat,
+            'jumlah_siswa' => $r->jumlah_siswa,
+        ]);
+
+        return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
+    }
+
+    public function hapusKelas($id)
+    {
+        $k = Kelas::find($id);
+        $k->delete();
+
+        return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function siswa($id_kelas)
+    {
+        $kelas = Kelas::find($id_kelas);
+        $siswa = $kelas->siswa()->with('user')->get();
+
+        return view('Operator.crudSiswa', compact('siswa', 'kelas', 'id_kelas'));
+    }
+
+    public function tambahSiswa(Request $request)
+    {
+        if (strlen($request->password) > 0) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => password_hash($request->password, PASSWORD_DEFAULT),
+                'role' => 'siswa'
+            ]);
+
+            Siswa::insert([
+                'nis' => $request->nis,
+                'id' => $user->id,
+                'id_kelas' => $request->id_kelas,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nisn' => $request->nisn,
+            ]);
+        } else {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => 'wali'
+            ]);
+
+            Siswa::insert([
+                'nis' => $request->nis,
+                'id' => $user->id,
+                'id_kelas' => $request->id_kelas,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nisn' => $request->nisn,
+            ]);
+        }
+        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
+    }
+
+    public function editSiswa(Request $r) {
+        DB::table('siswas')->where('id', $r->id)->update([
+            'nis' => $r->nis,
+            'jenis_kelamin' => $r->jenis_kelamin,
+            'nisn' => $r->nisn,
+        ]);
+
+
+        //DB user
+        DB::table('users')->where('id', $r->id)->update([
+            'name' => $r->name,
+            'email' => $r->email,
+            'password' => password_hash($r->password, PASSWORD_DEFAULT),
+        ]);
+
+        return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
+    }
+
+    public function hapusSiswa($id)
+    {
+        $s = Siswa::find($id);
+        $s->delete();
+
+        $s = User::find($id);
+        $s->delete();
+
+        return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
     /**
      * Display the specified resource.
      */

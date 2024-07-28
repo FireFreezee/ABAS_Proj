@@ -24,14 +24,17 @@
                             <a href="{{ route('Dashboard') }}"><i class="ik ik-calendar"></i><span>Setting
                                     Koordinat dan Waktu</span></a>
                         </div>
+                        <div class="nav-item">
+                            <a href="{{ route('data-wali') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                                    Walikelas</span></a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                                    Jurusan</span></a>
+                        </div>
                         <div class="nav-item active">
-                            <a href=""><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
-                        </div>
-                        <div class="nav-item">
-                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Jurusan</span></a>
-                        </div>
-                        <div class="nav-item">
-                            <a href="{{ route('data-kelas') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kelas</span></a>
+                            <a href="{{ route('data-kelas') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                                    Kelas</span></a>
                         </div>
                     </nav>
                 </div>
@@ -57,7 +60,7 @@
                         <div class="page-header-title">
                             <i class="ik ik-inbox bg-blue"></i>
                             <div class="d-inline">
-                                <h5>List Walikelas</h5>
+                                <h5>List Siswa</h5>
                             </div>
                         </div>
                     </div>
@@ -68,7 +71,7 @@
                                     <a href="../index.html"><i class="ik ik-home"></i></a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="#">List Walikelas</a>
+                                    <a href="#">List Siswa</a>
                                 </li>
                                 <li class="breadcrumb-item active" aria-current="page">Tabel Siswa</li>
                             </ol>
@@ -82,7 +85,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3>List Walikelas</h3>
+                            <h3>{{ $kelas->tingkat }} {{ $kelas->jurusan->nama_jurusan }}</h3>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-end mb-3">
@@ -101,30 +104,32 @@
                             <table id="data_table" class="table">
                                 <thead style="text-align: center;">
                                     <tr>
-                                        <th>NUPTK</th>
+                                        <th>NIS</th>
                                         <th>Nama</th>
-                                        <th>JK</th>
-                                        <th>Kelas</th>
+                                        <th>Jenis Kelamin</th>
                                         <th>Email</th>
                                         <th class="nosort">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($wali_kelas as $w)
+                                    @foreach ($siswa as $s)
                                         <tr style="text-align: center;">
-                                            <td>{{ $w->nuptk }}</td>
-                                            <td>{{ $w->user->name }}</td>
-                                            <td>{{ $w->jenis_kelamin }}</td>
-                                            <td>{{ $w->kelas ? $w->kelas->tingkat : 'Tanpa Kelas' }} {{ $w->kelas ? $w->kelas->jurusan->nama_jurusan : '' }}</td>
-                                            <td>{{ $w->user ? $w->user->email : 'N/A' }}</td>
+                                            <td>{{ $s->nis }}</td>
+                                            <td>{{ $s->user->name ?? 'No User' }}</td>
+                                            <td>{{ $s->jenis_kelamin }}</td>
+                                            <td>{{ $s->user->email ?? 'No Email' }}</td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a href="#" data-toggle="modal" data-target="#edit{{$w->id}}"><i class="ik ik-edit-2"></i></a>
-                                                    <a href="#" data-toggle="modal" data-target="#hapus{{ $w->id }}"><i class="ik ik-trash-2"></i></a>
+                                                    <a href="#" data-toggle="modal"
+                                                        data-target="#edit{{ $s->id }}"><i
+                                                            class="ik ik-edit-2"></i></a>
+                                                    <a href="#" data-toggle="modal"
+                                                        data-target="#hapus{{ $s->id }}"><i
+                                                            class="ik ik-trash-2"></i></a>
                                                 </div>
 
                                             </td>
-                                            @include('Operator.CRUDwaliModal')
+                                            @include('Operator.CRUDsiswaModal')
                                         </tr>
                                     @endforeach
                                 </tbody>

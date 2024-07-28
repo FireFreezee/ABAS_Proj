@@ -50,10 +50,29 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::get('operator', [App\Http\Controllers\operatorController::class, 'lokasisekolah'])->name('Dashboard');
-    Route::post('/operator/updatelokasisekolah', [App\Http\Controllers\operatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
-    Route::post('/operator/updatewaktu', [App\Http\Controllers\operatorController::class, 'updatewaktu'])->name('updatewaktu');
+
     Route::get('/operator/data-walikelas', [App\Http\Controllers\operatorController::class, 'dataWali'])->name('data-wali');
     Route::post('/store-wali-kelas', [App\Http\Controllers\operatorController::class, 'store'])->name('store-wali-kelas');
-    Route::delete('/hapuswalikelas/{id}', [App\Http\Controllers\operatorController::class, 'hapuswali'])->name('hapus');
+    Route::post('/editwalikelas/{id}', [OperatorController::class, 'editwali'])->name('edit-wali-kelas');
+    Route::delete('hapuswalikelas/{id}', [OperatorController::class, 'hapuswali'])->name('hapuswali');
+
+    Route::get('/operator/data-jurusan', [OperatorController::class, 'jurusan'])->name('data-jurusan');
+    Route::post('/add-jurusan', [OperatorController::class, 'tambahJurusan'])->name('add-jurusan');
+    Route::post('/edit-jurusan/{id_jurusan}', [OperatorController::class, 'editJurusan'])->name('edit-jurusan');
+    Route::delete('/hapus-jurusan/{id}', [OperatorController::class, 'hapusJurusan'])->name('hapus-jurusan');
+
+    Route::get('/operator/data-kelas', [OperatorController::class, 'kelas'])->name('data-kelas');
+    Route::post('/add-kelas', [OperatorController::class, 'tambahKelas'])->name('add-kelas');
+    Route::post('/edit-kelas/{id_kelas}', [OperatorController::class, 'editKelas'])->name('edit-kelas');
+    Route::delete('/hapus-kelas/{id}', [OperatorController::class, 'hapusKelas'])->name('hapus-kelas');
+
+    Route::get('/kelas/{id}/data-siswa/', [OperatorController::class, 'siswa'])->name('data-siswa');
+    Route::post('/kelas/{id}/add-siswa', [OperatorController::class, 'tambahSiswa'])->name('add-siswa');
+    Route::post('/kelas/{id}/edit-siswa', [OperatorController::class, 'editSiswa'])->name('edit-siswa');
+    Route::delete('/kelas/{id}/hapus-siswa', [OperatorController::class, 'hapusSiswa'])->name('hapus-siswa');
+
+    Route::post('/operator/updatelokasisekolah', [App\Http\Controllers\operatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
+    Route::post('/operator/updatewaktu', [App\Http\Controllers\operatorController::class, 'updatewaktu'])->name('updatewaktu');
+
 });
 

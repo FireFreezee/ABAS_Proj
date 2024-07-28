@@ -21,11 +21,17 @@
                 <nav id="main-menu-navigation" class="navigation-main">
                     <div class="nav-lavel">Navigation</div>
                     <div class="nav-item active">
-                        <a href="pages/laporan-absensi.html"><i class="ik ik-calendar"></i><span>Setting
+                        <a href=""><i class="ik ik-calendar"></i><span>Setting
                                 Koordinat dan Waktu</span></a>
                     </div>
                     <div class="nav-item">
                         <a href="{{ route('data-wali') }}"><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="{{ route('data-jurusan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Jurusan</span></a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="{{ route('data-kelas') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kelas</span></a>
                     </div>
                 </nav>
             </div>

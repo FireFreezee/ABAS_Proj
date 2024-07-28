@@ -9,44 +9,47 @@
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('store-wali-kelas') }}" method="POST" class="forms-sample">
+                <form action="{{ route('add-kelas') }}" method="POST" class="forms-sample">
                     @csrf
                     <div class="form-group">
-                        <label for="exampleInputUsername1">NUPTK</label>
-                        <input type="text" class="form-control" id="nuptk" name="nuptk" placeholder="NUPTK"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">NIP</label>
-                        <input type="text" class="form-control" id="nip" name="nip" placeholder="NIP"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Jenis Kelamin</label>
-                        <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
-                            <option value="{{ $w->jenis_kelamin }}" hidden>Pilih</option>
-                            <option value="1">laki laki
-                            </option>
-                            <option value="2">perempuan
-                            </option>
+                        <label for="exampleInputPassword1">Jurusan</label>
+                        <select class="form-control" id="id_jurusan" name="id_jurusan" required>
+                            <option value="" hidden>Pilih</option>
+                            @foreach ($jurusan as $j)
+                            <option value="{{ $j->id_jurusan }}">{{ $j->nama_jurusan }}</option>
+                            @endforeach
+
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputConfirmPassword1">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                        <label for="exampleInputUsername1">Nomor Kelas</label>
+                        <input type="text" class="form-control" id="nomor_kelas" name="nomor_kelas" placeholder="Nomor Kelas"
                             required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputConfirmPassword1">Password</label>
-                        <input type="text" class="form-control" id="password" name="password"
-                            placeholder="Password" required>
-                    </div>
+                        <label for="exampleInputPassword1">Wali Kelas</label>
+                        <select class="form-control" id="nuptk" name="nutpk">
+                            <option value="" hidden>Pilih</option>
+                            @foreach ($walikelas as $wk)
+                            <option value="{{ $wk->nutpk }}">{{ $wk->user->name }}</option>
+                            @endforeach
 
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Tingkat Kelas</label>
+                        <select class="form-control" id="tingkat" name="tingkat" required>
+                            <option value="{{ $k->tingkat }}" hidden>Pilih</option>
+                            <option value="1">10</option>
+                            <option value="2">11</option>
+                            <option value="2">12</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Maksimal Siswa</label>
+                        <input type="text" class="form-control" id="jumlah_siswa" name="jumlah_siswa" placeholder="Jumlah Siswa"
+                            required>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Tambah</button>
@@ -82,7 +85,7 @@
 
 {{-- modal edit --}}
 
-<div class="modal fade" id="edit{{ $w->id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="edit{{ $k->id_kelas }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -92,42 +95,47 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('edit-wali-kelas', ['id' => $w->id]) }}" method="POST" class="forms-sample"
-                enctype="multipart/form-data">
+            <form action="{{ route('edit-kelas', ['id_kelas' => $k->id_kelas]) }}" method="POST" class="forms-sample" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="nuptk">NUPTK</label>
-                        <input type="text" class="form-control" id="nuptk" name="nuptk"
-                            placeholder="NUPTK" value="{{ $w->nuptk }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="nip">NIP</label>
-                        <input type="text" class="form-control" id="nip" name="nip" placeholder="NIP"
-                            value="{{ $w->nip }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
-                            value="{{ $w->user->name }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="jenis_kelamin">Jenis Kelamin</label>
-                        <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
+                        <label for="exampleInputPassword1">Jurusan</label>
+                        <select class="form-control" id="id_jurusan" name="id_jurusan" required>
                             <option value="" hidden>Pilih</option>
-                            <option value="1" {{ $w->jenis_kelamin == 'laki laki' ? 'selected' : '' }}>laki laki</option>
-                            <option value="2" {{ $w->jenis_kelamin == 'perempuan' ? 'selected' : '' }}>perempuan</option>
+                            @foreach ($jurusan as $j)
+                            <option value="{{ $j->id_jurusan }}" {{ $k->id_jurusan == $j->id_jurusan ? 'selected' : '' }}>{{ $j->nama_jurusan }}</option>
+                            @endforeach
+
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email"
-                            placeholder="Email" value="{{ $w->user->email }}" required>
+                        <label for="exampleInputUsername1">Nomor Kelas</label>
+                        <input type="text" class="form-control" id="nomor_kelas" name="nomor_kelas" placeholder="Nomor Kelas"
+                        value="{{ $k->nomor_kelas }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Password" required>
+                        <label for="exampleInputPassword1">Wali Kelas</label>
+                        <select class="form-control" id="nuptk" name="nutpk">
+                            <option value="" hidden>Pilih</option>
+                            @foreach ($walikelas as $wk)
+                            <option value="{{ $wk->nutpk }}" {{ $k->nuptk == $wk->nuptk ? 'selected' : '' }}>{{ $wk->user->name }}</option>
+                            @endforeach
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Tingkat Kelas</label>
+                        <select class="form-control" id="tingkat" name="tingkat" required>
+                            <option value="{{ $k->tingkat }}" hidden>Pilih</option>
+                            <option value="10" {{ $k->tingkat == 10 ? 'selected' : '' }}>10</option>
+                            <option value="11" {{ $k->tingkat == 11 ? 'selected' : '' }}>11</option>
+                            <option value="12" {{ $k->tingkat == 12 ? 'selected' : '' }}>12</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Maksimal Siswa</label>
+                        <input type="text" class="form-control" id="jumlah_siswa" name="jumlah_siswa" placeholder="Jumlah Siswa"
+                        value="{{ $k->jumlah_siswa }}" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -142,7 +150,7 @@
 
 {{-- modal hapus --}}
 
-<div class="modal fade" id="hapus{{ $w->id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="hapus{{ $k->id_kelas }}" tabindex="-1" role="dialog"
     aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -153,12 +161,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                Apakah anda yakin ingin menghapus data {{ $w->user->name }} ini?
+                Apakah anda yakin ingin menghapus kelas {{ $k->tingkat }} {{ $k->jurusan->nama_jurusan }} ?
                 <span class="badge badge-danger">Data Akan Dihapus Secara Permanen!</span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
-                <form action="{{ route('hapuswali', ['id' => $w->id]) }}" method="POST">
+                <form action="{{ route('hapus-kelas', ['id' => $k->id_kelas]) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Hapus</button>

@@ -16,10 +16,6 @@ return new class extends Migration
 
             $table->unsignedBigInteger('id');
             $table->foreign('id')->references('id')->on('users');
-
-
-
-            $table->string('nama');
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nip')->unique();
         });

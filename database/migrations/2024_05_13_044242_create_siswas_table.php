@@ -14,15 +14,13 @@ return new class extends Migration
         Schema::create('siswas', function (Blueprint $table) {
             $table->string('nis')->primary();
 
-            $table->unsignedBigInteger('id_user')->nullable();
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->unsignedBigInteger('id')->nullable();
+            $table->foreign('id')->references('id')->on('users');
 
             $table->unsignedInteger('id_kelas');
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
 
-            $table->string('nama');
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
-            $table->string('nik')->unique();
             $table->string('nisn')->unique();
         });
     }

@@ -10,26 +10,27 @@ class Wali_Kelas extends Model
     use HasFactory;
 
     protected $table = 'wali__kelas';
-    protected $primaryKey = 'nuptk'; // Sesuaikan dengan primary key yang digunakan
-    public $incrementing = false; // Karena primary key bukan incrementing integer
-    protected $keyType = 'string'; // Tipe data primary key
 
     protected $fillable = [
         'nuptk',
         'id',
-        'nama',
         'jenis_kelamin',
         'nip',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->hasOne(User::class, 'id');
     }
 
     public function kelas()
     {
-        return $this->hasOne(Kelas::class, 'nuptk');
+        return $this->hasOne(Kelas::class, 'nuptk', 'nuptk');
+    }
+
+    public function jurusan()
+    {
+        return $this->hasOneThrough(jurusan::class, kelas::class, 'nuptk', 'id_jurusan', 'nuptk', 'id_jurusan');
     }
 
     public $timestamps = false;
