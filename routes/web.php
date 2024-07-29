@@ -66,6 +66,7 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::post('/add-kelas', [OperatorController::class, 'tambahKelas'])->name('add-kelas');
     Route::post('/edit-kelas/{id_kelas}', [OperatorController::class, 'editKelas'])->name('edit-kelas');
     Route::delete('/hapus-kelas/{id}', [OperatorController::class, 'hapusKelas'])->name('hapus-kelas');
+    Route::post('/kelas/import', [OperatorController::class, 'importKelas'])->name('import-kelas');
 
     Route::get('/kelas/{id}/data-siswa/', [OperatorController::class, 'siswa'])->name('data-siswa');
     Route::post('/kelas/{id}/add-siswa', [OperatorController::class, 'tambahSiswa'])->name('add-siswa');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('id')->references('id')->on('users');
 
             $table->unsignedInteger('id_kelas');
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
 
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nisn')->unique();

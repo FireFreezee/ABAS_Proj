@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\KelasImport;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Siswa;
@@ -212,20 +213,20 @@ class OperatorController extends Controller
 
     public function kelas()
     {
-        $kelas = Kelas::with('walikelas')->get();
+        $kelas = Kelas::withCount('siswa')->get();
         $jurusan = Jurusan::all();
-        $walikelas = Wali_Kelas::all();
-        return view('Operator.crudKelas', compact('kelas', 'jurusan', 'walikelas'));
+        $walikelas = Wali_Kelas::doesntHave('kelas')->get();
+        return view('Operator.crudKelas', compact('walikelas', 'kelas', 'jurusan'));
     }
 
     public function tambahKelas(Request $request)
     {
+
         Kelas::insert([
             'id_jurusan' => $request->id_jurusan,
             'nomor_kelas' => $request->nomor_kelas,
             'nuptk' => $request->nuptk,
             'tingkat' => $request->tingkat,
-            'jumlah_siswa' => $request->jumlah_siswa,
         ]);
 
         return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
@@ -238,18 +239,51 @@ class OperatorController extends Controller
             'nomor_kelas' => $r->nomor_kelas,
             'nuptk' => $r->nuptk,
             'tingkat' => $r->tingkat,
-            'jumlah_siswa' => $r->jumlah_siswa,
         ]);
 
         return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
     }
 
     public function hapusKelas($id)
-    {
-        $k = Kelas::find($id);
-        $k->delete();
+{
+    // Find the Kelas record
+    $kelas = Kelas::find($id);
+
+    if ($kelas) {
+        // Delete all related Siswa records
+        $siswas = Siswa::where('id_kelas', $id)->get();
+        foreach ($siswas as $siswa) {
+            // Delete the Siswa record
+            $siswa->delete();
+
+            // Delete related User record
+            $user = User::find($siswa->id);
+            if ($user) {
+                $user->delete();
+            }
+        }
+
+        // Finally, delete the Kelas record
+        $kelas->delete();
 
         return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    } else {
+        return redirect()->back()->with('warning', 'Data Tidak Ditemukan!');
+    }
+}
+
+    public function importKelas(Request $request)
+    {
+        $request->validate([
+            'import_file' => [
+                'required',
+                'file'
+            ],
+        ]);
+
+        Excel::import(new KelasImport, $request->file('import_file'));
+
+        return redirect()->back()->with('success', 'Data Berhasil Diimport!');
     }
 
     public function siswa($id_kelas)
@@ -295,7 +329,8 @@ class OperatorController extends Controller
         return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
     }
 
-    public function editSiswa(Request $r) {
+    public function editSiswa(Request $r)
+    {
         DB::table('siswas')->where('id', $r->id)->update([
             'nis' => $r->nis,
             'jenis_kelamin' => $r->jenis_kelamin,

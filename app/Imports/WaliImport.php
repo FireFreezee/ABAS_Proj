@@ -15,7 +15,7 @@ class WaliImport implements ToCollection, WithHeadingRow
     */
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row) 
+        foreach ($rows as $row)
         {
             $wali = User::where('email', $row['email'])->first();
             if ($wali) {
@@ -29,7 +29,7 @@ class WaliImport implements ToCollection, WithHeadingRow
                     ['id' => $wali->id],
                     [
                     'nuptk' => $row['nuptk'],
-                    'jenis_kelamin' => $row['jenis kelamin'],
+                    'jenis_kelamin' => $row['jenis_kelamin'],
                     'nip' => $row['nip'],
                 ]);
             }else {
@@ -48,7 +48,7 @@ class WaliImport implements ToCollection, WithHeadingRow
                 ]);
             }
 
-            
+
         }
     }
 }

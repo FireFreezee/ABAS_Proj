@@ -115,7 +115,7 @@
                                         <tr style="text-align: center;">
                                             <td>{{ $k->tingkat }} {{ $k->jurusan->nama_jurusan }}</td>
                                             <td>{{ $k->walikelas->user->name ?? 'No Wali Kelas' }}</td>
-                                            <td>{{ $k->jumlah_siswa }}</td>
+                                            <td>{{ $k->siswa_count }}</td> <!-- Display total number of siswa -->
                                             <td>
                                                 <div class="table-actions">
                                                     <a href="{{ route('data-siswa', $k->id_kelas) }}"><i

@@ -28,10 +28,10 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Wali Kelas</label>
-                        <select class="form-control" id="nuptk" name="nutpk">
+                        <select class="form-control" id="nuptk" name="nuptk">
                             <option value="" hidden>Pilih</option>
-                            @foreach ($walikelas as $wk)
-                            <option value="{{ $wk->nutpk }}">{{ $wk->user->name }}</option>
+                            @foreach ($walikelas as $w)
+                            <option value="{{ $w->nuptk }}">{{ $w->user->name }}</option>
                             @endforeach
 
                         </select>
@@ -44,11 +44,6 @@
                             <option value="2">11</option>
                             <option value="2">12</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">Maksimal Siswa</label>
-                        <input type="text" class="form-control" id="jumlah_siswa" name="jumlah_siswa" placeholder="Jumlah Siswa"
-                            required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -71,13 +66,19 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <form action="{{ route('import-kelas') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputConfirmPassword1">File</label>
+                        <input type="file" class="form-control" id="password" name="import_file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -115,10 +116,10 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Wali Kelas</label>
-                        <select class="form-control" id="nuptk" name="nutpk">
+                        <select class="form-control" id="nuptk" name="nuptk">
                             <option value="" hidden>Pilih</option>
                             @foreach ($walikelas as $wk)
-                            <option value="{{ $wk->nutpk }}" {{ $k->nuptk == $wk->nuptk ? 'selected' : '' }}>{{ $wk->user->name }}</option>
+                            <option value="{{ $wk->nuptk }}" {{ $k->nuptk == $wk->nuptk ? 'selected' : '' }}>{{ $wk->user->name }}</option>
                             @endforeach
 
                         </select>
@@ -131,11 +132,6 @@
                             <option value="11" {{ $k->tingkat == 11 ? 'selected' : '' }}>11</option>
                             <option value="12" {{ $k->tingkat == 12 ? 'selected' : '' }}>12</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">Maksimal Siswa</label>
-                        <input type="text" class="form-control" id="jumlah_siswa" name="jumlah_siswa" placeholder="Jumlah Siswa"
-                        value="{{ $k->jumlah_siswa }}" required>
                     </div>
                 </div>
                 <div class="modal-footer">

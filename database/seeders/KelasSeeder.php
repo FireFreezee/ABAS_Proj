@@ -18,7 +18,6 @@ class KelasSeeder extends Seeder
             'nomor_kelas' => 2,
             'nuptk' => '1234567890123456',
             'tingkat' => '10',
-            'jumlah_siswa' => 36,
         ]);
 
         kelas::create([
@@ -26,7 +25,6 @@ class KelasSeeder extends Seeder
             'nomor_kelas' => 1,
             'nuptk' => '2345678901234567',
             'tingkat' => '11',
-            'jumlah_siswa' => 35,
         ]);
 
         kelas::create([
@@ -34,7 +32,6 @@ class KelasSeeder extends Seeder
             'nomor_kelas' => 1,
             'nuptk' => '3456789012345678',
             'tingkat' => '12',
-            'jumlah_siswa' => 35,
         ]);
     }
 }
