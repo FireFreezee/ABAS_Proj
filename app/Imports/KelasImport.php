@@ -27,28 +27,65 @@ class KelasImport implements ToCollection, WithHeadingRow
 
             // Check if both foreign keys are valid
             if ($jurusanId) {
-                $kelas = Kelas::create([
-                    'nomor_kelas' => $row['nomor_kelas'],
-                    'id_jurusan' => $jurusanId,
-                    'tingkat' => $row['tingkat'],
-                ]);
+                // Check if the Kelas already exists
+                $kelas = Kelas::where('nomor_kelas', $row['nomor_kelas'])
+                              ->where('id_jurusan', $jurusanId)
+                              ->first();
 
-                $user = User::create([
-                    'name' => $row['nama'],
-                    'email' => $row['email'],
-                    'password' => password_hash("12345678", PASSWORD_DEFAULT),
-                    'role' => 'siswa'
-                ]);
+                if ($kelas) {
+                    // Update existing Kelas
+                    $kelas->update([
+                        'tingkat' => $row['tingkat'],
+                    ]);
+                } else {
+                    // Create new Kelas
+                    $kelas = Kelas::create([
+                        'nomor_kelas' => $row['nomor_kelas'],
+                        'id_jurusan' => $jurusanId,
+                        'tingkat' => $row['tingkat'],
+                    ]);
+                }
 
-                Siswa::insert([
-                    'nis' => $row['nis'],
-                    'id' => $user->id,
-                    'id_kelas' => $kelas->id_kelas,
-                    'jenis_kelamin' => $row['jenis_kelamin'],
-                    'nisn' => $row['nisn'],
-                ]);
+                // Check if the User already exists
+                $user = User::where('email', $row['email'])->first();
+                if ($user) {
+                    // Update existing User
+                    $user->update([
+                        'name' => $row['nama'],
+                        'password' => password_hash("12345678", PASSWORD_DEFAULT), // Optional: only update password if needed
+                    ]);
+                } else {
+                    // Create new User
+                    $user = User::create([
+                        'name' => $row['nama'],
+                        'email' => $row['email'],
+                        'password' => password_hash("12345678", PASSWORD_DEFAULT),
+                        'role' => 'siswa'
+                    ]);
+                }
+
+                // Check if the Siswa already exists
+                $siswa = Siswa::where('nis', $row['nis'])->first();
+                if ($siswa) {
+                    // Update existing Siswa
+                    $siswa->update([
+                        'id' => $user->id,
+                        'id_kelas' => $kelas->id_kelas,
+                        'jenis_kelamin' => $row['jenis_kelamin'],
+                        'nisn' => $row['nisn'],
+                    ]);
+                } else {
+                    // Create new Siswa
+                    Siswa::create([
+                        'nis' => $row['nis'],
+                        'id' => $user->id,
+                        'id_kelas' => $kelas->id_kelas,
+                        'jenis_kelamin' => $row['jenis_kelamin'],
+                        'nisn' => $row['nisn'],
+                    ]);
+                }
             } else {
-
+                // Handle cases where Jurusan does not exist
             }
         }
     }
