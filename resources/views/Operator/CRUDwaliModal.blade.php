@@ -43,8 +43,8 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputConfirmPassword1">Password</label>
-                        <input type="text" class="form-control" id="password" name="password"
-                            placeholder="Password" required>
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Password"
+                            required>
                     </div>
 
                     <div class="modal-footer">
@@ -68,13 +68,19 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <form action="{{ route('import-wali') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputConfirmPassword1">File</label>
+                        <input type="file" class="form-control" id="password" name="import_file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -115,8 +121,10 @@
                         <label for="jenis_kelamin">Jenis Kelamin</label>
                         <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
                             <option value="" hidden>Pilih</option>
-                            <option value="1" {{ $w->jenis_kelamin == 'laki laki' ? 'selected' : '' }}>laki laki</option>
-                            <option value="2" {{ $w->jenis_kelamin == 'perempuan' ? 'selected' : '' }}>perempuan</option>
+                            <option value="1" {{ $w->jenis_kelamin == 'laki laki' ? 'selected' : '' }}>laki laki
+                            </option>
+                            <option value="2" {{ $w->jenis_kelamin == 'perempuan' ? 'selected' : '' }}>perempuan
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">

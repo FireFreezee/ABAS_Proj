@@ -40,8 +40,11 @@
     </div>
     <div class="main-content">
         @if (Session::get('success'))
-            <div class="alert alert-success" role="alert" onloadeddata="showSuccessToast()">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" onloadeddata="showSuccessToast()">
                 {{ Session::get('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="ik ik-x"></i>
+                </button>
             </div>
         @endif
 

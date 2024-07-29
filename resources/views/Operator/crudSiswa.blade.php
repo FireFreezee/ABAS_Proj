@@ -31,7 +31,7 @@
                         <div class="nav-item">
                             <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit Jurusan</span></a>
                         </div>
-                        <div class="nav-item">
+                        <div class="nav-item active">
                             <a href="{{ route('data-kelas') }}"><i class="ik ik-book-open"></i><span>Tambah/Edit Kelas</span></a>
                         </div>
                     </nav>
@@ -41,8 +41,11 @@
     </div>
     <div class="main-content">
         @if (Session::get('success'))
-            <div class="alert alert-success" role="alert" onloadeddata="showSuccessToast()">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" onloadeddata="showSuccessToast()">
                 {{ Session::get('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <i class="ik ik-x"></i>
+                </button>
             </div>
         @endif
 

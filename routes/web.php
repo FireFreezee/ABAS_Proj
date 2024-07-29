@@ -55,6 +55,7 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::post('/store-wali-kelas', [App\Http\Controllers\operatorController::class, 'store'])->name('store-wali-kelas');
     Route::post('/editwalikelas/{id}', [OperatorController::class, 'editwali'])->name('edit-wali-kelas');
     Route::delete('hapuswalikelas/{id}', [OperatorController::class, 'hapuswali'])->name('hapuswali');
+    Route::post('/walikelas/import', [OperatorController::class, 'importWali'])->name('import-wali');
 
     Route::get('/operator/data-jurusan', [OperatorController::class, 'jurusan'])->name('data-jurusan');
     Route::post('/add-jurusan', [OperatorController::class, 'tambahJurusan'])->name('add-jurusan');

@@ -7,11 +7,13 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Wali_Kelas;
+use App\Imports\WaliImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OperatorController extends Controller
 {
@@ -159,6 +161,20 @@ class OperatorController extends Controller
         $w->delete();
 
         return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function importWali(Request $request)
+    {
+        $request->validate([
+            'import_file' => [
+                'required',
+                'file'
+            ],
+        ]);
+
+        Excel::import(new WaliImport, $request->file('import_file'));
+
+        return redirect()->back()->with('success', 'Data Berhasil Diimport!');
     }
 
     public function jurusan()
