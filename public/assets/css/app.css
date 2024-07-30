@@ -19,3 +19,11 @@
 
 #map { height: 300px; }
 
+.padd-head {
+    padding-left : 0px;
+}
+
+.padd-content {
+    padding-left : 0px;
+}
+

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="plugins/owl.carousel/dist/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="plugins/owl.carousel/dist/assets/owl.theme.default.min.css">
     <link rel="stylesheet" href="dist/css/theme.min.css">
+    <link rel="stylesheet" href="css/app.css">
     <script src="src/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 
@@ -34,97 +35,44 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-    <div class="wrapper">
-        <header class="header-top" header-theme="light">
+    <div class="wrapper nav-collapsed menu-collapsed">
+        <header class="header-top" header-theme="light" style="padding-left: 8px;">
             <div class="container-fluid">
                 <div class="d-flex justify-content-between">
                     <div class="top-menu d-flex align-items-center">
-                        <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
+
                         <div class="header-search">
                             <div class="input-group">
-                                <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
-                                <input type="text" class="form-control">
-                                <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                <img src="img/logo-abas.png" style="height: 2rem; width: auto;" alt="lavalite">
+                                <img src="img/logo-title.png" style="height: 2rem; width: auto;" class="text"
+                                    alt="lavalite">
                             </div>
                         </div>
-                        <button type="button" id="navbar-fullscreen" class="nav-link"><i
-                                class="ik ik-maximize"></i></button>
+                    </div>
+                    <div class="card-body" style="padding-top: 5px; padding-bottom: 5px;">
+                        <ul class="nav nav-pills justify-content-center">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">Absen</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Laporan</a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="top-menu d-flex align-items-center">
                         <div class="dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="notiDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                    class="ik ik-bell"></i><span class="badge bg-danger">3</span></a>
                             <div class="dropdown-menu dropdown-menu-right notification-dropdown"
                                 aria-labelledby="notiDropdown">
-                                <h4 class="header">Notifications</h4>
                                 <div class="notifications-wrap">
                                     <a href="#" class="media">
                                         <span class="d-flex">
-                                            <i class="ik ik-check"></i>
-                                        </span>
-                                        <span class="media-body">
-                                            <span class="heading-font-family media-heading">Invitation accepted</span>
-                                            <span class="media-content">Your have been Invited ...</span>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="media">
-                                        <span class="d-flex">
                                             <img src="img/users/1.jpg" class="rounded-circle" alt="">
-                                        </span>
-                                        <span class="media-body">
-                                            <span class="heading-font-family media-heading">Steve Smith</span>
-                                            <span class="media-content">I slowly updated projects</span>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="media">
-                                        <span class="d-flex">
-                                            <i class="ik ik-calendar"></i>
-                                        </span>
-                                        <span class="media-body">
-                                            <span class="heading-font-family media-heading">To Do</span>
-                                            <span class="media-content">Meeting with Nathan on Friday 8 AM ...</span>
                                         </span>
                                     </a>
                                 </div>
                                 <div class="footer"><a href="javascript:void(0);">See all activity</a></div>
                             </div>
                         </div>
-                        <button type="button" class="nav-link ml-10 right-sidebar-toggle"><i
-                                class="ik ik-message-square"></i><span class="badge bg-success">3</span></button>
-                        <div class="dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                    class="ik ik-plus"></i></a>
-                            <div class="dropdown-menu dropdown-menu-right menu-grid" aria-labelledby="menuDropdown">
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Dashboard"><i class="ik ik-bar-chart-2"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Message"><i class="ik ik-mail"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Accounts"><i class="ik ik-users"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Sales"><i class="ik ik-shopping-cart"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Purchase"><i class="ik ik-briefcase"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Pages"><i class="ik ik-clipboard"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Chats"><i class="ik ik-message-square"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Contacts"><i class="ik ik-map-pin"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Blocks"><i class="ik ik-inbox"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Events"><i class="ik ik-calendar"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="Notifications"><i class="ik ik-bell"></i></a>
-                                <a class="dropdown-item" href="#" data-toggle="tooltip" data-placement="top"
-                                    title="More"><i class="ik ik-more-horizontal"></i></a>
-                            </div>
-                        </div>
-                        <button type="button" class="nav-link ml-10" id="apps_modal_btn" data-toggle="modal"
-                            data-target="#appsModal"><i class="ik ik-grid"></i></button>
                         <div class="dropdown">
                             <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><img class="avatar" src="img/user.jpg"
@@ -150,34 +98,8 @@
         </header>
 
         <div class="page-wrap">
-            <div class="app-sidebar colored">
-                <div class="sidebar-header">
-                    <a class="header-brand" href="index.html">
-                        <div class="logo-img">
-                            <img src="img/logo-abas.png" style="height: 2rem; width: auto;" alt="lavalite">
-                            <img src="img/logo-title.png" style="height: 2rem; width: auto;" class="text"
-                                alt="lavalite">
-                        </div>
-                    </a>
-                    <button type="button" class="nav-toggle"><i data-toggle="expanded"
-                            class="ik ik-toggle-right toggle-icon"></i></button>
-                    <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
-                </div>
 
-                <div class="sidebar-content">
-                    <div class="nav-container">
-                        <nav id="main-menu-navigation" class="navigation-main">
-                            <div class="nav-lavel">Navigation</div>
-                            <div class="nav-item active">
-                                <a href="pages/laporan-absensi.html"><i class="ik ik-calendar"></i><span>Setting
-                                        Koordinat dan Waktu</span></a>
-                            </div>
-
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            <div class="main-content">
+            <div class="main-content" style="padding-left: 17px;">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="container-fluid">
@@ -205,8 +127,8 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="exampleInputConfirmPassword1">Batas Absen Pulang</label>
-                                                <input type="password" class="form-control" id="exampleInputConfirmPassword1"
-                                                    placeholder="Password">
+                                                <input type="password" class="form-control"
+                                                    id="exampleInputConfirmPassword1" placeholder="Password">
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary mr-2 ">Submit</button>
@@ -240,8 +162,8 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputConfirmPassword1">Confirm Password</label>
-                                            <input type="password" class="form-control" id="exampleInputConfirmPassword1"
-                                                placeholder="Password">
+                                            <input type="password" class="form-control"
+                                                id="exampleInputConfirmPassword1" placeholder="Password">
                                         </div>
                                         <div class="form-group">
                                             <label class="custom-control custom-radio">
@@ -259,7 +181,7 @@
                 </div>
             </div>
 
-            
+
 
             <footer class="footer">
                 <div class="w-100 clearfix">

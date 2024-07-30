@@ -44,7 +44,7 @@
         <div class="header-1">
 
             <a href="#" class="logo">
-                <img src="image/logo-abas.png" class="logo-size" alt=""> 
+                <img src="image/logo-abas.png" class="logo-size" alt="">
                 <img src="image/logo-title.png" class="logo-size" alt="">
             </a>
 
@@ -84,23 +84,26 @@
     <!-- login form  -->
 
     <div class="login-form-container">
-
-        <div id="close-login-btn" class="fas fa-times"></div>
-
-        <form action="">
-            <h3>sign in</h3>
-            <span>username</span>
-            <input type="email" name="" class="box" placeholder="enter your email" id="">
-            <span>password</span>
-            <input type="password" name="" class="box" placeholder="enter your password" id="">
-            <div class="checkbox">
-                <input type="checkbox" name="" id="remember-me">
-                <label for="remember-me"> remember me</label>
+        <div class="top-menu d-flex align-items-center">
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
+                        src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
+                        Profile</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                  document.getElementById('logout-form').submit();"><i
+                            class="ik ik-power dropdown-icon"></i>
+                        {{ __('Logout') }}</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                </div>
             </div>
-            <input type="submit" value="sign in" class="btn">
-            <p>forget password ? <a href="#">click here</a></p>
-            <p>don't have an account ? <a href="#">create one</a></p>
-        </form>
+
+        </div>
 
     </div>
 
