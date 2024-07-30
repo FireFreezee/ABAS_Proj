@@ -166,6 +166,7 @@ class OperatorController extends Controller
 
     public function importWali(Request $request)
     {
+
         $request->validate([
             'import_file' => [
                 'required',
@@ -355,6 +356,43 @@ class OperatorController extends Controller
 
         $s = User::find($id);
         $s->delete();
+
+        return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
+     public function kesiswaan()
+     {
+        $kesiswaan = User::where('role', 'kesiswaan')->get();
+        return view('operator.crudKesiswaan', compact('kesiswaan'));
+     }
+    
+    public function tambahKesiswaan(Request $request)
+    {
+            User::insert([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => password_hash($request->password, PASSWORD_DEFAULT),
+                'role' => 'kesiswaan',
+            ]);
+
+        return redirect()->back()->with('success', 'Keiswaan berhasil ditambahkan!');
+    }
+
+    public function editKesiswaan(Request $r)
+    {
+        DB::table('users')->where('id', $r->id)->update([
+            'name' => $r->name,
+            'email' => $r->email,
+            'password' => password_hash($r->password, PASSWORD_DEFAULT),
+        ]);
+        
+        return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
+    }
+
+    public function hapusKesiswaan($id)
+    {
+        $k = User::find($id);
+        $k->delete();
 
         return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
     }

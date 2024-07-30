@@ -16,35 +16,35 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        $hariini = date("Y-m-d");
-        $user = Auth::user();
-        $nis = $user->siswa->nis;
+        // $hariini = date("Y-m-d");
+        // $user = Auth::user();
+        // $nis = $user->siswa->nis;
 
-        $cekabsen = DB::table('absensis')
-            ->where('date', $hariini)
-            ->where('nis', $nis)
-            ->first();
+        // $cekabsen = DB::table('absensis')
+        //     ->where('date', $hariini)
+        //     ->where('nis', $nis)
+        //     ->first();
 
-        $statusAbsen = $cekabsen ? $cekabsen->status : 'Belum Absen';
+        // $statusAbsen = $cekabsen ? $cekabsen->status : 'Belum Absen';
 
-        $absenMasuk = false;
-        $absenPulang = false;
+        // $absenMasuk = false;
+        // $absenPulang = false;
 
-        if ($cekabsen) {
-            $absenMasuk = !empty($cekabsen->photo_in);
-            $absenPulang = !empty($cekabsen->photo_out);
-        }
+        // if ($cekabsen) {
+        //     $absenMasuk = !empty($cekabsen->photo_in);
+        //     $absenPulang = !empty($cekabsen->photo_out);
+        // }
 
-        return view('Siswa.siswa', [
-            'cekabsen' => $cekabsen ? 1 : 0,
-            'absenMasuk' => $absenMasuk,
-            'absenPulang' => $absenPulang,
-            'statusAbsen' => $statusAbsen,
-        ]);
-
-        // return view('Siswa.siswa',[
-        //     "title" => "Dashboard"
+        // return view('Siswa.siswa', [
+        //     'cekabsen' => $cekabsen ? 1 : 0,
+        //     'absenMasuk' => $absenMasuk,
+        //     'absenPulang' => $absenPulang,
+        //     'statusAbsen' => $statusAbsen,
         // ]);
+
+        return view('Siswa.siswa',[
+            "title" => "Dashboard"
+        ]);
     }
 
     public function Absen()

@@ -9,11 +9,16 @@
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('add-jurusan') }}" method="POST" class="forms-sample">
+                <form action="{{ route('tambah-kesiswaan') }}" method="POST" class="forms-sample">
                     @csrf
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Jurusan</label>
-                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" placeholder="NIP"
+                        <label for="exampleInputUsername1">Nama</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"
                             required>
                     </div>
                     <div class="modal-footer">
@@ -27,10 +32,9 @@
     </div>
 </div>
 
-
 {{-- modal edit --}}
 
-<div class="modal fade" id="edit{{ $j->id_jurusan }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="edit{{ $k->id }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -40,18 +44,24 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('edit-jurusan', ['id_jurusan' => $j->id_jurusan]) }}" method="POST" class="forms-sample" enctype="multipart/form-data">
+            <form action="{{ route('edit-kesiswaan', ['id' => $k->id]) }}" method="POST" class="forms-sample"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Jurusan</label>
-                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" placeholder="NIP"
-                           value="{{ $j->nama_jurusan }}" required>
+                        <label for="exampleInputUsername1">Nama</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
+                           value="{{ $k->name }}" required>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                           value="{{ $k->email }}" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -61,7 +71,7 @@
 
 {{-- modal hapus --}}
 
-<div class="modal fade" id="hapus{{ $j->id_jurusan }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="hapus{{ $k->id }}" tabindex="-1" role="dialog"
     aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -72,12 +82,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                Apakah anda yakin ingin menghapus jurusan {{ $j->nama_jurusan }} ini?
+                Apakah anda yakin ingin menghapus data {{ $k->name }} ini?
                 <span class="badge badge-danger">Data Akan Dihapus Secara Permanen!</span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
-                <form action="{{ route('hapus-jurusan', ['id' => $j->id_jurusan]) }}" method="POST">
+                <form action="{{ route('hapus-kesiswaan', ['id' => $k->id]) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Hapus</button>

@@ -73,6 +73,11 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::post('/kelas/{id}/edit-siswa', [OperatorController::class, 'editSiswa'])->name('edit-siswa');
     Route::delete('/kelas/{id}/hapus-siswa', [OperatorController::class, 'hapusSiswa'])->name('hapus-siswa');
 
+    Route::get('/operator/data-kesiswaan', [OperatorController::class, 'kesiswaan'])->name('data-kesiswaan');
+    Route::post('/tambah-kesiswaan', [OperatorController::class, 'tambahKesiswaan'])->name('tambah-kesiswaan');
+    Route::post('/edit-kesiswaan/{id}', [OperatorController::class, 'editKesiswaan'])->name('edit-kesiswaan');
+    Route::delete('/hapus-kesiswaan/{id}', [OperatorController::class, 'hapusKesiswaan'])->name('hapus-kesiswaan');
+
     Route::post('/operator/updatelokasisekolah', [App\Http\Controllers\operatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
     Route::post('/operator/updatewaktu', [App\Http\Controllers\operatorController::class, 'updatewaktu'])->name('updatewaktu');
 

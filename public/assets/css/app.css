@@ -9,8 +9,12 @@
 }
 
 .form {
-    min-height: 50px;
-    font-size: 20px;
+    min-height: 77px;
+    font-size: 30px;
+}
+
+.form-gp {
+    margin-bottom: 9.7em;
 }
 
 #map { height: 300px; }

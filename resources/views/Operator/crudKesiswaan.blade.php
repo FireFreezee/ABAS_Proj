@@ -25,17 +25,19 @@
                                     Koordinat dan Waktu</span></a>
                         </div>
                         <div class="nav-item">
-                            <a href="{{ route('data-wali') }}"><i class="ik ik-users"></i><span>Tambah/Edit
-                                    Walikelas</span></a>
-                        </div>
-                        <div class="nav-item">
-                            <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kesiswaan</span></a>
-                        </div>
-                        <div class="nav-item">
-                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit Jurusan</span></a>
+                            <a href=""><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
                         </div>
                         <div class="nav-item active">
-                            <a href="{{ route('data-kelas') }}"><i class="ik ik-book-open"></i><span>Tambah/Edit Kelas</span></a>
+                            <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                                    Kesiswaan</span></a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit
+                                    Jurusan</span></a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="{{ route('data-kelas') }}"><i class="ik ik-book-open"></i><span>Tambah/Edit
+                                    Kelas</span></a>
                         </div>
                     </nav>
                 </div>
@@ -64,7 +66,7 @@
                         <div class="page-header-title">
                             <i class="ik ik-inbox bg-blue"></i>
                             <div class="d-inline">
-                                <h5>List Siswa</h5>
+                                <h5>List Kesiswaan</h5>
                             </div>
                         </div>
                     </div>
@@ -75,9 +77,9 @@
                                     <a href="../index.html"><i class="ik ik-home"></i></a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="#">List Siswa</a>
+                                    <a href="#">List Kesiswaan</a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Tabel Siswa</li>
+                                <li class="breadcrumb-item active" aria-current="page">Tabel Kesiswaan</li>
                             </ol>
                         </nav>
                     </div>
@@ -89,7 +91,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3>{{ $kelas->tingkat }} {{ $kelas->jurusan->nama_jurusan }}</h3>
+                            <h3>List Kesiswaan</h3>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-end mb-3">
@@ -100,40 +102,32 @@
                                         <path
                                             d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                     </svg> Tambah</button>
-                                <button type="button" class="btn btn-outline-primary btn-rounded" data-toggle="modal"
-                                    data-target="#import">Import</button>
-
-
                             </div>
                             <table id="data_table" class="table">
                                 <thead style="text-align: center;">
                                     <tr>
-                                        <th>NIS</th>
                                         <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
                                         <th>Email</th>
                                         <th class="nosort">&nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($siswa as $s)
+                                    @foreach ($kesiswaan as $k)
                                         <tr style="text-align: center;">
-                                            <td>{{ $s->nis }}</td>
-                                            <td>{{ $s->user->name ?? 'No User' }}</td>
-                                            <td>{{ $s->jenis_kelamin }}</td>
-                                            <td>{{ $s->user->email ?? 'No Email' }}</td>
+                                            <td>{{ $k->name }}</td>
+                                            <td>{{ $k->email }}</td>
                                             <td>
                                                 <div class="table-actions">
                                                     <a href="#" data-toggle="modal"
-                                                        data-target="#edit{{ $s->id }}"><i
+                                                        data-target="#edit{{ $k->id }}"><i
                                                             class="ik ik-edit-2"></i></a>
                                                     <a href="#" data-toggle="modal"
-                                                        data-target="#hapus{{ $s->id }}"><i
+                                                        data-target="#hapus{{ $k->id }}"><i
                                                             class="ik ik-trash-2"></i></a>
                                                 </div>
 
                                             </td>
-                                            @include('Operator.CRUDsiswaModal')
+                                            @include('Operator.CRUDkesiswaanModal')
                                         </tr>
                                     @endforeach
                                 </tbody>

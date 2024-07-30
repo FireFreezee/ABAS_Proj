@@ -14,24 +14,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- custom css file link  -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ asset('assets/page-siswa/css/style.css') }}">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
 
-    <link rel="stylesheet" href="plugins/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-        <link rel="stylesheet" href="plugins/icon-kit/dist/css/iconkit.min.css">
-        <link rel="stylesheet" href="plugins/ionicons/dist/css/ionicons.min.css">
-        <link rel="stylesheet" href="plugins/perfect-scrollbar/css/perfect-scrollbar.css">
-        <link rel="stylesheet" href="plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-        <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap.css">
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css">
-        <link rel="stylesheet" href="plugins/weather-icons/css/weather-icons.min.css">
-        <link rel="stylesheet" href="plugins/c3/c3.min.css">
-        <link rel="stylesheet" href="plugins/owl.carousel/dist/assets/owl.carousel.min.css">
-        <link rel="stylesheet" href="plugins/owl.carousel/dist/assets/owl.theme.default.min.css">
-        <link rel="stylesheet" href="dist/css/theme.min.css">
-        <script src="src/js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/bootstrap/dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/icon-kit/dist/css/iconkit.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/ionicons/dist/css/ionicons.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/jvectormap/jquery-jvectormap.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/weather-icons/css/weather-icons.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/c3/c3.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/owl.carousel/dist/assets/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/page-siswa/dist/css/theme.min.css') }}">
+        <script src="{{ asset('assets/page-siswa/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 
 </head>
 
@@ -44,8 +44,8 @@
         <div class="header-1">
 
             <a href="#" class="logo">
-                <img src="image/logo-abas.png" class="logo-size" alt=""> 
-                <img src="image/logo-title.png" class="logo-size" alt="">
+                <img src="{{ asset('assets/page-siswa/image/logo-abas.png') }}" class="logo-size" alt=""> 
+                <img src="{{ asset('assets/page-siswa/image/logo-title.png') }}" class="logo-size" alt="">
             </a>
 
             <form action="" class="search-form">
@@ -116,8 +116,8 @@
             </div>
 
             <div class="swiper books-slider swiper-initialized swiper-horizontal swiper-pointer-events">
-                <a href="#" class="swiper-slide"><img src="image/full-logo.png" alt=""></a>
-                <img src="image/stand.png" class="stand" alt="">
+                <a href="#" class="swiper-slide"><img src="{{ asset('assets/page-siswa/image/full-logo.png') }}" alt=""></a>
+                <img src="{{ asset('assets/page-siswa/image/stand.png') }}" class="stand" alt="">
                 <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
             </div>
 
@@ -280,7 +280,7 @@
 
     <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
     <!-- custom js file link  -->
-    <script src="js/script.js"></script>
+    <script src="{{ asset('assets/page-siswa/js/script.js') }}"></script>
 
 
 </body>

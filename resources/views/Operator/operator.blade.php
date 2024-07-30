@@ -28,6 +28,9 @@
                         <a href="{{ route('data-wali') }}"><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
                     </div>
                     <div class="nav-item">
+                        <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kesiswaan</span></a>
+                    </div>
+                    <div class="nav-item">
                         <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit Jurusan</span></a>
                     </div>
                     <div class="nav-item">
@@ -63,22 +66,22 @@
                             <form class="forms-sample" action="{{ route('updatewaktu') }}" method="POST">
                                 @csrf
                                 <div class="row">
-                                    <div class="form-group col-sm-6 ">
+                                    <div class="form-group form-gp col-sm-6 ">
                                         <label for="exampleInputUsername1">Jam Masuk</label>
                                         <input type="time" class="form-control form" id="jam_absen" name="jam_absen"
                                             value="{{ $waktu->jam_absen }}">
                                     </div>
-                                    <div class="form-group col-sm-6">
+                                    <div class="form-group form-gp col-sm-6">
                                         <label for="exampleInputEmail1">Jam Pulang</label>
                                         <input type="time" class="form-control form" id="jam_pulang" name="jam_pulang"
                                             value="{{ $waktu->jam_pulang }}">
                                     </div>
-                                    <div class="form-group col-sm-6">
+                                    <div class="form-group form-gp col-sm-6">
                                         <label for="exampleInputPassword1">Batas Absen Masuk</label>
                                         <input type="time" class="form-control form" id="batas_absen_masuk"
                                             name="batas_absen_masuk" value="{{ $waktu->batas_absen_masuk }}">
                                     </div>
-                                    <div class="form-group col-sm-6">
+                                    <div class="form-group form-gp col-sm-6">
                                         <label for="exampleInputConfirmPassword1">Batas Absen Pulang</label>
                                         <input type="time" class="form-control form" id="batas_absen_pulang"
                                             name="batas_absen_pulang" value="{{ $waktu->batas_absen_pulang }}">

@@ -28,6 +28,9 @@
                             <a href=""><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
                         </div>
                         <div class="nav-item">
+                            <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kesiswaan</span></a>
+                        </div>
+                        <div class="nav-item">
                             <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit Jurusan</span></a>
                         </div>
                         <div class="nav-item">
