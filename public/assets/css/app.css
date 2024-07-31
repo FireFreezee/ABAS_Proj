@@ -1,10 +1,13 @@
 .responsive-logo {
-    max-width: 100px; /* Adjust the max-width as needed */
+    max-width: 100px;
+    /* Adjust the max-width as needed */
     height: auto;
 }
+
 @media (max-width: 768px) {
     .responsive-logo {
-        max-width: 60px; /* Adjust the size for smaller screens */
+        max-width: 60px;
+        /* Adjust the size for smaller screens */
     }
 }
 
@@ -17,13 +20,23 @@
     margin-bottom: 9.7em;
 }
 
-#map { height: 300px; }
+#map {
+    height: 300px;
+}
 
 .padd-head {
-    padding-left : 0px;
+    padding-left: 0px;
 }
 
 .padd-content {
-    padding-left : 0px;
+    padding-left: 0px;
 }
 
+.clock ul {
+    font-size: 13px;
+    font-weight: bolder;
+    list-style: none;
+    display: flex;
+    /* Memusatkan horizontal */
+    gap: 5px;
+}
