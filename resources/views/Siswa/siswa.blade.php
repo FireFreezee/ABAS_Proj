@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <title>Responsive bottom navigation</title>
 </head>
@@ -75,7 +77,7 @@
         <div class="page-wrap">
             <!--=============== HOME ===============-->
             <div class="main-content" style="padding-left: 0px;">
-
+                <input type="hidden" id="lokasi">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body text-center">
@@ -103,7 +105,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
                                             <h6>Tanggal</h6>
-                                            <h4 id="date">Senin 15 September 2024</h4>
+                                            <h5 id="date">Senin 15 September 2024</h5>
                                         </div>
                                         <div class="icon">
                                             <i class="ik ik-shopping-cart"></i>
@@ -118,13 +120,13 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
                                             <h6>Jam Sekarang</h6>
-                                            <h4 class="clock">
+                                            <h5 class="clock">
                                                 <span id="jam">00</span>
                                                 <span>:</span>
                                                 <span id="menit">00</span>
                                                 <span>:</span>
                                                 <span id="detik">00</span>
-                                            </h4>
+                                            </h5>
                                         </div>
                                         <div class="icon">
                                             <i class="ik ik-shopping-cart"></i>
@@ -139,7 +141,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
                                             <h6>Jarak dari sekolah</h6>
-                                            <h4>300M</h4>
+                                            <h5 id="distance">Jarak </h5>
                                         </div>
                                         <div class="icon">
                                             <i class="ik ik-inbox"></i>
@@ -149,19 +151,111 @@
                             </div>
                         </div>
                         <div class="col-3 col-md-3 col-sm-12">
-                            <div class="widget bg-warning card-keterangan">
-                                <div class="widget-body ">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="state">
-                                            <h6>Status Kehadiran</h6>
-                                            <h4>Hadir</h4>
-                                        </div>
-                                        <div class="icon">
-                                            <i class="ik ik-inbox"></i>
+                            @if ($statusAbsen == 'Belum Absen')
+                                <div class="widget card-keterangan" style="background-color: grey; color: white">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6>Status Kehadiran</h6>
+                                                <h5>{{ $statusAbsen }}</h5>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ik ik-inbox" style="color: white"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @elseif ($statusAbsen == 'Hadir')
+                                <div class="widget card-keterangan"
+                                    style="background-color: rgb(0, 182, 0); color: white">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6>Status Kehadiran</h6>
+                                                <h5>{{ $statusAbsen }}</h5>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ik ik-inbox" style="color: white"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @elseif ($statusAbsen == 'Terlambat')
+                                <div class="widget card-keterangan"
+                                    style="background-color: rgb(14, 78, 1); color: white">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6>Status Kehadiran</h6>
+                                                <h5>{{ $statusAbsen }}</h5>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ik ik-inbox" style="color: white"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @elseif ($statusAbsen == 'Sakit')
+                                <div class="widget card-keterangan"
+                                    style="background-color: rgb(167, 179, 0); color: white">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6>Status Kehadiran</h6>
+                                                <h5>{{ $statusAbsen }}</h5>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ik ik-inbox" style="color: white"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @elseif ($statusAbsen == 'Izin')
+                                <div class="widget card-keterangan"
+                                    style="background-color: rgb(6, 231, 220); color: white">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6>Status Kehadiran</h6>
+                                                <h5>{{ $statusAbsen }}</h5>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ik ik-inbox" style="color: white"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @elseif ($statusAbsen == 'Tidak Hadir')
+                                <div class="widget card-keterangan"
+                                    style="background-color: rgb(255, 0, 0); color: white">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6>Status Kehadiran</h6>
+                                                <h5>{{ $statusAbsen }}</h5>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ik ik-inbox" style="color: white"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="widget card-keterangan"
+                                    style="background-color: rgb(255, 0, 0); color: white">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6>Status Kehadiran</h6>
+                                                <h5>Sudah Pulang</h5>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="ik ik-inbox" style="color: white"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                         <div class="col-6 col-md-6 col-sm-12">
                             <div class="widget bg-blue card-keterangan">
@@ -196,15 +290,35 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-6 col-md-6 col-sm-12">
-                            <button type="button" class="btn-absen btn-primary btn-block pb-30 pt-30"
-                                style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
-                                    class="ik ik-maximize"></i>&nbsp; Absen <h4>Jam Absen
-                                    6:10-07:00 WIB</h4></button>
+                            <a href="{{ route('siswa-absen') }}">
+                                @if ($cek > 0)
+                                    <button type="button" class="btn-absen btn-danger btn-block pb-30 pt-30"
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
+                                            class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4>Jam Absen
+                                            15:30-18:00 WIB</h4></button>
+                                @else
+                                    <button type="button" class="btn-absen btn-primary btn-block pb-30 pt-30"
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
+                                            class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4>Jam Absen
+                                            6:10-07:00 WIB</h4></button>
+                                @endif
+                            </a>
                         </div>
                         <div class="col-6 col-md-6 col-sm-12">
-                            <button type="button" class="btn-absen btn-danger btn-block pb-30 pt-30"
-                                style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
-                                    class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4></button>
+                            @if ($cek > 0)
+                                <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
+                                    style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;" disabled><i
+                                        class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
+                                </button>
+                            @else
+                                <a href="">
+                                    <button type="button" class="btn-absen btn-info btn-block pb-30 pt-30"
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
+                                            class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
+                                    </button>
+                                </a>
+                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -214,38 +328,6 @@
 
 
     <!--=============== MAIN JS ===============-->
-    <script>
-        function clock() {
-            var dateTime = new Date();
-            var jm = dateTime.getHours();
-            var mnt = dateTime.getMinutes();
-            var dtk = dateTime.getSeconds();
-
-            Number.prototype.pad = function(digits) {
-                for (var n = this.toString(); n.length < digits; n = 0 + n);
-                return n;
-            }
-
-            document.getElementById('jam').innerHTML = jm.pad(2);
-            document.getElementById('menit').innerHTML = mnt.pad(2);
-            document.getElementById('detik').innerHTML = dtk.pad(2);
-
-        }
-        setInterval(clock, 10);
-    </script>
-    <script>
-        function date() {
-            var monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September",
-                "Oktober", "November", "Desember"
-            ];
-            var dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-            var today = new Date();
-            document.getElementById('date').innerHTML = (dayNames[today.getDay()] + ", " + today.getDate() + ' ' +
-                monthNames[today.getMonth()] + ' ' + today.getFullYear());
-        }
-        setInterval(date, 1)
-    </script>
-
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
@@ -270,6 +352,7 @@
     <script src="{{ asset('assets/js/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/charts.js') }}"></script>
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
+    <script src="{{ asset('assets/js/timedate.js') }}"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
         (function(b, o, i, l, e, r) {
@@ -286,6 +369,50 @@
         }(window, document, 'script', 'ga'));
         ga('create', 'UA-XXXXX-X', 'auto');
         ga('send', 'pageview');
+
+        var lokasi = document.getElementById('lokasi');
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        }
+
+        // Output the server values to verify
+        var lokasi_sekolah = "{{ $lok_sekolah->lokasi_sekolah }}";
+        var radius = parseFloat("{{ $lok_sekolah->radius }}");
+        console.log('lokasi_sekolah:', lokasi_sekolah);
+        console.log('radius:', radius);
+
+        function successCallback(position) {
+            console.log('User coordinates:', position.coords.latitude, position.coords.longitude);
+            var lat_user = position.coords.latitude;
+            var long_user = position.coords.longitude;
+
+            // Example coordinates for testing
+            var lok = lokasi_sekolah.split(",");
+            var lat_sekolah = lok[0];
+            var long_sekolah = lok[1];
+
+            var userLatLng = L.latLng(lat_user, long_user);
+            var schoolLatLng = L.latLng(lat_sekolah, long_sekolah);
+
+            var distance = userLatLng.distanceTo(schoolLatLng).toFixed(0);
+            var distanceInKm = (distance / 1000).toFixed(2);
+
+            document.getElementById('distance').innerText = distance + ' m';
+
+            console.log('Distance (meters):', distance);
+            console.log('Distance (km):', distanceInKm);
+        }
+
+        function errorCallback(error) {
+            console.error("Error retrieving location:", error);
+        }
+
+        // Request the user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
     </script>
 </body>
 

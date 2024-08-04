@@ -21,7 +21,11 @@
 }
 
 #map {
-    height: 300px;
+    height: 450px;;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
 }
 
 .padd-head {
@@ -39,4 +43,42 @@
     display: flex;
     /* Memusatkan horizontal */
     gap: 5px;
+}
+
+.ambilfotowrapper {
+    display: flex;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 600px;
+    /* Memastikan wrapper memiliki lebar yang sama dengan capture webcam */
+    height: 450px;
+    /* Memastikan wrapper memiliki tinggi yang sama dengan capture webcam */
+    position: relative;
+}
+
+.webcam-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #e0e0e0;
+}
+
+.webcam-capture,
+.webcam-capture video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    /* Radius border yang sama dengan wrapper */
+}
+
+.foto {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Memastikan gambar menutupi seluruh area */
+    border-radius: 10px;
+    /* Radius border yang sama dengan wrapper */
+    background-color: #e0e0e0;
 }

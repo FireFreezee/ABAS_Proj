@@ -11,8 +11,6 @@ class Absensi extends Model
 
     protected $fillable = [
         'NIS',
-        'id_koordinat_sekolah',
-        'id_waktu_absen',
         'status',
         'bukti',
         'date',
@@ -21,7 +19,7 @@ class Absensi extends Model
         'titik_koordinat',
     ];
 
-    public function absensi()
+    public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'id_siswa');
     }

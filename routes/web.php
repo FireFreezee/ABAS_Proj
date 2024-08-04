@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Middleware\Operator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +46,9 @@ Route::middleware(['auth', 'Walikelas:walikelas'])->group(function () {
 });
 
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
-    Route::resource('siswa', App\Http\Controllers\siswaController::class);
+    Route::get('siswa', [App\Http\Controllers\siswaController::class, 'index']);
+    Route::get('/siswa/absen', [App\Http\Controllers\siswaController::class, 'absen'])->name('siswa-absen');
+    Route::post('/absen/store', [SiswaController::class, 'store']);
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {

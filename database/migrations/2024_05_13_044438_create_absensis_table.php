@@ -16,13 +16,6 @@ return new class extends Migration
 
             $table->string('nis');
             $table->foreign('nis')->references('nis')->on('siswas');
-
-            $table->unsignedInteger('id_koordinat_sekolah')->nullable();
-            $table->foreign('id_koordinat_sekolah')->references('id_koordinat_sekolah')->on('koordinat__sekolahs');
-
-            $table->unsignedInteger('id_waktu_absen')->nullable();
-            $table->foreign('id_waktu_absen')->references('id_waktu_absen')->on('waktu__absens');
-
             $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Tidak Hadir', 'Terlambat'])->default('Tidak Hadir');
             $table->string('photo_in');
             $table->string('photo_out')->nullable();
@@ -30,8 +23,8 @@ return new class extends Migration
             $table->date('date');
             $table->time('jam_masuk');
             $table->time('jam_pulang')->nullable();
-            $table->point('titik_koordinat_masuk');
-            $table->point('titik_koordinat_pulang')->nullable();
+            $table->string('titik_koordinat_masuk');
+            $table->string('titik_koordinat_pulang')->nullable();
         });
     }
 
