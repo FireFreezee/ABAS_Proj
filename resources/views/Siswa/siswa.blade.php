@@ -64,8 +64,14 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
                                 Profile</a>
-                            <a class="dropdown-item" href="login.html"><i class="ik ik-power dropdown-icon"></i>
-                                Logout</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                          document.getElementById('logout-form').submit();"><i
+                                    class="ik ik-power dropdown-icon"></i>
+                                {{ __('Logout') }}</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                         </div>
                     </div>
 
@@ -353,6 +359,7 @@
     <script src="{{ asset('assets/js/charts.js') }}"></script>
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
     <script src="{{ asset('assets/js/timedate.js') }}"></script>
+    <script src="{{ asset('assets/js/jarak.js') }}"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
         (function(b, o, i, l, e, r) {
@@ -370,49 +377,8 @@
         ga('create', 'UA-XXXXX-X', 'auto');
         ga('send', 'pageview');
 
-        var lokasi = document.getElementById('lokasi');
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        }
-
-        // Output the server values to verify
-        var lokasi_sekolah = "{{ $lok_sekolah->lokasi_sekolah }}";
-        var radius = parseFloat("{{ $lok_sekolah->radius }}");
-        console.log('lokasi_sekolah:', lokasi_sekolah);
-        console.log('radius:', radius);
-
-        function successCallback(position) {
-            console.log('User coordinates:', position.coords.latitude, position.coords.longitude);
-            var lat_user = position.coords.latitude;
-            var long_user = position.coords.longitude;
-
-            // Example coordinates for testing
-            var lok = lokasi_sekolah.split(",");
-            var lat_sekolah = lok[0];
-            var long_sekolah = lok[1];
-
-            var userLatLng = L.latLng(lat_user, long_user);
-            var schoolLatLng = L.latLng(lat_sekolah, long_sekolah);
-
-            var distance = userLatLng.distanceTo(schoolLatLng).toFixed(0);
-            var distanceInKm = (distance / 1000).toFixed(2);
-
-            document.getElementById('distance').innerText = distance + ' m';
-
-            console.log('Distance (meters):', distance);
-            console.log('Distance (km):', distanceInKm);
-        }
-
-        function errorCallback(error) {
-            console.error("Error retrieving location:", error);
-        }
-
-        // Request the user's location
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
+        var lokasiSekolah = @json($lok_sekolah->lokasi_sekolah);
+        var radiusSekolah = @json($lok_sekolah->radius);
     </script>
 </body>
 

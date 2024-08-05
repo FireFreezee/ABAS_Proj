@@ -47,8 +47,6 @@ class WaliImport implements ToCollection, WithHeadingRow
                     'nip' => $row['nip'],
                 ]);
             }
-
-
         }
     }
 }
