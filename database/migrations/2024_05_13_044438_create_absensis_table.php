@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('nis');
             $table->foreign('nis')->references('nis')->on('siswas');
-            $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Tidak Hadir', 'Terlambat'])->default('Tidak Hadir');
+            $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Alfa', 'Terlambat', 'TAP'])->default('Alfa');
             $table->string('photo_in');
             $table->string('photo_out')->nullable();
             $table->string('keterangan')->nullable();

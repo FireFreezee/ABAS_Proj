@@ -15,24 +15,27 @@ class SiswaSeeder extends Seeder
     {
         siswa::create([
             'nis' => '0061748352',
-            'id' => 2,
+            'id_user' => 'S001',
             'id_kelas' => 1,
+            'nik' => '2108410',
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678901',
         ]);
 
         siswa::create([
             'nis' => '0062894371',
-            'id' => 3,
+            'id_user' => 'S002',
             'id_kelas' => 2,
+            'nik' => '2108411',
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678902',
         ]);
 
         siswa::create([
             'nis' => '0069584720',
-            'id' => 4,
+            'id_user' => 'S003',
             'id_kelas' => 3,
+            'nik' => '2108412',
             'jenis_kelamin' => 'perempuan',
             'nisn' => '0045678903',
         ]);

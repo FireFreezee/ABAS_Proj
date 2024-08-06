@@ -13,14 +13,14 @@ class Wali_Kelas extends Model
 
     protected $fillable = [
         'nuptk',
-        'id',
+        'id_user',
         'jenis_kelamin',
         'nip',
     ];
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id');
+        return $this->hasOne(User::class, 'id_user');
     }
 
     public function kelas()

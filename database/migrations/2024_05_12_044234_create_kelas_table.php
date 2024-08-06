@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kelas', function (Blueprint $table) {
             $table->increments('id_kelas');
 
-            $table->unsignedInteger('id_jurusan');
+            $table->string('id_jurusan');
             $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusans');
 
             $table->integer('nomor_kelas')->nullable();

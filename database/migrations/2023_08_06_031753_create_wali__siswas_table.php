@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jurusans', function (Blueprint $table) {
-            $table->string('id_jurusan')->primary();
-            $table->string('nama_jurusan');
+        Schema::create('wali__siswas', function (Blueprint $table) {
+            $table->string('nik')->primary();
+
+            $table->string('id_user')->nullable();
+            $table->foreign('id_user')->references('id_user')->on('users');
+
+            $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
         });
     }
 
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jurusans');
+        Schema::dropIfExists('wali__siswas');
     }
 };

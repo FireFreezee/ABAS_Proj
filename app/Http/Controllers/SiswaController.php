@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Absensi;
+use App\Models\Siswa;
 use App\Models\Koordinat_Sekolah;
 
 class SiswaController extends Controller
@@ -35,11 +36,14 @@ class SiswaController extends Controller
 
         $waktu = DB::table('waktu__absens')->where('id_waktu_absen', 1)->first();
         $lok_sekolah = DB::table('koordinat__sekolahs')->where('id_koordinat_sekolah', 1)->first();
+        $presensi_hari_ini = DB::table('absensis')->where('nis', $nis)->where('jam_masuk');
+        $siswa = Siswa::with('user')->get();
         return view('Siswa.siswa', [
             'waktu' => $waktu,
             'cek' => $cek ? 1 : 0,
             'statusAbsen' => $statusAbsen,
             'lok_sekolah' => $lok_sekolah,
+            'siswa' => $siswa
         ]);
     }
 

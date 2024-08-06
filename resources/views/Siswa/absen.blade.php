@@ -107,13 +107,6 @@
                                         <div class="row clearfix pt-15">
                                             <div class="col-4 col-md-4 col-sm-12">
                                                 <button type="button" class="btn-absen btn-primary btn-block"
-                                                    id="startCamera"
-                                                    style="border-radius: 10px; padding:7px; font-size: 20px">
-                                                    <i class="ik ik-maximize"></i>&nbsp;Mulai Kamera
-                                                </button>
-                                            </div>
-                                            <div class="col-4 col-md-4 col-sm-12">
-                                                <button type="button" class="btn-absen btn-primary btn-block"
                                                     id="takeSnapshot"
                                                     style="border-radius: 10px; padding:7px; font-size: 20px">
                                                     <i class="ik ik-maximize"></i>&nbsp;Ambil Gambar

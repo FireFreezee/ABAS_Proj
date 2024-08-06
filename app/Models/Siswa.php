@@ -13,15 +13,16 @@ class Siswa extends Model
 
     protected $fillable = [
         'nis',
-        'id',
+        'id_user',
         'id_kelas',
+        'nik',
         'jenis_kelamin',
         'nisn',
     ];
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'id');
+        return $this->hasOne(User::class, 'id_user', 'id_user');
     }
 
     public function kelas()
@@ -32,6 +33,11 @@ class Siswa extends Model
     public function absensi()
     {
         return $this->hasMany(Absensi::class, 'NIS');
+    }
+
+    public function ortu()
+    {
+        return $this->hasOne(Wali_Siswa::class, 'nik', 'nik');
     }
 
     public $timestamps = false;

@@ -90,8 +90,8 @@
                             <div class="profile-pic mb-20">
                                 <img src="{{ asset('assets/page-siswa2/img/user.jpg') }}" width="150"
                                     class="rounded-circle" alt="user">
-                                <h4 class="mt-20 mb-0">John Doe</h4>
-                                <a href="#">johndoe@admin.com</a>
+                                <h4 class="mt-20 mb-0">{{ Auth::user()->name }}</h4>
+                                <a href="#">{{ Auth::user()->email }}</a>
                             </div>
                             <div class="badge badge-pill badge-dark">Dashboard</div>
                             <div class="badge badge-pill badge-dark">UI</div>

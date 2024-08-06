@@ -1,6 +1,6 @@
 // webcam and face detection
 let image = '';
-let isCameraOn = false;
+let isCameraOn = true;
 let faceConfidence = 0;
 
 async function loadModels() {
@@ -47,19 +47,18 @@ async function detectFaces() {
 }
 
 // Start Camera
-document.getElementById('startCamera').addEventListener('click', function () {
-    if (!isCameraOn) {
-        Webcam.set({
-            height: 450,
-            width: 600,
-            image_format: 'jpeg',
-            jpeg_quality: 90,
-            flip_horiz: true
-        });
-        Webcam.attach('#webcamCapture');
-        isCameraOn = true;
-    }
+
+
+Webcam.set({
+    height: 450,
+    width: 600,
+    image_format: 'jpeg',
+    jpeg_quality: 90,
+    flip_horiz: true
 });
+Webcam.attach('#webcamCapture');
+
+
 
 // Take Snapshot
 document.getElementById('takeSnapshot').addEventListener('click', async function () {

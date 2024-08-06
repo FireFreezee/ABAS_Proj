@@ -34,7 +34,8 @@ class otherTable extends Seeder
             'jam_absen' => '06:00:00',
             'batas_absen_masuk' => '07:00:00',
             'jam_pulang' => '15:00:00',
-            'batas_absen_pulang' => '17:00:00'
+            'batas_absen_pulang' => '17:00:00',
+            'toleransi_waktu' => '600'
         ];
 
         // $absen =
