@@ -88,7 +88,7 @@
 
 {{-- modal edit --}}
 
-<div class="modal fade" id="edit{{ $w->id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="edit{{ $w->id_user }}" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -98,7 +98,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('edit-wali-kelas', ['id' => $w->id]) }}" method="POST" class="forms-sample"
+            <form action="{{ route('edit-wali-kelas', ['id' => $w->id_user]) }}" method="POST" class="forms-sample"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
@@ -150,7 +150,7 @@
 
 {{-- modal hapus --}}
 
-<div class="modal fade" id="hapus{{ $w->id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="hapus{{ $w->id_user }}" tabindex="-1" role="dialog"
     aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -166,7 +166,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
-                <form action="{{ route('hapuswali', ['id' => $w->id]) }}" method="POST">
+                <form action="{{ route('hapuswali', ['id' => $w->id_user]) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Hapus</button>

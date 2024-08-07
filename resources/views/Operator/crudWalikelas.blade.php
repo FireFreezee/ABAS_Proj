@@ -121,12 +121,12 @@
                                             <td>{{ $w->nuptk }}</td>
                                             <td>{{ $w->user->name }}</td>
                                             <td>{{ $w->jenis_kelamin }}</td>
-                                            <td>{{ $w->kelas ? $w->kelas->tingkat : 'Tanpa Kelas' }} {{ $w->kelas ? $w->kelas->jurusan->nama_jurusan : '' }}</td>
+                                            <td>{{ $w->kelas ? $w->kelas->tingkat : 'Tanpa Kelas' }} {{ $w->kelas ? $w->kelas->jurusan->id_jurusan : '' }} {{ $w->kelas ? $w->kelas->nomor_kelas : '' }}</td>
                                             <td>{{ $w->user ? $w->user->email : 'N/A' }}</td>
                                             <td>
                                                 <div class="table-actions">
-                                                    <a href="#" data-toggle="modal" data-target="#edit{{$w->id}}"><i class="ik ik-edit-2"></i></a>
-                                                    <a href="#" data-toggle="modal" data-target="#hapus{{ $w->id }}"><i class="ik ik-trash-2"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#edit{{$w->id_user}}"><i class="ik ik-edit-2"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#hapus{{ $w->id_user }}"><i class="ik ik-trash-2"></i></a>
                                                 </div>
 
                                             </td>

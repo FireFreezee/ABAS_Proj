@@ -17,10 +17,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    public $primaryKey = 'id_user';
+    public $primaryKey = 'id';
     
     protected $fillable = [
-        'id_user',
         'name',
         'email',
         'password',
@@ -48,16 +47,18 @@ class User extends Authenticatable
 
     public function siswa()
     {
-        return $this->hasOne(Siswa::class, 'id_user', 'id_user');
+        return $this->hasOne(Siswa::class, 'id_user', 'id');
     }
 
     public function wali()
     {
-        return $this->hasOne(Wali_Kelas::class, 'id_user', 'id_user');
+        return $this->hasOne(Wali_Kelas::class, 'id_user', 'id');
     }
 
     public function ortu()
     {
-        return $this->hasOne(Wali_Siswa::class, 'id_user', 'id_user');
+        return $this->hasOne(Wali_Siswa::class, 'id_user', 'id');
     }
+
+    public $timestamps = false;
 }

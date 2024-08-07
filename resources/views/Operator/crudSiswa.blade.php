@@ -125,10 +125,10 @@
                                             <td>
                                                 <div class="table-actions">
                                                     <a href="#" data-toggle="modal"
-                                                        data-target="#edit{{ $s->id }}"><i
+                                                        data-target="#edit{{ $s->id_user }}"><i
                                                             class="ik ik-edit-2"></i></a>
                                                     <a href="#" data-toggle="modal"
-                                                        data-target="#hapus{{ $s->id }}"><i
+                                                        data-target="#hapus{{ $s->id_user }}"><i
                                                             class="ik ik-trash-2"></i></a>
                                                 </div>
 

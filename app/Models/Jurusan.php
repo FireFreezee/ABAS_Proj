@@ -10,9 +10,15 @@ class Jurusan extends Model
     use HasFactory;
 
     protected $table = 'jurusans';
-    protected $primaryKey = 'id_jurusan';
+    public $primaryKey = 'id_jurusan';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-    protected $fillable = ['nama_jurusan'];
+    
+    protected $fillable = [
+        'id_jurusan',
+        'nama_jurusan'
+    ];
 
     public function kelas()
     {

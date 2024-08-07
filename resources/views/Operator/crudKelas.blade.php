@@ -116,7 +116,7 @@
                                 <tbody>
                                     @foreach ($kelas as $k)
                                         <tr style="text-align: center;">
-                                            <td>{{ $k->tingkat }} {{ $k->jurusan->nama_jurusan }}</td>
+                                            <td>{{ $k->tingkat }} {{ $k->jurusan->id_jurusan }} {{ $k->nomor_kelas }}</td>
                                             <td>{{ $k->walikelas->user->name ?? 'No Wali Kelas' }}</td>
                                             <td>{{ $k->siswa_count }}</td> <!-- Display total number of siswa -->
                                             <td>

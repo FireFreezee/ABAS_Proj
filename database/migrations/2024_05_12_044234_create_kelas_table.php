@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id_kelas');
 
             $table->string('id_jurusan');
-            $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusans');
+            $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusans')->onUpdate('cascade')->onDelete('set null');
 
             $table->integer('nomor_kelas')->nullable();
             $table->string('nuptk')->nullable();

@@ -12,8 +12,11 @@
                 <form action="{{ route('add-jurusan') }}" method="POST" class="forms-sample">
                     @csrf
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Jurusan</label>
-                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" placeholder="NIP"
+                        <label for="exampleInputUsername1">Id Jurusan</label>
+                        <input type="text" class="form-control" id="id_jurusan" name="id_jurusan" placeholder="id jurusan"
+                            required>
+                            <label for="exampleInputUsername1">Jurusan</label>
+                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" placeholder="nama jurusan"
                             required>
                     </div>
                     <div class="modal-footer">
@@ -44,9 +47,10 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Jurusan</label>
-                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" placeholder="NIP"
+                           <label for="exampleInputUsername1">Jurusan</label>
+                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" 
                            value="{{ $j->nama_jurusan }}" required>
+                           <input type="hidden" name="id_jurusan">
                     </div>
                 </div>
                 <div class="modal-footer">

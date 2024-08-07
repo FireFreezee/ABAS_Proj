@@ -15,21 +15,21 @@ class WaliSeeder extends Seeder
     {
         wali_kelas::create([
             'nuptk' => '1234567890123456',
-            'id_user' => 'WK001',
+            'id_user' => 5,
             'jenis_kelamin' => 'laki laki',
             'nip' => '198005052022011001',
         ]);
 
         wali_kelas::create([
             'nuptk' => '2345678901234567',
-            'id_user' => 'WK002',
+            'id_user' => 6,
             'jenis_kelamin' => 'perempuan',
             'nip' => '198107062022021002',
         ]);
 
         wali_kelas::create([
             'nuptk' => '3456789012345678',
-            'id_user' => 'WK003',
+            'id_user' => 7,
             'jenis_kelamin' => 'perempuan',
             'nip' => '198209072022031003',
         ]);

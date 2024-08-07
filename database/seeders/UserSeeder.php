@@ -14,113 +14,93 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         user::create([
-            'id_user' => 'K001',
+            'id' => '1',
             'name' => 'Kesiswaan',
             'email' => 'kesiswaan@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'kesiswaan',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'S001',
+            'id' => '2',
             'name' => 'Reyga Marza Ramadhan',
             'email' => 'rey@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'siswa',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'S002',
+            'id' => '3',
             'name' => 'Satria Galam Pratama',
             'email' => 'sat@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'siswa',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'S003',
+            'id' => '4',
             'name' => 'Irma Naila Juwita',
             'email' => 'iruma@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'siswa',
-            'created_at' => now(),
-            'updated_at' => now(),
+
+
         ]);
 
         user::create([
-            'id_user' => 'WK001',
+            'id' => '5',
             'name' => 'Engkus Kusnadi',
             'email' => 'wali10pplg1@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'WK002',
+            'id' => '6',
             'name' => 'Himatul Munawaroh',
             'email' => 'wali11rpl1@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'WK003',
+            'id' => '7',
             'name' => 'Ani Nuraeni',
             'email' => 'wali12rpl1@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'OP001',
+            'id' => '8',
             'name' => 'Operator1',
             'email' => 'opabas@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'operator',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'WS001',
+            'id' => '9',
             'name' => 'Cahyadi',
             'email' => 'cahyadi@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'walis',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'WS002',
+            'id' => '10',
             'name' => 'Asep',
             'email' => 'Asep@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'walis',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         user::create([
-            'id_user' => 'WS003',
+            'id' => '11',
             'name' => 'Saepuloh',
             'email' => 'saepuloh@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'walis',
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
     }
 }

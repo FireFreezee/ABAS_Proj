@@ -107,41 +107,44 @@ window.onload = async function () {
     await loadModels();
 };
 
-// map
-var lokasi = document.getElementById('lokasi');
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-}
 
-
-function successCallback(position) {
+function jarak() {
+    // map
     var lokasi = document.getElementById('lokasi');
-    lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-
-    // Use the variables from the inline script
-    var lokasi_sekolah = lokasiSekolah;
-    var radius = radiusSekolah;
-
-    var lok = lokasi_sekolah.split(",");
-    var lat_sekolah = lok[0];
-    var long_sekolah = lok[1];
-    var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-    var circle = L.circle([lat_sekolah, long_sekolah], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: radius
-    }).addTo(map);
-}
-
-function errorCallback(params) {
-
-}
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    }
+    
+    
+    function successCallback(position) {
+        var lokasi = document.getElementById('lokasi');
+        lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+    
+        // Use the variables from the inline script
+        var lokasi_sekolah = lokasiSekolah;
+        var radius = radiusSekolah;
+    
+        var lok = lokasi_sekolah.split(",");
+        var lat_sekolah = lok[0];
+        var long_sekolah = lok[1];
+        var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+        var circle = L.circle([lat_sekolah, long_sekolah], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: radius
+        }).addTo(map);
+    }
+    
+    function errorCallback(params) {
+    
+    }
+}setInterval(jarak, 1000);
 
 
 $(document).ready(function () {

@@ -20,7 +20,7 @@ class Wali_Kelas extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id_user');
+        return $this->hasOne(User::class, 'id', 'id_user');
     }
 
     public function kelas()

@@ -110,7 +110,7 @@ class OperatorController extends Controller
 
             Wali_Kelas::insert([
                 'nuptk' => $request->nuptk,
-                'id' => $user->id,
+                'id_user' => $user->id,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nip' => $request->nip,
             ]);
@@ -123,7 +123,7 @@ class OperatorController extends Controller
 
             Wali_Kelas::insert([
                 'nuptk' => $request->nuptk,
-                'id' => $user->id,
+                'id_user' => $user->id,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nip' => $request->nip,
             ]);
@@ -135,7 +135,7 @@ class OperatorController extends Controller
     public function editwali(Request $r)
     {
         //DB wali
-        DB::table('wali__kelas')->where('id', $r->id)->update([
+        DB::table('wali__kelas')->where('id_user', $r->id)->update([
             'nuptk' => $r->nuptk,
             'jenis_kelamin' => $r->jenis_kelamin,
             'nip' => $r->nip,
@@ -143,7 +143,7 @@ class OperatorController extends Controller
 
 
         //DB user
-        DB::table('users')->where('id', $r->id)->update([
+        DB::table('users')->where('id_user', $r->id)->update([
             'name' => $r->name,
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
@@ -155,7 +155,7 @@ class OperatorController extends Controller
 
     public function hapuswali(Request $request, $id)
     {
-        $w = Wali_Kelas::find($id);
+        $w = Wali_Kelas::where('id_user', $request->id);
         $w->delete();
 
         $w = user::find($id);
@@ -258,7 +258,7 @@ class OperatorController extends Controller
             $siswa->delete();
 
             // Delete related User record
-            $user = User::find($siswa->id);
+            $user = User::find($siswa->id_user);
             if ($user) {
                 $user->delete();
             }
@@ -307,7 +307,7 @@ class OperatorController extends Controller
 
             Siswa::insert([
                 'nis' => $request->nis,
-                'id' => $user->id,
+                'id_user' => $user->id,
                 'id_kelas' => $request->id_kelas,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nisn' => $request->nisn,
@@ -321,7 +321,7 @@ class OperatorController extends Controller
 
             Siswa::insert([
                 'nis' => $request->nis,
-                'id' => $user->id,
+                'id_user' => $user->id,
                 'id_kelas' => $request->id_kelas,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nisn' => $request->nisn,
@@ -332,7 +332,7 @@ class OperatorController extends Controller
 
     public function editSiswa(Request $r)
     {
-        DB::table('siswas')->where('id', $r->id)->update([
+        DB::table('siswas')->where('id', $r->id_user)->update([
             'nis' => $r->nis,
             'jenis_kelamin' => $r->jenis_kelamin,
             'nisn' => $r->nisn,
@@ -340,7 +340,7 @@ class OperatorController extends Controller
 
 
         //DB user
-        DB::table('users')->where('id', $r->id)->update([
+        DB::table('users')->where('id', $r->id_user)->update([
             'name' => $r->name,
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
@@ -351,7 +351,7 @@ class OperatorController extends Controller
 
     public function hapusSiswa($id)
     {
-        $s = Siswa::find($id);
+        $s = Siswa::where('id_user', $request->id);;
         $s->delete();
 
         $s = User::find($id);

@@ -22,7 +22,7 @@ class Wali_Siswa extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id_user', 'id_user');
+        return $this->hasOne(User::class, 'id', 'id_user');
     }
 
     public $timestamps = false;

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('wali__siswas', function (Blueprint $table) {
             $table->string('nik')->primary();
 
-            $table->string('id_user')->nullable();
-            $table->foreign('id_user')->references('id_user')->on('users');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users');
 
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
         });
