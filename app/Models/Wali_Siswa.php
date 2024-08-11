@@ -9,6 +9,8 @@ class Wali_Siswa extends Model
 {
     use HasFactory;
 
+    public $primaryKey = 'nik';
+
     protected $fillable = [
         'nik',
         'id_user',

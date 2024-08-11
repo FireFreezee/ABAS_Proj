@@ -27,7 +27,8 @@
                         <a href="{{ route('data-wali') }}"><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
                     </div>
                     <div class="nav-item">
-                        <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kesiswaan</span></a>
+                        <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                                Kesiswaan</span></a>
                     </div>
                     <div class="nav-item active">
                         <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit
@@ -99,6 +100,39 @@
                                         <path
                                             d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                     </svg> Tambah</button>
+                            </div>
+                            {{-- modal tambah --}}
+                            <div class="modal fade" id="tambah" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterLabel">Tambah Data</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('add-jurusan') }}" method="POST"
+                                                class="forms-sample">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="exampleInputUsername1">Id Jurusan</label>
+                                                    <input type="text" class="form-control" id="id_jurusan"
+                                                        name="id_jurusan" placeholder="id jurusan" required>
+                                                    <label for="exampleInputUsername1">Jurusan</label>
+                                                    <input type="text" class="form-control" id="nama_jurusan"
+                                                        name="nama_jurusan" placeholder="nama jurusan" required>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                             <table id="data_table" class="table">
                                 <thead style="text-align: center;">

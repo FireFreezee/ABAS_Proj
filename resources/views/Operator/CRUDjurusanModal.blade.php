@@ -1,34 +1,4 @@
-{{-- modal tambah --}}
-<div class="modal fade" id="tambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterLabel">Tambah Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('add-jurusan') }}" method="POST" class="forms-sample">
-                    @csrf
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">Id Jurusan</label>
-                        <input type="text" class="form-control" id="id_jurusan" name="id_jurusan" placeholder="id jurusan"
-                            required>
-                            <label for="exampleInputUsername1">Jurusan</label>
-                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" placeholder="nama jurusan"
-                            required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
-                    </div>
-                </form>
-            </div>
 
-        </div>
-    </div>
-</div>
 
 
 {{-- modal edit --}}
@@ -48,7 +18,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                            <label for="exampleInputUsername1">Jurusan</label>
-                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan" 
+                        <input type="text" class="form-control" id="nama_jurusan" name="nama_jurusan"
                            value="{{ $j->nama_jurusan }}" required>
                            <input type="hidden" name="id_jurusan">
                     </div>

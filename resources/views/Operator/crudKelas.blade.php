@@ -27,7 +27,8 @@
                         <a href="{{ route('data-wali') }}"><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
                     </div>
                     <div class="nav-item">
-                        <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kesiswaan</span></a>
+                        <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                                Kesiswaan</span></a>
                     </div>
                     <div class="nav-item">
                         <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit
@@ -104,6 +105,97 @@
 
 
                             </div>
+                            {{-- modal tambah --}}
+                            <div class="modal fade" id="tambah" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterLabel">Tambah Data</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('add-kelas') }}" method="POST" class="forms-sample">
+                                                @csrf
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Jurusan</label>
+                                                    <select class="form-control" id="id_jurusan" name="id_jurusan"
+                                                        required>
+                                                        <option value="" hidden>Pilih</option>
+                                                        @foreach ($jurusan as $j)
+                                                            <option value="{{ $j->id_jurusan }}">{{ $j->nama_jurusan }}
+                                                            </option>
+                                                        @endforeach
+
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputUsername1">Nomor Kelas</label>
+                                                    <input type="text" class="form-control" id="nomor_kelas"
+                                                        name="nomor_kelas" placeholder="Nomor Kelas" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Wali Kelas</label>
+                                                    <select class="form-control" id="nuptk" name="nuptk">
+                                                        <option value="" hidden>Pilih</option>
+                                                        @foreach ($walikelas as $w)
+                                                            <option value="{{ $w->nuptk }}">{{ $w->user->name }}
+                                                            </option>
+                                                        @endforeach
+
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Tingkat Kelas</label>
+                                                    <select class="form-control" id="tingkat" name="tingkat" required>
+                                                        <option value="" hidden>Pilih</option>
+                                                        <option value="1">10</option>
+                                                        <option value="2">11</option>
+                                                        <option value="2">12</option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- modal import --}}
+                            <div class="modal fade" id="import" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <form action="{{ route('import-kelas') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="exampleInputConfirmPassword1">File</label>
+                                                    <input type="file" class="form-control" id="password"
+                                                        name="import_file" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Import</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                             <table id="data_table" class="table">
                                 <thead style="text-align: center;">
                                     <tr>
@@ -116,7 +208,8 @@
                                 <tbody>
                                     @foreach ($kelas as $k)
                                         <tr style="text-align: center;">
-                                            <td>{{ $k->tingkat }} {{ $k->jurusan->id_jurusan }} {{ $k->nomor_kelas }}</td>
+                                            <td>{{ $k->tingkat }} {{ $k->jurusan->id_jurusan }} {{ $k->nomor_kelas }}
+                                            </td>
                                             <td>{{ $k->walikelas->user->name ?? 'No Wali Kelas' }}</td>
                                             <td>{{ $k->siswa_count }}</td> <!-- Display total number of siswa -->
                                             <td>

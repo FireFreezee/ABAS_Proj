@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <script src="{{ asset('asssets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+    <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 </head>
 
 <body>
@@ -191,7 +191,7 @@
     {{-- <script src="{{ asset('assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/moment/moment.js') }}"></script>
     <script src="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js') }}">
     </script>
@@ -201,6 +201,7 @@
     <script src="{{ asset('assets/js/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/charts.js') }}"></script>
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

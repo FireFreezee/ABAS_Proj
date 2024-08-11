@@ -10,6 +10,7 @@ class Wali_Kelas extends Model
     use HasFactory;
 
     // protected $table = 'wali__kelas';
+    public $primaryKey = 'nuptk';
 
     protected $fillable = [
         'nuptk',

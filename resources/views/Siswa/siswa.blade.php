@@ -8,6 +8,9 @@
     <!--=============== BOXICONS ===============-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
+    <!--=============== Icon ===============-->
+    <link rel="icon" href="{{ asset('assets/img/logo-abas.png') }}" type="image/x-icon" />
+
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="{{ asset('assets/page-siswa2/assets/css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
@@ -64,14 +67,14 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
                                 Profile</a>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
+                            <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                           document.getElementById('logout-form').submit();"><i
                                     class="ik ik-power dropdown-icon"></i>
                                 {{ __('Logout') }}</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
                         </div>
                     </div>
 
@@ -90,8 +93,8 @@
                             <div class="profile-pic mb-20">
                                 <img src="{{ asset('assets/page-siswa2/img/user.jpg') }}" width="150"
                                     class="rounded-circle" alt="user">
-                                <h4 class="mt-20 mb-0">{{ Auth::user()->name }}</h4>
-                                <a href="#">{{ Auth::user()->email }}</a>
+                                <h4 class="mt-20 mb-0">John Doe</h4>
+                                <a href="#">johndoe@admin.com</a>
                             </div>
                             <div class="badge badge-pill badge-dark">Dashboard</div>
                             <div class="badge badge-pill badge-dark">UI</div>
@@ -231,7 +234,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @elseif ($statusAbsen == 'Tidak Hadir')
+                            @elseif ($statusAbsen == 'Alfa')
                                 <div class="widget card-keterangan"
                                     style="background-color: rgb(255, 0, 0); color: white">
                                     <div class="widget-body ">
@@ -294,18 +297,25 @@
                             </div>
                         </div>
                     </div>
+                    @php
+                        $currentTime = \Carbon\Carbon::now()->format('H:i');
+                        $isAbsenMasukDisabled = $currentTime < $jam_absen || $currentTime >= $batas_absen_pulang;
+                        $isAbsenPulang = $statusAbsen === 'Sudah Pulang';
+                    @endphp
                     <div class="row clearfix">
                         <div class="col-6 col-md-6 col-sm-12">
                             <a href="{{ route('siswa-absen') }}">
                                 @if ($cek > 0)
                                     <button type="button" class="btn-absen btn-danger btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang) background-color: gray; color: white; border: none; @endif"
+                                        @if ($isAbsenMasukDisabled || $isAbsenPulang) disabled @endif><i
                                             class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4>Jam Absen
                                             15:30-18:00 WIB</h4></button>
                                 @else
                                     <button type="button" class="btn-absen btn-primary btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
-                                            class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4>Jam Absen
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
+                                        @if ($isAbsenMasukDisabled) disabled @endif>
+                                        <i class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4>Jam Absen
                                             6:10-07:00 WIB</h4></button>
                                 @endif
                             </a>
@@ -359,7 +369,6 @@
     <script src="{{ asset('assets/js/charts.js') }}"></script>
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
     <script src="{{ asset('assets/js/timedate.js') }}"></script>
-    <script src="{{ asset('assets/js/jarak.js') }}"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
         (function(b, o, i, l, e, r) {
@@ -377,8 +386,52 @@
         ga('create', 'UA-XXXXX-X', 'auto');
         ga('send', 'pageview');
 
-        var lokasiSekolah = @json($lok_sekolah->lokasi_sekolah);
-        var radiusSekolah = @json($lok_sekolah->radius);
+        var lokasi = document.getElementById('lokasi');
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        }
+
+        // Output the server values to verify
+        var lokasi_sekolah = "{{ $lok_sekolah->lokasi_sekolah }}";
+        var radius = parseFloat("{{ $lok_sekolah->radius }}");
+        console.log('lokasi_sekolah:', lokasi_sekolah);
+        console.log('radius:', radius);
+
+        function successCallback(position) {
+            console.log('User coordinates:', position.coords.latitude, position.coords.longitude);
+            var lat_user = position.coords.latitude;
+            var long_user = position.coords.longitude;
+
+            // Example coordinates for testing
+            var lok = lokasi_sekolah.split(",");
+            var lat_sekolah = lok[0];
+            var long_sekolah = lok[1];
+
+            var userLatLng = L.latLng(lat_user, long_user);
+            var schoolLatLng = L.latLng(lat_sekolah, long_sekolah);
+
+            var distance = userLatLng.distanceTo(schoolLatLng).toFixed(0);
+            var distanceInKm = (distance / 1000).toFixed(2);
+
+            document.getElementById('distance').innerText = distance + ' m';
+
+            console.log('Distance (meters):', distance);
+            console.log('Distance (km):', distanceInKm);
+        }
+
+        function errorCallback(error) {
+            console.error("Error retrieving location:", error);
+        }
+
+        // Request the user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+        var jam_absen = @json($jam_absen);
+        var batas_absen_pulang = @json($batas_absen_pulang);
     </script>
 </body>
 

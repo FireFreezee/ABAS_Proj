@@ -10,7 +10,7 @@ class Absensi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'NIS',
+        'nis',
         'status',
         'bukti',
         'date',
@@ -21,7 +21,7 @@ class Absensi extends Model
 
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'id_siswa');
+        return $this->belongsTo(Siswa::class, 'nis');
     }
 
     public function koordinat()

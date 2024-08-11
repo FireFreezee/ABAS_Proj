@@ -143,7 +143,7 @@ class OperatorController extends Controller
 
 
         //DB user
-        DB::table('users')->where('id_user', $r->id)->update([
+        DB::table('users')->where('id', $r->id)->update([
             'name' => $r->name,
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
@@ -245,33 +245,33 @@ class OperatorController extends Controller
         return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
     }
 
-    public function hapusKelas($id)
-{
-    // Find the Kelas record
-    $kelas = Kelas::find($id);
+    public function hapusKelas(Request $request, $id)
+    {
+        // Find the Kelas record
+        $kelas = Kelas::find($id);
 
-    if ($kelas) {
-        // Delete all related Siswa records
-        $siswas = Siswa::where('id_kelas', $id)->get();
-        foreach ($siswas as $siswa) {
-            // Delete the Siswa record
-            $siswa->delete();
+        if ($kelas) {
+            // Delete all related Siswa records
+            $siswas = Siswa::where('id_kelas', $request->id_user)->get();
+            foreach ($siswas as $siswa) {
+                // Delete the related User record if exists
+                $user = User::find($siswa->id_user);
+                if ($user) {
+                    $user->delete();
+                }
 
-            // Delete related User record
-            $user = User::find($siswa->id_user);
-            if ($user) {
-                $user->delete();
+                // Delete the Siswa record
+                $siswa->delete();
             }
+
+            // Finally, delete the Kelas record
+            $kelas->delete();
+
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+        } else {
+            return redirect()->back()->with('warning', 'Data Tidak Ditemukan!');
         }
-
-        // Finally, delete the Kelas record
-        $kelas->delete();
-
-        return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
-    } else {
-        return redirect()->back()->with('warning', 'Data Tidak Ditemukan!');
     }
-}
 
     public function importKelas(Request $request)
     {
@@ -332,7 +332,7 @@ class OperatorController extends Controller
 
     public function editSiswa(Request $r)
     {
-        DB::table('siswas')->where('id', $r->id_user)->update([
+        DB::table('siswas')->where('id_user', $r->id)->update([
             'nis' => $r->nis,
             'jenis_kelamin' => $r->jenis_kelamin,
             'nisn' => $r->nisn,
@@ -340,7 +340,7 @@ class OperatorController extends Controller
 
 
         //DB user
-        DB::table('users')->where('id', $r->id_user)->update([
+        DB::table('users')->where('id', $r->id)->update([
             'name' => $r->name,
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
@@ -349,7 +349,7 @@ class OperatorController extends Controller
         return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
     }
 
-    public function hapusSiswa($id)
+    public function hapusSiswa(Request $request, $id)
     {
         $s = Siswa::where('id_user', $request->id);;
         $s->delete();
@@ -360,20 +360,20 @@ class OperatorController extends Controller
         return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
     }
 
-     public function kesiswaan()
-     {
+    public function kesiswaan()
+    {
         $kesiswaan = User::where('role', 'kesiswaan')->get();
         return view('operator.crudKesiswaan', compact('kesiswaan'));
-     }
-    
+    }
+
     public function tambahKesiswaan(Request $request)
     {
-            User::insert([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => password_hash($request->password, PASSWORD_DEFAULT),
-                'role' => 'kesiswaan',
-            ]);
+        User::insert([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => password_hash($request->password, PASSWORD_DEFAULT),
+            'role' => 'kesiswaan',
+        ]);
 
         return redirect()->back()->with('success', 'Keiswaan berhasil ditambahkan!');
     }
@@ -385,7 +385,7 @@ class OperatorController extends Controller
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
         ]);
-        
+
         return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
     }
 

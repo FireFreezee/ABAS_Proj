@@ -29,13 +29,16 @@
                                     Walikelas</span></a>
                         </div>
                         <div class="nav-item">
-                            <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit Kesiswaan</span></a>
+                            <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                                    Kesiswaan</span></a>
                         </div>
                         <div class="nav-item">
-                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit Jurusan</span></a>
+                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit
+                                    Jurusan</span></a>
                         </div>
                         <div class="nav-item active">
-                            <a href="{{ route('data-kelas') }}"><i class="ik ik-book-open"></i><span>Tambah/Edit Kelas</span></a>
+                            <a href="{{ route('data-kelas') }}"><i class="ik ik-book-open"></i><span>Tambah/Edit
+                                    Kelas</span></a>
                         </div>
                     </nav>
                 </div>
@@ -104,6 +107,88 @@
                                     data-target="#import">Import</button>
 
 
+                            </div>
+                            {{-- modal tambah --}}
+                            <div class="modal fade" id="tambah" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterLabel">Tambah Data</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('add-siswa', ['id' => $kelas->id_kelas]) }}"
+                                                method="POST" class="forms-sample">
+                                                @csrf
+                                                <input type="hidden" name="id_kelas" value="{{ $id_kelas }}">
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">NIS</label>
+                                                    <input type="text" class="form-control" id="nis"
+                                                        name="nis" placeholder="NIS" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">NISN</label>
+                                                    <input type="text" class="form-control" id="nisn"
+                                                        name="nisn" placeholder="NISN" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputUsername1">Nama</label>
+                                                    <input type="text" class="form-control" id="name"
+                                                        name="name" placeholder="Nama" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Jenis Kelamin</label>
+                                                    <select class="form-control" id="jenis_kelamin" name="jenis_kelamin"
+                                                        required>
+                                                        <option value="" hidden>Pilih</option>
+                                                        <option value="1">laki laki</option>
+                                                        <option value="2">perempuan</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputUsername1">Email</label>
+                                                    <input type="email" class="form-control" id="email"
+                                                        name="email" placeholder="Email" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputUsername1">Password</label>
+                                                    <input type="text" class="form-control" id="password"
+                                                        name="password" placeholder="Password" required>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- modal import --}}
+                            <div class="modal fade" id="import" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <table id="data_table" class="table">
                                 <thead style="text-align: center;">

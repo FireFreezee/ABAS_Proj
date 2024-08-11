@@ -114,16 +114,16 @@ function jarak() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     }
-    
-    
+
+
     function successCallback(position) {
         var lokasi = document.getElementById('lokasi');
         lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-    
+
         // Use the variables from the inline script
         var lokasi_sekolah = lokasiSekolah;
         var radius = radiusSekolah;
-    
+
         var lok = lokasi_sekolah.split(",");
         var lat_sekolah = lok[0];
         var long_sekolah = lok[1];
@@ -140,9 +140,9 @@ function jarak() {
             radius: radius
         }).addTo(map);
     }
-    
+
     function errorCallback(params) {
-    
+
     }
 }setInterval(jarak, 1000);
 

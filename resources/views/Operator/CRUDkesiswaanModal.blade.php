@@ -1,37 +1,3 @@
-{{-- modal tambah --}}
-<div class="modal fade" id="tambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterLabel">Tambah Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('tambah-kesiswaan') }}" method="POST" class="forms-sample">
-                    @csrf
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputUsername1">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                            required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary">Tambah</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 {{-- modal edit --}}
 
 <div class="modal fade" id="edit{{ $k->id }}" tabindex="-1" role="dialog"
