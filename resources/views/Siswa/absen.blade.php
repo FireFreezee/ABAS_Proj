@@ -11,6 +11,9 @@
     <!--=============== BOXICONS ===============-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
+    <!--=============== Icon ===============-->
+    <link rel="icon" href="{{ asset('assets/img/logo-abas.png') }}" type="image/x-icon" />
+    
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="{{ asset('assets/page-siswa2/assets/css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">

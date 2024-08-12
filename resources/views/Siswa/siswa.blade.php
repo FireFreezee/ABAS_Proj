@@ -301,6 +301,7 @@
                         $currentTime = \Carbon\Carbon::now()->format('H:i');
                         $isAbsenMasukDisabled = $currentTime < $jam_absen || $currentTime >= $batas_absen_pulang;
                         $isAbsenPulang = $statusAbsen === 'Sudah Pulang';
+                        // $isJarak = $userLatLng > $schoolLatLng;
                     @endphp
                     <div class="row clearfix">
                         <div class="col-6 col-md-6 col-sm-12">
@@ -321,20 +322,19 @@
                             </a>
                         </div>
                         <div class="col-6 col-md-6 col-sm-12">
-                            @if ($cek > 0)
-                                <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
-                                    style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;" disabled><i
-                                        class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
-                                </button>
-                            @else
-                                <a href="">
+                            <a href="{{ route('siswa-izin') }}">
+                                @if ($cek > 0)
+                                    <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;" disabled><i
+                                            class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
+                                    </button>
+                                @else
                                     <button type="button" class="btn-absen btn-info btn-block pb-30 pt-30"
                                         style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
                                             class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
                                     </button>
-                                </a>
-                            @endif
-
+                                @endif
+                            </a>
                         </div>
                     </div>
                 </div>

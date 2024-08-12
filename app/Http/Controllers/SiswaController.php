@@ -34,8 +34,8 @@ class SiswaController extends Controller
             $statusAbsen = 'Belum Absen';
         }
 
-        $batas_absen_pulang = '23:10';
-        $jam_absen = '22:50';
+        // $batas_absen_pulang = '23:10';
+        // $jam_absen = '22:50';
         $jam = date("H:i:s");
         $waktu = DB::table('waktu__absens')->where('id_waktu_absen', 1)->first();
         $lok_sekolah = DB::table('koordinat__sekolahs')->where('id_koordinat_sekolah', 1)->first();
@@ -48,8 +48,8 @@ class SiswaController extends Controller
             'lok_sekolah' => $lok_sekolah,
             'siswa' => $siswa,
             'jam' => $jam,
-            'jam_absen' => $jam_absen,
-            'batas_absen_pulang' => $batas_absen_pulang
+            'jam_absen' => $waktu->jam_absen,
+            'batas_absen_pulang' => $waktu->batas_absen_pulang
         ]);
     }
 
@@ -107,11 +107,11 @@ class SiswaController extends Controller
         }
 
         $cek = DB::table('absensis')->where('date', $date)->where('nis', $nis)->count();
-        // if ($radius > $radiussekolah) {
-        //     echo "error|Anda Berada Diluar Radius, Jarak Anda " . $radius . " meter dari Sekolah|";
-        // } elseif ($faceConfidence < 0.90) { // Confidence threshold
-        //     echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
-        // } else {
+        if ($radius > $radiussekolah) {
+            echo "error|Anda Berada Diluar Radius, Jarak Anda " . $radius . " meter dari Sekolah|";
+        } elseif ($faceConfidence < 0.90) { // Confidence threshold
+            echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
+        } else {
             if ($cek > 0) {
                 $data_pulang = [
                     'photo_out' => $fileName,
@@ -144,7 +144,7 @@ class SiswaController extends Controller
                     echo "error|Absen Gagal|in";
                 }
             }
-        // }
+        }
     }
 
     function distance($lat1, $lon1, $lat2, $lon2)
@@ -159,6 +159,11 @@ class SiswaController extends Controller
         $kilometers = $miles * 1.609344;
         $meters = $kilometers * 1000;
         return compact('meters');
+    }
+
+    public function izin()
+    {
+        return view('Siswa.izin');
     }
 
 
