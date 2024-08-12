@@ -50,6 +50,7 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
     Route::get('/siswa/absen', [App\Http\Controllers\siswaController::class, 'absen'])->name('siswa-absen');
     Route::post('/absen/store', [SiswaController::class, 'store']);
     Route::get('/siswa/izin', [SiswaController::class, 'izin'])->name('siswa-izin');
+    Route::post('/izin/store', [SiswaController::class, 'izin_store'])->name('izin-store');
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {

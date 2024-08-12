@@ -101,8 +101,7 @@ class SiswaController extends Controller
 
         if ($jam > $batasMasuk) {
             $status = 'Terlambat';
-        }
-        else {
+        } else {
             $status = 'Hadir';
         }
 
@@ -166,6 +165,41 @@ class SiswaController extends Controller
         return view('Siswa.izin');
     }
 
+    public function izin_store(Request $request)
+    {
+        $request->validate([
+            'photo_in' => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
+            'keterangan' => 'nullable|string|max:255',
+            'status' => 'required|string',
+        ]);
+
+        // Menyimpan file foto status jika ada
+        if ($request->hasFile('photo_in')) {
+            $file = $request->file('photo_in');
+            $filePath = $file->store('uploads/absensi', 'public'); // Menyimpan file di folder 'photos' dalam storage 'public'
+        } else {
+            $filePath = null;
+        }
+
+        $user = Auth::user();
+        $nis = $user->siswa->nis;
+        $status = $request->input('status');
+        $date = date("Y-m-d");
+        $jam = date("H:i:s");
+
+        $data = [
+            'nis' => $nis,
+            'status' => $status,
+            'photo_in' => $filePath,
+            'keterangan' => $request->input('keterangan'),
+            'date' => $date,
+            'jam_masuk' => $jam,
+        ];
+
+        DB::table('absensis')->insert($data);
+
+        return view('Siswa.siswa')->with('success', 'Absensi berhasil disimpan!');
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -102,45 +102,48 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col">
-                                        <input type="file" class="filepond" name="filepond" multiple
-                                            data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3"
-                                            id="file">
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="exampleTextarea1">Keterangan</label>
-                                            <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                    <form action="{{ route('izin-store') }}" method="POST" enctype="multipart/form-data">
+                                        <div class="col">
+                                            <input type="file" class="filepond" name="filepond" multiple
+                                                data-allow-reorder="true" data-max-file-size="10MB"
+                                                data-max-files="3" id="photo_in">
                                         </div>
-                                        <div class="form-radio mb-30">
-                                            <form>
-                                                <div class="radio radiofill radio-info radio-inline">
-                                                    <label>
-                                                        <input type="radio" name="radio" checked="checked">
-                                                        <i class="helper"></i>Sakit
-                                                    </label>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="exampleTextarea1">Keterangan</label>
+                                                <textarea class="form-control" id="exampleTextarea1" name="keterangan" rows="4"></textarea>
+                                            </div>
+                                            <div class="form-radio mb-30">
+                                                <form>
+                                                    <div class="radio radiofill radio-info radio-inline">
+                                                        <label>
+                                                            <input type="radio" name="status" value="Sakit"
+                                                                checked="checked">
+                                                            <i class="helper"></i>Sakit
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio radiofill radio-warning radio-inline">
+                                                        <label>
+                                                            <input type="radio" name="status" value="Izin"
+                                                                checked="checked">
+                                                            <i class="helper"></i>Izin
+                                                        </label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="row clearfix pt-15">
+                                                <div class="col-4 col-md-4 col-sm-12"></div>
+                                                <div class="col-4 col-md-4 col-sm-12"></div>
+                                                <div class="col-4 col-md-4 col-sm-12">
+                                                    <button type="button" class="btn-absen btn-primary btn-block"
+                                                        id="absen"
+                                                        style="border-radius: 10px; padding:7px; font-size: 20px">
+                                                        <i class="ik ik-maximize"></i>&nbsp;Submit
+                                                    </button>
                                                 </div>
-                                                <div class="radio radiofill radio-warning radio-inline">
-                                                    <label>
-                                                        <input type="radio" name="radio" checked="checked">
-                                                        <i class="helper"></i>Izin
-                                                    </label>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="row clearfix pt-15">
-                                            <div class="col-4 col-md-4 col-sm-12"></div>
-                                            <div class="col-4 col-md-4 col-sm-12"></div>
-                                            <div class="col-4 col-md-4 col-sm-12">
-                                                <button type="button" class="btn-absen btn-primary btn-block"
-                                                    id="absen"
-                                                    style="border-radius: 10px; padding:7px; font-size: 20px">
-                                                    <i class="ik ik-maximize"></i>&nbsp;Submit
-                                                </button>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -156,8 +159,10 @@
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+    </script>
+    <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js">
+    </script>
     <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
