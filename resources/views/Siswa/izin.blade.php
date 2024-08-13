@@ -93,7 +93,15 @@
         <div class="page-wrap">
             <!--=============== HOME ===============-->
             <div class="main-content" style="padding-left: 0px;">
-                <input type="hidden" id="lokasi">
+                @if (Session::get('error'))
+                    <script>
+                        Swal.fire({
+                            title: "Gagal",
+                            text: {{ session[1] }},
+                            icon: "error"
+                        });
+                    </script>
+                @endif
                 <div class="col-md-12">
                     <div class="container-fluid">
                         <div class="card">
@@ -101,31 +109,34 @@
                                 <h3>Izin / Sakit</h3>
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <form action="{{ route('izin-store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('izin-store') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row">
+                                        <input type="hidden" id="lokasi" name="lokasi">
                                         <div class="col">
-                                            <input type="file" class="filepond" name="filepond" multiple
-                                                data-allow-reorder="true" data-max-file-size="10MB"
-                                                data-max-files="3" id="photo_in">
+                                            <input type="file" multiple
+                                                data-allow-reorder="false" data-max-file-size="10MB"
+                                                data-max-files="3" id="photo_in" name="photo_in">
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
                                                 <label for="exampleTextarea1">Keterangan</label>
-                                                <textarea class="form-control" id="exampleTextarea1" name="keterangan" rows="4"></textarea>
+                                                <textarea class="form-control" id="keterangan" name="keterangan" rows="4"></textarea>
                                             </div>
                                             <div class="form-radio mb-30">
                                                 <form>
                                                     <div class="radio radiofill radio-info radio-inline">
                                                         <label>
-                                                            <input type="radio" name="status" value="Sakit"
-                                                                checked="checked">
+                                                            <input type="radio" id="status" name="status"
+                                                                value="Sakit" checked="checked">
                                                             <i class="helper"></i>Sakit
                                                         </label>
                                                     </div>
                                                     <div class="radio radiofill radio-warning radio-inline">
                                                         <label>
-                                                            <input type="radio" name="status" value="Izin"
-                                                                checked="checked">
+                                                            <input type="radio" id="status" name="status"
+                                                                value="Izin" checked="checked">
                                                             <i class="helper"></i>Izin
                                                         </label>
                                                     </div>
@@ -135,16 +146,15 @@
                                                 <div class="col-4 col-md-4 col-sm-12"></div>
                                                 <div class="col-4 col-md-4 col-sm-12"></div>
                                                 <div class="col-4 col-md-4 col-sm-12">
-                                                    <button type="button" class="btn-absen btn-primary btn-block"
-                                                        id="absen"
-                                                        style="border-radius: 10px; padding:7px; font-size: 20px">
+                                                    <button type="submit" class="btn-absen btn-primary btn-block"
+                                                        style="border-radius: 10px; padding:7px; font-size: 20px ">
                                                         <i class="ik ik-maximize"></i>&nbsp;Submit
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -210,18 +220,34 @@
             FilePondPluginFileValidateSize,
             FilePondPluginImageExifOrientation,
             FilePondPluginImageValidateSize,
-            FilePondPluginFileEncode
         );
         // Get a reference to the file input element
-        const pond = FilePond.create(document.querySelector('input[id="file"]'), {
+        const pond = FilePond.create(document.querySelector('input[id=""]'), {
             allowImagePreview: true,
-            imagePreviewMaxHeight: 100,
+            imagePreviewMaxHeight: 300,
             allowMultiple: false,
             instantUpload: false,
             acceptedFileTypes: ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'],
         });
 
-        // Create a FilePond instance
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        }
+
+
+        function successCallback(position) {
+            var lokasi = document.getElementById('lokasi');
+            lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+
+            // Use the variables from the inline script
+            var lokasi_sekolah = lokasiSekolah;
+            var radius = radiusSekolah;
+        }
+
+        function errorCallback(params) {
+
+        }
     </script>
 
 </body>

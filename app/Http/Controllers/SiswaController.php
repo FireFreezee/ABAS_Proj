@@ -168,37 +168,45 @@ class SiswaController extends Controller
     public function izin_store(Request $request)
     {
         $request->validate([
-            'photo_in' => 'nullable|image|mimes:jpeg,png,jpg|max:3000',
-            'keterangan' => 'nullable|string|max:255',
+            'photo_in' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+            'keterangan' => 'required|string|max:255',
             'status' => 'required|string',
         ]);
 
-        // Menyimpan file foto status jika ada
         if ($request->hasFile('photo_in')) {
-            $file = $request->file('photo_in');
-            $filePath = $file->store('uploads/absensi', 'public'); // Menyimpan file di folder 'photos' dalam storage 'public'
-        } else {
-            $filePath = null;
+            $user = Auth::user();
+            $nis = $user->siswa->nis;
+            $status = $request->status;
+            $date = date("Y-m-d");
+            $jam = date("H:i:s");
+
+            $lokasiSiswa = $request->lokasi;
+            $foto = $request->file('photo_in');
+            
+            $extension = $foto->getClientOriginalExtension();
+            $folderPath = "public/uploads/absensi/";
+            $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
+            $file = $folderPath . $fileName;
+            
+
+            $data = [
+                'nis' => $nis,
+                'status' => $status,
+                'photo_in' => $fileName,
+                'keterangan' => $request->keterangan,
+                'date' => $date,
+                'jam_masuk' => $jam,
+                'titik_koordinat_masuk' => $lokasiSiswa,
+            ];
+
+            $simpan = DB::table('absensis')->insert($data);
+            if ($simpan) {
+                Storage::put($file, file_get_contents($foto));
+                return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
+            } else {
+                return redirect()->route('siswa-izin')->with('error', 'Gagal');
+            }
         }
-
-        $user = Auth::user();
-        $nis = $user->siswa->nis;
-        $status = $request->input('status');
-        $date = date("Y-m-d");
-        $jam = date("H:i:s");
-
-        $data = [
-            'nis' => $nis,
-            'status' => $status,
-            'photo_in' => $filePath,
-            'keterangan' => $request->input('keterangan'),
-            'date' => $date,
-            'jam_masuk' => $jam,
-        ];
-
-        DB::table('absensis')->insert($data);
-
-        return view('Siswa.siswa')->with('success', 'Absensi berhasil disimpan!');
     }
 
     /**

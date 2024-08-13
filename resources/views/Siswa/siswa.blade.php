@@ -93,8 +93,8 @@
                             <div class="profile-pic mb-20">
                                 <img src="{{ asset('assets/page-siswa2/img/user.jpg') }}" width="150"
                                     class="rounded-circle" alt="user">
-                                <h4 class="mt-20 mb-0">John Doe</h4>
-                                <a href="#">johndoe@admin.com</a>
+                                <h4 class="mt-20 mb-0">{{ Auth::user()->name }}</h4>
+                                <a href="#">{{ Auth::user()->email }}</a>
                             </div>
                             <div class="badge badge-pill badge-dark">Dashboard</div>
                             <div class="badge badge-pill badge-dark">UI</div>
@@ -301,6 +301,7 @@
                         $currentTime = \Carbon\Carbon::now()->format('H:i');
                         $isAbsenMasukDisabled = $currentTime < $jam_absen || $currentTime >= $batas_absen_pulang;
                         $isAbsenPulang = $statusAbsen === 'Sudah Pulang';
+                        $isIzin = $statusAbsen === 'Izin' || $statusAbsen === 'Sakit'; 
                         // $isJarak = $userLatLng > $schoolLatLng;
                     @endphp
                     <div class="row clearfix">
@@ -308,8 +309,8 @@
                             <a href="{{ route('siswa-absen') }}">
                                 @if ($cek > 0)
                                     <button type="button" class="btn-absen btn-danger btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang) background-color: gray; color: white; border: none; @endif"
-                                        @if ($isAbsenMasukDisabled || $isAbsenPulang) disabled @endif><i
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
+                                        @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i
                                             class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4>Jam Absen
                                             15:30-18:00 WIB</h4></button>
                                 @else
@@ -325,7 +326,7 @@
                             <a href="{{ route('siswa-izin') }}">
                                 @if ($cek > 0)
                                     <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;" disabled><i
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;" disabled><i
                                             class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
                                     </button>
                                 @else
