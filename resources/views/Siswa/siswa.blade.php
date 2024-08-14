@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!--=============== BOXICONS ===============-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"> --}}
 
     <!--=============== Icon ===============-->
     <link rel="icon" href="{{ asset('assets/img/logo-abas.png') }}" type="image/x-icon" />
@@ -16,23 +16,23 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/icon-kit/dist/css/iconkit.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/ionicons/dist/css/ionicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/icon-kit/dist/css/iconkit.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/ionicons/dist/css/ionicons.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.css') }}"> --}}
     <link rel="stylesheet"
-        href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/weather-icons/css/weather-icons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/c3/c3.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
+        {{-- href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/weather-icons/css/weather-icons.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/c3/c3.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.carousel.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script> --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> --}}
 
     <title>Responsive bottom navigation</title>
 </head>
@@ -43,19 +43,18 @@
         <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 14px;">
             <nav class="nav container-fluid" style="padding-right: 100px;">
                 <div class="logo-img">
-                    <img src="{{ asset('assets/img/logo-abas.png') }}" style="height: 2rem; width: auto;"
-                        alt="lavalite">
-                    <img src="{{ asset('assets/img/logo-title.png') }}" style="height: 2rem; width: auto;"
+                    <img src="{{ asset('assets/img/logo-abas.png') }}" style="width: 100%; max-width: 40px; height: auto;" alt="lavalite">
+                    <img src="{{ asset('assets/img/logo-title.png') }}" style="width: 100%; max-width: 80px; height: auto;"
                         class="text" alt="lavalite">
                 </div>
 
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav nav-pills justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#" style="font-size: large;">Absen</a>
+                            <a class="nav-link active" href="#" style="font-size: 2vw;">Absen</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="font-size: large;">Laporan</a>
+                            <a class="nav-link" href="#" style="font-size: 2vw;">Laporan</a>
                         </li>
                     </ul>
                 </div>
@@ -348,49 +347,49 @@
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')
+        // window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')
     </script>
     <script src="{{ asset('assets/plugins/popper.js/dist/umd/popper.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/screenfull/dist/screenfull.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/datatables.net/js/jquery.dataTables.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script>
-    <script src="{{ asset('assets/plugins/moment/moment.js') }}"></script>
-    <script src="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js') }}">
+    {{-- <script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/plugins/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/plugins/moment/moment.js') }}"></script> --}}
+    {{-- <script src="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js') }}"> --}}
     </script>
-    <script src="{{ asset('assets/plugins/d3/dist/d3.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/plugins/d3/dist/d3.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/c3/c3.min.js') }}"></script>
     <script src="{{ asset('assets/js/tables.js') }}"></script>
     <script src="{{ asset('assets/js/widgets.js') }}"></script>
-    <script src="{{ asset('assets/js/charts.js') }}"></script>
+    <script src="{{ asset('assets/js/charts.js') }}"></script> --}}
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
     <script src="{{ asset('assets/js/timedate.js') }}"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
-        (function(b, o, i, l, e, r) {
-            b.GoogleAnalyticsObject = l;
-            b[l] || (b[l] =
-                function() {
-                    (b[l].q = b[l].q || []).push(arguments)
-                });
-            b[l].l = +new Date;
-            e = o.createElement(i);
-            r = o.getElementsByTagName(i)[0];
-            e.src = 'https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e, r)
-        }(window, document, 'script', 'ga'));
-        ga('create', 'UA-XXXXX-X', 'auto');
-        ga('send', 'pageview');
+        // (function(b, o, i, l, e, r) {
+        //     b.GoogleAnalyticsObject = l;
+        //     b[l] || (b[l] =
+        //         function() {
+        //             (b[l].q = b[l].q || []).push(arguments)
+        //         });
+        //     b[l].l = +new Date;
+        //     e = o.createElement(i);
+        //     r = o.getElementsByTagName(i)[0];
+        //     e.src = 'https://www.google-analytics.com/analytics.js';
+        //     r.parentNode.insertBefore(e, r)
+        // }(window, document, 'script', 'ga'));
+        // ga('create', 'UA-XXXXX-X', 'auto');
+        // ga('send', 'pageview');
 
-        var lokasi = document.getElementById('lokasi');
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        }
+        // var lokasi = document.getElementById('lokasi');
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        // }
 
         // Output the server values to verify
         var lokasi_sekolah = "{{ $lok_sekolah->lokasi_sekolah }}";
