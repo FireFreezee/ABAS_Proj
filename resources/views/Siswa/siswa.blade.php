@@ -22,8 +22,8 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.css') }}"> --}}
-    <link rel="stylesheet"
-        {{-- href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
+    {{-- <link rel="stylesheet" --}}
+    {{-- href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/weather-icons/css/weather-icons.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/c3/c3.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.carousel.min.css') }}"> --}}
@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     {{-- <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script> --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> --}}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <title>Responsive bottom navigation</title>
 </head>
@@ -40,21 +40,22 @@
 <body>
     <!--=============== HEADER ===============-->
     <div class="wrapper">
-        <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 14px;">
+        <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 12px;">
             <nav class="nav container-fluid" style="padding-right: 100px;">
                 <div class="logo-img">
-                    <img src="{{ asset('assets/img/logo-abas.png') }}" style="width: 100%; max-width: 40px; height: auto;" alt="lavalite">
-                    <img src="{{ asset('assets/img/logo-title.png') }}" style="width: 100%; max-width: 80px; height: auto;"
-                        class="text" alt="lavalite">
+                    <img src="{{ asset('assets/img/logo-abas.png') }}"
+                        class="logo" alt="lavalite">
+                    <img src="{{ asset('assets/img/logo-title.png') }}"
+                        class="logo-text" alt="lavalite">
                 </div>
 
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav nav-pills justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#" style="font-size: 2vw;">Absen</a>
+                            <a class="nav-link active" href="#" style="font-size: 90%;">Absen</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="font-size: 2vw;">Laporan</a>
+                            <a class="nav-link" href="#" style="font-size: 90%;">Laporan</a>
                         </li>
                     </ul>
                 </div>
@@ -126,7 +127,7 @@
                             <div class="widget bg-success card-keterangan">
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="state">
+                                        <div class="col-md-6 md-3" style="">
                                             <h6>Jam Sekarang</h6>
                                             <h5 class="clock">
                                                 <span id="jam">00</span>
@@ -297,10 +298,9 @@
                         </div>
                     </div>
                     @php
-                        $currentTime = \Carbon\Carbon::now()->format('H:i');
-                        $isAbsenMasukDisabled = $currentTime < $jam_absen || $currentTime >= $batas_absen_pulang;
+                        $isAbsenMasukDisabled = $jam < $jam_absen || $jam >= $batas_absen_pulang;
                         $isAbsenPulang = $statusAbsen === 'Sudah Pulang';
-                        $isIzin = $statusAbsen === 'Izin' || $statusAbsen === 'Sakit'; 
+                        $isIzin = $statusAbsen === 'Izin' || $statusAbsen === 'Sakit';
                         // $isJarak = $userLatLng > $schoolLatLng;
                     @endphp
                     <div class="row clearfix">
@@ -311,13 +311,13 @@
                                         style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i
                                             class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4>Jam Absen
-                                            15:30-18:00 WIB</h4></button>
+                                                {{ $jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4></button>
                                 @else
                                     <button type="button" class="btn-absen btn-primary btn-block pb-30 pt-30"
                                         style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled) disabled @endif>
                                         <i class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4>Jam Absen
-                                            6:10-07:00 WIB</h4></button>
+                                            {{ $jam_absen }}-{{ $waktu->batas_absen_masuk }} WIB</h4></button>
                                 @endif
                             </a>
                         </div>
@@ -325,8 +325,9 @@
                             <a href="{{ route('siswa-izin') }}">
                                 @if ($cek > 0)
                                     <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;" disabled><i
-                                            class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
+                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;"
+                                        disabled><i class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit
+                                        </h4>
                                     </button>
                                 @else
                                     <button type="button" class="btn-absen btn-info btn-block pb-30 pt-30"
@@ -432,6 +433,57 @@
 
         var jam_absen = @json($jam_absen);
         var batas_absen_pulang = @json($batas_absen_pulang);
+
+        // // disable tombol absen
+        // $(document).ready(function() {
+        //     // Define the times for `jam_absen` and `batas_absen_pulang` from the server-side variables
+        //     const jamAbsen = "{{ $jam_absen }}";
+        //     const batasAbsenPulang = "{{ $batas_absen_pulang }}";
+
+        //     const [jamHours, jamMinutes] = jamAbsen.split(':').map(Number);
+        //     const [batasHours, batasMinutes] = batasAbsenPulang.split(':').map(Number);
+
+        //     function checkTimeAndRefresh() {
+        //         const currentTime = new Date();
+
+        //         // Create Date objects for `jam_absen` and `batas_absen_pulang`
+        //         const absenTime = new Date();
+        //         absenTime.setHours(jamHours);
+        //         absenTime.setMinutes(jamMinutes);
+        //         absenTime.setSeconds(0);
+
+        //         const batasTime = new Date();
+        //         batasTime.setHours(batasHours);
+        //         batasTime.setMinutes(batasMinutes);
+        //         batasTime.setSeconds(0);
+
+        //         // Check if the current time is past `jam_absen`
+        //         if (currentTime > absenTime) {
+        //             if (!localStorage.getItem('pageRefreshed')) {
+        //                 localStorage.setItem('pageRefreshed', 'true');
+        //                 setTimeout(() => location.reload(), 1000); // Refresh after 1 second
+        //             }
+        //         } else {
+        //             localStorage.removeItem('pageRefreshed');
+        //         }
+
+        //         // Check if the current time is past `batas_absen_pulang`
+        //         if (currentTime >= batasTime) {
+        //             if (!localStorage.getItem('batasRefreshed')) {
+        //                 localStorage.setItem('batasRefreshed', 'true');
+        //                 setTimeout(() => location.reload(), 1000); // Refresh after 1 second
+        //             }
+        //         } else {
+        //             localStorage.removeItem('batasRefreshed');
+        //         }
+        //     }
+
+        //     // Check the time immediately
+        //     checkTimeAndRefresh();
+
+        //     // Set an interval to check every 5 seconds
+        //     setInterval(checkTimeAndRefresh, 5000); // Check every 5 seconds
+        // });
     </script>
 </body>
 
