@@ -16,7 +16,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="exampleInputUsername1">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
                            value="{{ $k->name }}" required>
                     </div>
                     <div class="form-group">

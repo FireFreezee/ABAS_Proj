@@ -17,8 +17,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/dist/css/bootstrap.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/icon-kit/dist/css/iconkit.min.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/ionicons/dist/css/ionicons.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('assets/plugins/icon-kit/dist/css/iconkit.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/ionicons/dist/css/ionicons.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.css') }}"> --}}
@@ -30,71 +30,81 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    @vite('resources/css/app.css')
     {{-- <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script> --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 
-    <title>Responsive bottom navigation</title>
+    <title>ABAS - Dashboard</title>
 </head>
 
 <body>
     <!--=============== HEADER ===============-->
     <div class="wrapper">
         <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 12px;">
-            <nav class="nav container-fluid" style="padding-right: 100px;">
-                <div class="logo-img">
-                    <img src="{{ asset('assets/img/logo-abas.png') }}"
-                        class="logo" alt="lavalite">
-                    <img src="{{ asset('assets/img/logo-title.png') }}"
-                        class="logo-text" alt="lavalite">
-                </div>
-
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav nav-pills justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#" style="font-size: 90%;">Absen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="font-size: 90%;">Laporan</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="top-menu d-flex align-items-center">
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
-                                src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
-                                Profile</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                          document.getElementById('logout-form').submit();"><i
-                                    class="ik ik-power dropdown-icon"></i>
-                                {{ __('Logout') }}</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
+            <div class="relative -mx-4 flex items-center p-[15px]">
+                <div class="grid grid-cols-3 justify-between w-full">
+                    <div class="flex justify-center items-center">
+                        <img src="{{ asset('assets/img/logo-abas.png') }}" class="h-[20px] w-auto md:h-[40px] md:w-auto object-left"
+                            alt="lavalite">
+                        <img src="{{ asset('assets/img/logo-title.png') }}"
+                            class="h-[20px] w-auto  md:h-[40px] md:w-auto sm:h-[6px] sm:w-auto" alt="lavalite">
                     </div>
 
+                    <div class="flex justify-center items-center" id="nav-menu">
+                        <div class=" grid grid-cols-2 justify-center">
+                            <div class="nav-item  bg-blue-600 p-[10px] rounded-lg text-white flex justify-center">
+                                <h1 class=" text-xs md:text-sm">Absen</h1>
+                            </div>
+                            <div class="nav-item bg-white p-[10px] rounded-lg text-dark flex justify-center">
+                                <h1 class=" text-xs md:text-sm">Laporan</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top-menu flex justify-center items-center">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
+                                    src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
+                                    Profile</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                  document.getElementById('logout-form').submit();"><i
+                                        class="ik ik-power dropdown-icon"></i>
+                                    {{ __('Logout') }}</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
-            </nav>
+            </div>
+            <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
         </header>
 
         <div class="page-wrap">
             <!--=============== HOME ===============-->
-            <div class="main-content" style="padding-left: 0px;">
+            <div class="main-content" style="padding-left: 0px; padding-right: 0px">
                 <input type="hidden" id="lokasi">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body text-center">
                             <div class="profile-pic mb-20">
-                                <img src="{{ asset('assets/page-siswa2/img/user.jpg') }}" width="150"
-                                    class="rounded-circle" alt="user">
-                                <h4 class="mt-20 mb-0">{{ Auth::user()->name }}</h4>
-                                <a href="#">{{ Auth::user()->email }}</a>
+                                <div class="flex justify-center">
+                                    <img src="{{ asset('assets/page-siswa2/img/user.jpg') }}" width="150"
+                                        class="rounded-circle" alt="user">
+                                </div>
+                                <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
+                                <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>
                             </div>
                             <div class="badge badge-pill badge-dark">Dashboard</div>
                             <div class="badge badge-pill badge-dark">UI</div>
@@ -105,16 +115,17 @@
                     </div>
                 </div>
 
-                <div class="container" style="margin-left: 0px; margin-right: 0px; max-width: none;">
+                <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
 
                     <div class="row clearfix">
-                        <div class="col-3 col-md-3 col-sm-12">
+                        <div class="col-md-3 sm-3 col-sm-12">
                             <div class="widget bg-purple card-keterangan">
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
-                                            <h6>Tanggal</h6>
-                                            <h5 id="date">Senin 15 September 2024</h5>
+                                            <h6 style="font-size: 0.9rem; font-weight: 500">Tanggal</h6>
+                                            <h5 id="date" style="font-size: 0.9rem; font-weight: 500">Senin 15
+                                                September 2024</h5>
                                         </div>
                                         <div class="icon">
                                             <i class="ik ik-shopping-cart"></i>
@@ -123,13 +134,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3 col-md-3 col-sm-12">
+                        <div class="col-md-3 sm-3 col-sm-12">
                             <div class="widget bg-success card-keterangan">
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="col-md-6 md-3" style="">
-                                            <h6>Jam Sekarang</h6>
-                                            <h5 class="clock">
+                                        <div class="state">
+                                            <h6 style="font-size: 0.9rem; font-weight: 500">Jam Sekarang</h6>
+                                            <h5 class="clock" style="font-size: 0.9rem; font-weight: 500">
                                                 <span id="jam">00</span>
                                                 <span>:</span>
                                                 <span id="menit">00</span>
@@ -144,13 +155,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3 col-md-3 col-sm-12">
+                        <div class="col-md-3 sm-3 col-sm-12">
                             <div class="widget bg-yellow card-keterangan">
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
-                                            <h6>Jarak dari sekolah</h6>
-                                            <h5 id="distance">Jarak </h5>
+                                            <h6 style="font-size: 0.9rem; font-weight: 500">Jarak dari sekolah</h6>
+                                            <h5 id="distance" style="font-size: 0.9rem; font-weight: 500">Jarak </h5>
                                         </div>
                                         <div class="icon">
                                             <i class="ik ik-inbox"></i>
@@ -159,14 +170,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3 col-md-3 col-sm-12">
+                        <div class="col-md-3 sm-3 col-sm-12">
                             @if ($statusAbsen == 'Belum Absen')
                                 <div class="widget card-keterangan" style="background-color: grey; color: white">
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6>Status Kehadiran</h6>
-                                                <h5>{{ $statusAbsen }}</h5>
+                                                <h6 style="font-size: 0.9rem; font-weight: 500">Status Kehadiran</h6>
+                                                <h5 style="font-size: 0.9rem; font-weight: 500">{{ $statusAbsen }}
+                                                </h5>
                                             </div>
                                             <div class="icon">
                                                 <i class="ik ik-inbox" style="color: white"></i>
@@ -304,43 +316,277 @@
                         // $isJarak = $userLatLng > $schoolLatLng;
                     @endphp
                     <div class="row clearfix">
-                        <div class="col-6 col-md-6 col-sm-12">
-                            <a href="{{ route('siswa-absen') }}">
+                        <div class="col-md-6 sm-3 col-sm-12">
+                            <a href="{{ route('siswa-absen') }}" style="text-decoration: none">
                                 @if ($cek > 0)
                                     <button type="button" class="btn-absen btn-danger btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i
-                                            class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4>Jam Absen
-                                                {{ $jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4></button>
+                                            class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4
+                                            style="font-size: 1rem; font-weight: 500;">Jam Absen
+                                            {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4></button>
                                 @else
                                     <button type="button" class="btn-absen btn-primary btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled) disabled @endif>
-                                        <i class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4>Jam Absen
+                                        <i class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4
+                                            style="font-size: 1rem; font-weight: 500;">Jam Absen
                                             {{ $jam_absen }}-{{ $waktu->batas_absen_masuk }} WIB</h4></button>
                                 @endif
                             </a>
                         </div>
-                        <div class="col-6 col-md-6 col-sm-12">
-                            <a href="{{ route('siswa-izin') }}">
+                        <div class="col-md-6 sm-3 col-sm-12">
+                            <a href="{{ route('siswa-izin') }}" style="text-decoration: none">
                                 @if ($cek > 0)
                                     <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;"
-                                        disabled><i class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;"
+                                        disabled><i class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4
+                                            style="font-size: 1rem; font-weight: 500;">Form Izin dan Sakit
                                         </h4>
                                     </button>
                                 @else
                                     <button type="button" class="btn-absen btn-info btn-block pb-30 pt-30"
-                                        style="font-size: 65px; margin-bottom: 20px; border-radius: 10px;"><i
-                                            class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4>Form Izin dan Sakit</h4>
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px;"><i
+                                            class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4
+                                            style="font-size: 1rem; font-weight: 500;">Form Izin dan Sakit</h4>
                                     </button>
                                 @endif
                             </a>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header d-block">
+                                    <h3>Absen Minggu Ini</h3>
+                                </div>
+                                <div class="card-body p-0 table-border-style">
+                                    <div class="table-responsive">
+                                        <table class="table" style="text-align: center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tanggal</th>
+                                                    <th>Status</th>
+                                                    <th>Absen Masuk</th>
+                                                    <th>Absen Pulang</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($riwayatmingguini as $riwayatM)
+                                                    <tr>
+                                                        <th>{{ $riwayatM->date }}</th>
+                                                        <td>
+                                                            @if ($riwayatM->status == 'Hadir')
+                                                                <span
+                                                                    class="status hadir">{{ $riwayatM->status }}</span>
+                                                            @elseif ($riwayatM->status == 'Terlambat')
+                                                                <span
+                                                                    class="status terlambat">{{ $riwayatM->status }}</span>
+                                                            @elseif ($riwayatM->status == 'TAP')
+                                                                <span
+                                                                    class="status tap">{{ $riwayatM->status }}</span>
+                                                            @elseif ($riwayatM->status == 'Sakit' || $riwayatM->status == 'Izin')
+                                                                <span
+                                                                    class="status izin">{{ $riwayatM->status }}</span>
+                                                            @elseif ($riwayatM->status == 'Alfa')
+                                                                <span
+                                                                    class="status alfa">{{ $riwayatM->status }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $riwayatM->jam_masuk }}</td>
+                                                        <td>{{ $riwayatM->jam_pulang }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title">Jumlah Kehadiran Anda</h3>
+                                    <div class="d-flex">
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                                data-bs-target="#bulan_ini" type="button" role="tab"
+                                                aria-controls="nav-home" aria-selected="true">Bulan Ini</button>
+                                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                                data-bs-target="#bulan_sebelumnya" type="button" role="tab"
+                                                aria-controls="nav-profile" aria-selected="false">Bulan
+                                                Sebelumnya</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-content mt-15" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="bulan_ini" role="tabpanel"
+                                            aria-labelledby="home-tab" tabindex="0">
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Hadir : {{ $dataBulanIni['Hadir'] ?? 0 }}
+                                                    </div>
+                                                    <div class="col-3 text-right">{{ $persentaseHadirBulanIni }}%
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-green" role="progressbar"
+                                                                style="width: {{ $persentaseHadirBulanIni }}%"
+                                                                aria-valuenow="{{ $persentaseHadirBulanIni }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Sakit/Izin :
+                                                        {{ $dataBulanIni['Sakit/Izin'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">{{ $persentaseSakitIzinBulanIni }}%
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-aqua" role="progressbar"
+                                                                style="width: {{ $persentaseSakitIzinBulanIni }}%"
+                                                                aria-valuenow="{{ $persentaseSakitIzinBulanIni }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Terlambat :
+                                                        {{ $dataBulanIni['Terlambat'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">{{ $persentaseTerlambatBulanIni }}%
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-purple" role="progressbar"
+                                                                style="width: {{ $persentaseTerlambatBulanIni }}%"
+                                                                aria-valuenow="{{ $persentaseTerlambatBulanIni }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Alfa :
+                                                        {{ $dataBulanIni['Alfa'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">{{ $persentaseAlfaBulanIni }}%</div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                                style="width: {{ $persentaseAlfaBulanIni }}%"
+                                                                aria-valuenow="{{ $persentaseAlfaBulanIni }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">TAP :
+                                                        {{ $dataBulanIni['TAP'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">{{ $persentaseTAPBulanIni }}%</div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                                style="width: {{ $persentaseTAPBulanIni }}%"
+                                                                aria-valuenow="{{ $persentaseTAPBulanIni }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">Total
+                                                        Keterlambatan :
+                                                        {{ $late }} Menit</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="bulan_sebelumnya" role="tabpanel"
+                                            aria-labelledby="profile-tab" tabindex="0">
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Hadir:
+                                                        {{ $dataBulanSebelumnya['Hadir'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">
+                                                        {{ $persentaseHadirBulanSebelumnya }}%</div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-green" role="progressbar"
+                                                                style="width: {{ $persentaseHadirBulanSebelumnya }}%"
+                                                                aria-valuenow="{{ $persentaseHadirBulanSebelumnya }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Sakit/Izin:
+                                                        {{ $dataBulanSebelumnya['Sakit/Izin'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">
+                                                        {{ $persentaseSakitIzinBulanSebelumnya }}%</div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-aqua" role="progressbar"
+                                                                style="width: {{ $persentaseSakitIzinBulanSebelumnya }}%"
+                                                                aria-valuenow="{{ $persentaseSakitIzinBulanSebelumnya }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Terlambat:
+                                                        {{ $dataBulanSebelumnya['Terlambat'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">
+                                                        {{ $persentaseTerlambatBulanSebelumnya }}%</div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-purple" role="progressbar"
+                                                                style="width: {{ $persentaseTerlambatBulanSebelumnya }}%"
+                                                                aria-valuenow="{{ $persentaseTerlambatBulanSebelumnya }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">Alfa:
+                                                        {{ $dataBulanSebelumnya['Alfa'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">
+                                                        {{ $persentaseAlfaBulanSebelumnya }}%</div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                                style="width: {{ $persentaseAlfaBulanSebelumnya }}%"
+                                                                aria-valuenow="{{ $persentaseAlfaBulanSebelumnya }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-15">
+                                                    <div class="col-9">TAP:
+                                                        {{ $dataBulanSebelumnya['TAP'] ?? 0 }}</div>
+                                                    <div class="col-3 text-right">{{ $persentaseTAPBulanSebelumnya }}%
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                                style="width: {{ $persentaseTAPBulanSebelumnya }}%"
+                                                                aria-valuenow="{{ $persentaseTAPBulanSebelumnya }}"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-9">Total
+                                                        Keterlambatan:
+                                                        {{ $late2 }} Menit</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 

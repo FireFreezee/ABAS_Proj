@@ -19,4 +19,6 @@ class Koordinat_Sekolah extends Model
     {
         return $this->hasMany(Absensi::class, 'id_koordinat_sekolah');
     }
+
+    public $timestamps = false;
 }

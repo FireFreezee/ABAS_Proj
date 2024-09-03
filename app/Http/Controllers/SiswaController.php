@@ -21,6 +21,9 @@ class SiswaController extends Controller
         $nis = $user->siswa->nis;
         $hariini = date("Y-m-d");
         $cek = DB::table('absensis')->where('date', $hariini)->where('nis', $nis)->first();
+        $late2 = Absensi::where('nis', $nis)->whereMonth('date', date('m', strtotime('first day of previous month')))->sum('menit_keterlambatan');
+        $late = Absensi::where('nis', $nis)->whereMonth('date', date('m'))->sum('menit_keterlambatan');
+
 
         if ($cek) {
             $statusAbsen = $cek->jam_masuk ? 'Hadir' : 'Belum Absen';
@@ -33,6 +36,64 @@ class SiswaController extends Controller
         } else {
             $statusAbsen = 'Belum Absen';
         }
+
+        $dataBulanIni = Absensi::whereYear('date', date('Y'))
+            ->where('nis', $nis)
+            ->whereMonth('date', date('m'))
+            ->select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+
+        $dataBulanSebelumnya = Absensi::whereYear('date', date('Y'))
+            ->where('nis', $nis)
+            ->whereMonth('date', date('m', strtotime('first day of previous month')))
+            ->select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+
+
+            // Gabungkan 'Sakit' dan 'Izin' menjadi satu kategori
+        $dataBulanIni['Sakit/Izin'] = ($dataBulanIni['Sakit'] ?? 0) + ($dataBulanIni['Izin'] ?? 0);
+        unset($dataBulanIni['Sakit'], $dataBulanIni['Izin']);
+
+        $dataBulanSebelumnya['Sakit/Izin'] = ($dataBulanSebelumnya['Sakit'] ?? 0) + ($dataBulanSebelumnya['Izin'] ?? 0);
+        unset($dataBulanSebelumnya['Sakit'], $dataBulanSebelumnya['Izin']);
+
+        // Status yang tersisa
+        $statuses = ['Hadir', 'Sakit/Izin', 'Alfa', 'Terlambat', 'TAP'];
+        foreach ($statuses as $status) {
+            if (!array_key_exists($status, $dataBulanIni)) {
+                $dataBulanIni[$status] = 0;
+            }
+            if (!array_key_exists($status, $dataBulanSebelumnya)) {
+                $dataBulanSebelumnya[$status] = 0;
+            }
+        }
+
+        $totalAbsenBulanIni = array_sum($dataBulanIni);
+        $persentaseHadirBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Hadir'] / $totalAbsenBulanIni) * 100) : 0;
+        $persentaseSakitIzinBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Sakit/Izin'] / $totalAbsenBulanIni) * 100) : 0;
+        $persentaseAlfaBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Alfa'] / $totalAbsenBulanIni) * 100) : 0;
+        $persentaseTerlambatBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Terlambat'] / $totalAbsenBulanIni) * 100) : 0;
+        $persentaseTAPBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['TAP'] / $totalAbsenBulanIni) * 100) : 0;
+        
+
+        // Menghitung persentase hadir bulan sebelumnya
+        $totalAbsenBulanSebelumnya = array_sum($dataBulanSebelumnya);
+        $persentaseHadirBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Hadir'] / $totalAbsenBulanSebelumnya) * 100) : 0;
+        $persentaseSakitIzinBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Sakit/Izin'] / $totalAbsenBulanSebelumnya) * 100) : 0;
+        $persentaseAlfaBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Alfa'] / $totalAbsenBulanSebelumnya) * 100) : 0;
+        $persentaseTerlambatBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Terlambat'] / $totalAbsenBulanSebelumnya) * 100) : 0;
+        $persentaseTAPBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['TAP'] / $totalAbsenBulanSebelumnya) * 100) : 0;
+        
+        $startOfWeek = date('Y-m-d', strtotime('monday this week'));
+        $endOfWeek = date('Y-m-d', strtotime('sunday this week'));
+
+        $riwayatmingguini = Absensi::whereBetween('date', [$startOfWeek, $endOfWeek])
+            ->where('nis', $nis) // Sesuaikan dengan kolom NIS siswa
+            ->get();
 
         // $batas_absen_pulang = '23:10';
         // $jam_absen = '22:50';
@@ -49,7 +110,22 @@ class SiswaController extends Controller
             'siswa' => $siswa,
             'jam' => $jam,
             'jam_absen' => $waktu->jam_absen,
-            'batas_absen_pulang' => $waktu->batas_absen_pulang
+            'batas_absen_pulang' => $waktu->batas_absen_pulang,
+            'dataBulanIni' => $dataBulanIni,
+            'dataBulanSebelumnya' => $dataBulanSebelumnya,
+            'late' => $late,
+            'late2' => $late2,
+            'persentaseHadirBulanIni' => $persentaseHadirBulanIni,
+            'persentaseHadirBulanSebelumnya' => $persentaseHadirBulanSebelumnya,
+            'riwayatmingguini' => $riwayatmingguini,
+            'persentaseSakitIzinBulanIni' => $persentaseSakitIzinBulanIni,
+            'persentaseAlfaBulanIni' => $persentaseAlfaBulanIni,
+            'persentaseTerlambatBulanIni' => $persentaseTerlambatBulanIni,
+            'persentaseTAPBulanIni' => $persentaseTAPBulanIni,
+            'persentaseSakitIzinBulanSebelumnya' => $persentaseSakitIzinBulanSebelumnya,
+            'persentaseAlfaBulanSebelumnya' => $persentaseAlfaBulanSebelumnya,
+            'persentaseTerlambatBulanSebelumnya' => $persentaseTerlambatBulanSebelumnya,
+            'persentaseTAPBulanSebelumnya' => $persentaseTAPBulanSebelumnya
         ]);
     }
 
@@ -168,44 +244,49 @@ class SiswaController extends Controller
     public function izin_store(Request $request)
     {
         $request->validate([
-            'photo_in' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+            'photo_in.*' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
             'keterangan' => 'required|string|max:255',
             'status' => 'required|string',
         ]);
 
+        dd($request->all());
+    
         if ($request->hasFile('photo_in')) {
+            dd($foto);
             $user = Auth::user();
             $nis = $user->siswa->nis;
             $status = $request->status;
             $date = date("Y-m-d");
             $jam = date("H:i:s");
-
+    
             $lokasiSiswa = $request->lokasi;
-            $foto = $request->file('photo_in');
             
-            $extension = $foto->getClientOriginalExtension();
-            $folderPath = "public/uploads/absensi/";
-            $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
-            $file = $folderPath . $fileName;
-            
-
-            $data = [
-                'nis' => $nis,
-                'status' => $status,
-                'photo_in' => $fileName,
-                'keterangan' => $request->keterangan,
-                'date' => $date,
-                'jam_masuk' => $jam,
-                'titik_koordinat_masuk' => $lokasiSiswa,
-            ];
-
-            $simpan = DB::table('absensis')->insert($data);
-            if ($simpan) {
-                Storage::put($file, file_get_contents($foto));
-                return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
-            } else {
-                return redirect()->route('siswa-izin')->with('error', 'Gagal');
+            foreach ($request->file('photo_in') as $foto) {
+                $extension = $foto->getClientOriginalExtension();
+                $folderPath = "public/uploads/absensi/";
+                $fileName = $nis . "-" . $date . "-" . $status . "-" . uniqid() . "." . $extension;
+                $file = $folderPath . $fileName;
+    
+                $data = [
+                    'nis' => $nis,
+                    'status' => $status,
+                    'photo_in' => $fileName,
+                    'keterangan' => $request->keterangan,
+                    'date' => $date,
+                    'jam_masuk' => $jam,
+                    'titik_koordinat_masuk' => $lokasiSiswa,
+                ];
+    
+                $simpan = DB::table('absensis')->insert($data);
+                if ($simpan) {
+                    // Store the file
+                    Storage::put($file, file_get_contents($foto));
+                } else {
+                    return redirect()->route('siswa-izin')->with('error', 'Gagal');
+                }
             }
+    
+            return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
         }
     }
 

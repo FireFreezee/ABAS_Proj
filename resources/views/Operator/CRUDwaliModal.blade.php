@@ -26,9 +26,9 @@
                             value="{{ $w->nip }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="name">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
-                            value="{{ $w->user->name }}" required>
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
+                            value="{{ $w->user->nama }}" required>
                     </div>
                     <div class="form-group">
                         <label for="jenis_kelamin">Jenis Kelamin</label>
@@ -74,7 +74,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Apakah anda yakin ingin menghapus data {{ $w->user->name }} ini?
+                Apakah anda yakin ingin menghapus data {{ $w->user->nama }} ini?
                 <span class="badge badge-danger">Data Akan Dihapus Secara Permanen!</span>
             </div>
             <div class="modal-footer">

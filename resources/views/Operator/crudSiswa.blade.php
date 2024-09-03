@@ -135,8 +135,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputUsername1">Nama</label>
-                                                    <input type="text" class="form-control" id="name"
-                                                        name="name" placeholder="Nama" required>
+                                                    <input type="text" class="form-control" id="nama"
+                                                        name="nama" placeholder="Nama" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputPassword1">Jenis Kelamin</label>
@@ -204,7 +204,7 @@
                                     @foreach ($siswa as $s)
                                         <tr style="text-align: center;">
                                             <td>{{ $s->nis }}</td>
-                                            <td>{{ $s->user->name ?? 'No User' }}</td>
+                                            <td>{{ $s->user->nama ?? 'No User' }}</td>
                                             <td>{{ $s->jenis_kelamin }}</td>
                                             <td>{{ $s->user->email ?? 'No Email' }}</td>
                                             <td>

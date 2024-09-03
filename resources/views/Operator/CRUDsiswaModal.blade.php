@@ -29,8 +29,8 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputUsername1">Nama</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nama"
-                        value="{{ $s->user->name }}" required>
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
+                        value="{{ $s->user->nama }}" required>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Jenis Kelamin</label>
@@ -74,7 +74,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Apakah anda yakin ingin menghapus data {{ $s->user->name }} ?
+                Apakah anda yakin ingin menghapus data {{ $s->user->nama }} ?
                 <span class="badge badge-danger">Data Akan Dihapus Secara Permanen!</span>
             </div>
             <div class="modal-footer">

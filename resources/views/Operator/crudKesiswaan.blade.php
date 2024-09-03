@@ -120,8 +120,8 @@
                                                 @csrf
                                                 <div class="form-group">
                                                     <label for="exampleInputUsername1">Nama</label>
-                                                    <input type="text" class="form-control" id="name"
-                                                        name="name" placeholder="Nama" required>
+                                                    <input type="text" class="form-control" id="nama"
+                                                        name="nama" placeholder="Nama" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exampleInputUsername1">Email</label>

@@ -20,12 +20,14 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             UserSeeder::class,
-            WaliSiswaSeeder::class,
-            WaliSeeder::class,
             JurusanSeeder::class,
+            WaliSeeder::class,
+            WaliSiswaSeeder::class,
             KelasSeeder::class,
             SiswaSeeder::class,
-            otherTable::class
+            WaktuSeeder::class,
+            KoordinatSeeder::class,
+            AbsensiSeeder::class,
         ]);
     }
 }

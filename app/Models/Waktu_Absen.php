@@ -20,4 +20,6 @@ class Waktu_Absen extends Model
     {
         return $this->hasMany(Absensi::class, 'id_waktu_absen');
     }
+
+    public $timestamps = false;
 }

@@ -30,7 +30,7 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.css') }}"> --}}
     {{-- <link rel="stylesheet" --}}
-        {{-- href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
+    {{-- href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/weather-icons/css/weather-icons.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/c3/c3.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.carousel.min.css') }}">
@@ -41,8 +41,11 @@
     <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- FilePond styles -->
+    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
+    @vite('resources/js/app.js')
 
-    <title>Responsive bottom navigation</title>
+    <title>ABAS - Izin</title>
 </head>
 
 <body>
@@ -109,15 +112,13 @@
                                 <h3>Izin / Sakit</h3>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('izin-store') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ route('izin-store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <input type="hidden" id="lokasi" name="lokasi">
                                         <div class="col">
-                                            <input type="file" multiple
-                                                data-allow-reorder="false" data-max-file-size="10MB"
-                                                data-max-files="3" id="photo_in" name="photo_in">
+                                            <input type="file" data-max-file-size="10MB" data-max-files="3"
+                                                id="photo_in" name="photo_in">
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
@@ -168,8 +169,14 @@
     <i class="fa fa-xingx" aria-hidden="true"></i>
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+    </script>
+    <!-- FilePond library -->
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <!-- FilePond plugin for file validation -->
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js">
+    </script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js">
     </script>
     <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js">
     </script>
@@ -217,18 +224,28 @@
         FilePond.registerPlugin(
             FilePondPluginImagePreview,
             FilePondPluginFileValidateSize,
-            FilePondPluginImageExifOrientation,
-            FilePondPluginImageValidateSize,
+            FilePondPluginFileValidateType
         );
-        // Get a reference to the file input element
-        const pond = FilePond.create(document.querySelector('input[id=""]'), {
-            allowImagePreview: true,
-            imagePreviewMaxHeight: 300,
-            allowMultiple: false,
-            instantUpload: false,
-            acceptedFileTypes: ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'],
-        });
 
+        // Select the file input and use FilePond
+        const inputElement = document.querySelector('input[type=""]');
+        const pond = FilePond.create(inputElement, {
+            allowMultiple: false,
+            maxFileSize: '10MB',
+            acceptedFileTypes: ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'],
+            name: 'photo_in', // Ensure name is properly set for multiple files
+            server: {
+                process: {
+                    url: '/izin/store', // Adjust this to your Laravel route
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    onload: (response) => console.log(response),
+                    onerror: (response) => console.error(response),
+                },
+            }
+        });
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
