@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/dist/css/bootstrap.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/plugins/icon-kit/dist/css/iconkit.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/ionicons/dist/css/ionicons.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/ionicons/dist/css/ionicons.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.css') }}"> --}}
@@ -30,6 +30,7 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     @vite('resources/css/app.css')
     {{-- <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script> --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -48,48 +49,100 @@
     <div class="wrapper">
         <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 12px;">
             <div class="relative -mx-4 flex items-center p-[15px]">
-                <div class="grid grid-cols-3 justify-between w-full">
-                    <div class="flex justify-center items-center">
-                        <img src="{{ asset('assets/img/logo-abas.png') }}" class="h-[20px] w-auto md:h-[40px] md:w-auto object-left"
-                            alt="lavalite">
+                <div class="grid grid-cols-3 justify-between w-full px-2">
+                    <div class="flex items-center">
+                        <img src="{{ asset('assets/img/logo-abas.png') }}"
+                            class="h-[20px] w-auto md:h-[40px] md:w-auto object-left" alt="lavalite">
                         <img src="{{ asset('assets/img/logo-title.png') }}"
-                            class="h-[20px] w-auto  md:h-[40px] md:w-auto sm:h-[6px] sm:w-auto" alt="lavalite">
+                            class="h-[20px] w-auto md:h-[40px] md:w-auto  sm:w-auto" alt="lavalite">
                     </div>
-
-                    <div class="flex justify-center items-center" id="nav-menu">
-                        <div class=" grid grid-cols-2 justify-center">
-                            <div class="nav-item  bg-blue-600 p-[10px] rounded-lg text-white flex justify-center">
-                                <h1 class=" text-xs md:text-sm">Absen</h1>
-                            </div>
-                            <div class="nav-item bg-white p-[10px] rounded-lg text-dark flex justify-center">
-                                <h1 class=" text-xs md:text-sm">Laporan</h1>
+                    <div class="flex justify-center items-center">
+                        <div class="hidden lg:!block" id="nav-menu">
+                            <div class="grid grid-cols-2 justify-center gap-2">
+                                <a href="{{ route('siswa-dashboard') }}"
+                                    class="decoration-transparent items-center group lg:text-sm bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Absen</div>
+                                </a>
+                                <a href="{{ route('siswa-laporan') }}"
+                                    class="decoration-transparent group items-center bg-slate-100 hover:bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    <div
+                                        class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
+                                        Laporan</div>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <div class="top-menu flex justify-center items-center">
+                    <div class="top-menu flex justify-end items-center pr-2">
                         <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
-                                    src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
+                            <a class="" href="#" id="userDropdown" role="" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <img class="avatar" src="{{ asset('assets/img/user.jpg') }}" alt="">
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                  document.getElementById('logout-form').submit();"><i
-                                        class="ik ik-power dropdown-icon"></i>
-                                    {{ __('Logout') }}</a>
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="ik ik-power dropdown-icon"></i> {{ __('Logout') }}
+                                </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-            <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
         </header>
+
+        <div
+            class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 lg:hidden">
+            <div class="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
+                <button type="button"
+                    class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                    <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                    </svg>
+                    <span
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Home</span>
+                </button>
+                <button type="button"
+                    class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                    <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M11.074 4 8.442.408A.95.95 0 0 0 7.014.254L2.926 4h8.148ZM9 13v-1a4 4 0 0 1 4-4h6V6a1 1 0 0 0-1-1H1a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h17a1 1 0 0 0 1-1v-2h-6a4 4 0 0 1-4-4Z" />
+                        <path
+                            d="M19 10h-6a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1Zm-4.5 3.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM12.62 4h2.78L12.539.41a1.086 1.086 0 1 0-1.7 1.352L12.62 4Z" />
+                    </svg>
+                    <span
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Wallet</span>
+                </button>
+                <button type="button"
+                    class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                    <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 12.25V1m0 11.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M4 19v-2.25m6-13.5V1m0 2.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M10 19V7.75m6 4.5V1m0 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM16 19v-2" />
+                    </svg>
+                    <span
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Settings</span>
+                </button>
+                <button type="button"
+                    class="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                    <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 20 20">
+                        <path
+                            d="M10 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm.625 12.3a.625.625 0 1 1-1.25 0v-1.263a.625.625 0 1 1 1.25 0v1.263Zm.5-3.836-.012.013-1.113 1.125a.625.625 0 1 1-.884-.883l.994-.995a2.5 2.5 0 1 0-3.526 0 .625.625 0 1 1-.884.883l-1.113-1.125-.012-.013a.625.625 0 0 1 .884-.883l1.131 1.143.012.012.013-.012 1.113-1.125a.625.625 0 1 1 .884.883L9.512 9.89a2.5 2.5 0 1 0 3.526 0 .625.625 0 1 1 .884-.883Z" />
+                    </svg>
+                    <span
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Help</span>
+                </button>
+            </div>
+        </div>
 
         <div class="page-wrap">
             <!--=============== HOME ===============-->
@@ -593,6 +646,7 @@
     <!--=============== MAIN JS ===============-->
     <script src="{{ asset('assets/assets/js/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script>
         // window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')
     </script>

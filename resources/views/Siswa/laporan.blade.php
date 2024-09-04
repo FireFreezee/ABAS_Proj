@@ -30,131 +30,346 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap.css') }}"> --}}
     {{-- <link rel="stylesheet" --}}
-        {{-- href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
+    {{-- href="{{ asset('assets/plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/weather-icons/css/weather-icons.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/c3/c3.min.css') }}"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    @vite('resources/css/app.css')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <title>ABAS - Izin</title>
+    <title>ABAS - Laporan</title>
 </head>
 
 <body>
     <!--=============== HEADER ===============-->
     <div class="wrapper">
-        <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 14px;">
-            <nav class="nav container-fluid" style="padding-right: 100px;">
-                <div class="logo-img">
-                    <img src="{{ asset('assets/img/logo-abas.png') }}" style="height: 2rem; width: auto;"
-                        alt="lavalite">
-                    <img src="{{ asset('assets/img/logo-title.png') }}" style="height: 2rem; width: auto;"
-                        class="text" alt="lavalite">
-                </div>
-
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav nav-pills justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/siswa" style="font-size: large;">Absen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="font-size: large;">Laporan</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="top-menu d-flex align-items-center">
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
-                                src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
-                                Profile</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                          document.getElementById('logout-form').submit();"><i
-                                    class="ik ik-power dropdown-icon"></i>
-                                {{ __('Logout') }}</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
+        <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 12px;">
+            <div class="relative -mx-4 flex items-center p-[15px] pr-[20px]">
+                <div class="grid grid-cols-3 justify-between w-full px-2">
+                    <div class="flex items-center">
+                        <img src="{{ asset('assets/img/logo-abas.png') }}"
+                            class="h-[20px] w-auto md:h-[40px] md:w-auto object-left" alt="lavalite">
+                        <img src="{{ asset('assets/img/logo-title.png') }}"
+                            class="h-[20px] w-auto  md:h-[40px] md:w-auto sm:h-[6px] sm:w-auto" alt="lavalite">
                     </div>
 
+                    <div class="flex justify-center items-center" id="nav-menu">
+                        <div class=" grid grid-cols-2 justify-center gap-2">
+                            <a href="{{ route('siswa-dashboard') }}"
+                                class="decoration-transparent items-center group md:text-sm bg-slate-100 hover:bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                <div
+                                    class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
+                                    Absen</div>
+                            </a>
+                            <a href="{{ route('siswa-laporan') }}"
+                                class="decoration-transparent group items-center bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                <div class=" text-[10px] lg:text-[15px] text-white flex items-center">Laporan</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="top-menu flex justify-end items-center pr-2">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
+                                    src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
+                                    Profile</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                  document.getElementById('logout-form').submit();"><i
+                                        class="ik ik-power dropdown-icon"></i>
+                                    {{ __('Logout') }}</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
-            </nav>
+            </div>
+            <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
         </header>
         <div class="page-wrap">
             <!--=============== HOME ===============-->
-            <div class="main-content" style="padding-left: 0px;">
-                @if (Session::get('error'))
-                    <script>
-                        Swal.fire({
-                            title: "Gagal",
-                            text: {{ session[1] }},
-                            icon: "error"
-                        });
-                    </script>
-                @endif
-                <div class="col-md-12">
-                    <div class="container-fluid">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Izin / Sakit</h3>
-                            </div>
-                            <div class="card-body">
-                                <form action="{{ route('izin-store') }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="row">
-                                        <input type="hidden" id="lokasi" name="lokasi">
-                                        <div class="col">
-                                            <input type="file" multiple
-                                                data-allow-reorder="false" data-max-file-size="10MB"
-                                                data-max-files="3" id="photo_in" name="photo_in">
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <label for="exampleTextarea1">Keterangan</label>
-                                                <textarea class="form-control" id="keterangan" name="keterangan" rows="4"></textarea>
+            <div class="main-content" style="padding-left: 0px; padding-right: 0px">
+                <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header d-block">
+                                    <h3>Absen Minggu Ini</h3>
+                                </div>
+                                <div class="grid grid-rows-6 gap-2 p-4">
+                                    <div class="flex items-center">
+                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
+                                            <div class="flex justify-between">
+                                                <div class="flex">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="stroke-green-500 h-[30px] w-[30px]" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="size-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                                                    </svg>
+                                                    <div
+                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        Hadir : 20x</div>
+                                                </div>
+                                                <div class="text-dark-3 font-semibold text-base">20%</div>
                                             </div>
-                                            <div class="form-radio mb-30">
-                                                <form>
-                                                    <div class="radio radiofill radio-info radio-inline">
-                                                        <label>
-                                                            <input type="radio" id="status" name="status"
-                                                                value="Sakit" checked="checked">
-                                                            <i class="helper"></i>Sakit
-                                                        </label>
-                                                    </div>
-                                                    <div class="radio radiofill radio-warning radio-inline">
-                                                        <label>
-                                                            <input type="radio" id="status" name="status"
-                                                                value="Izin" checked="checked">
-                                                            <i class="helper"></i>Izin
-                                                        </label>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="row clearfix pt-15">
-                                                <div class="col-4 col-md-4 col-sm-12"></div>
-                                                <div class="col-4 col-md-4 col-sm-12"></div>
-                                                <div class="col-4 col-md-4 col-sm-12">
-                                                    <button type="submit" class="btn-absen btn-primary btn-block"
-                                                        style="border-radius: 10px; padding:7px; font-size: 20px ">
-                                                        <i class="ik ik-maximize"></i>&nbsp;Submit
-                                                    </button>
+                                            <div class="w-full">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar bg-green-500" role="progressbar"
+                                                        style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <input id="checked-checkbox" type="checkbox" value=""
+                                            class="w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     </div>
-                                </form>
+                                    <div class="flex items-center">
+                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
+                                            <div class="flex justify-between">
+                                                <div class="flex">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-[30px] w-[30px]"
+                                                        width="24" height="24" viewBox="0 0 24 24"
+                                                        style="fill: #06b6d4;transform: ;msFilter:;">
+                                                        <path
+                                                            d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z">
+                                                        </path>
+                                                        <circle cx="8.5" cy="10.5" r="1.5"></circle>
+                                                        <circle cx="15.493" cy="10.493" r="1.493"></circle>
+                                                        <path d="M12 14c-3 0-4 3-4 3h8s-1-3-4-3z"></path>
+                                                    </svg>
+                                                    <div class="text-dark-3 font-semibold text-base">Sakit : 20x</div>
+                                                </div>
+                                                <div class="text-dark-3 font-semibold text-base">20%</div>
+                                            </div>
+                                            <div class="w-full">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar bg-cyan-500" role="progressbar"
+                                                        style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input id="checked-checkbox" type="checkbox" value=""
+                                            class="w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
+                                            <div class="flex justify-between">
+                                                <div class="flex">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="stroke-orange-400 h-[30px] w-[30px]" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="size-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                                                    </svg>
+                                                    <div class="text-dark-3 font-semibold text-base">Izin : 20x</div>
+                                                </div>
+                                                <div class="text-dark-3 font-semibold text-base">20%</div>
+                                            </div>
+                                            <div class="w-full">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar bg-orange-400" role="progressbar"
+                                                        style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input id="checked-checkbox" type="checkbox" value=""
+                                            class="w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
+                                            <div class="flex justify-between">
+                                                <div class="flex">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="stroke-gray-700 h-[30px] w-[30px]" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="size-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                    </svg>
+
+                                                    <div
+                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        Terlambat : 20x</div>
+                                                </div>
+                                                <div class="text-dark-3 font-semibold text-base">20%</div>
+                                            </div>
+                                            <div class="w-full">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar bg-gray-700" role="progressbar"
+                                                        style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input id="checked-checkbox" type="checkbox" value=""
+                                            class="w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
+                                            <div class="flex justify-between">
+                                                <div class="flex">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="stroke-red-700 h-[30px] w-[30px]" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="size-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                    </svg>
+                                                    <div
+                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        Alfa : 20x</div>
+                                                </div>
+                                                <div class="text-dark-3 font-semibold text-base">20%</div>
+                                            </div>
+                                            <div class="w-full">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar bg-red-700" role="progressbar"
+                                                        style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input id="checked-checkbox" type="checkbox" value=""
+                                            class="w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
+                                            <div class="flex justify-between">
+                                                <div class="text-dark-3 font-semibold text-base">TAP : 20x</div>
+                                                <div class="text-dark-3 font-semibold text-base">20%</div>
+                                            </div>
+                                            <div class="w-full">
+                                                <div class="progress mt-2">
+                                                    <div class="progress-bar bg-purple" role="progressbar"
+                                                        style="width: 20%" aria-valuenow="20" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input id="checked-checkbox" type="checkbox" value=""
+                                            class="w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header flex justify-between">
+                                    <h3>Absen Minggu Ini</h3>
+
+                                    <div id="date-range-picker" date-rangepicker class="flex items-center">
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="currentColor" viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                </svg>
+                                            </div>
+                                            <input id="datepicker-range-start" name="start" type="text"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Select date start">
+                                        </div>
+                                        <span class="mx-4 text-gray-500">to</span>
+                                        <div class="relative">
+                                            <div
+                                                class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="currentColor" viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                </svg>
+                                            </div>
+                                            <input id="datepicker-range-end" name="end" type="text"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Select date end">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="card-body p-0 table-border-style">
+                                    <div class="table-responsive">
+                                        <table class="table text-center">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tanggal</th>
+                                                    <th>Status</th>
+                                                    <th>Detail Kehadiran</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th class="place-content-center">12-02-2014</th>
+                                                    <th class="place-content-center">Hadir</th>
+                                                    <th>
+                                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                                                            class="bg-blue-500 h-fit w-[70px] rounded-full p-1 hover:bg-blue-800 hover:text-white">
+                                                            Detail
+                                                        </button>
+                                                    </th>
+                                                </tr>
+                                                <!-- Main modal -->
+                                                <div id="crud-modal" tabindex="-1" aria-hidden="true"
+                                                    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                                    <div class="relative p-4 w-full max-w-md max-h-full">
+                                                        <!-- Modal content -->
+                                                        <div
+                                                            class="relative bg-white rounded-lg shadow dark:bg-gray-700 px-7 pb-7">
+                                                            <!-- Modal header -->
+                                                            <div
+                                                                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                                                <h3
+                                                                    class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                                   Detail Absen
+                                                                </h3>
+                                                                <button type="button"
+                                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                    data-modal-toggle="crud-modal">
+                                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 14 14">
+                                                                        <path stroke="currentColor"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2"
+                                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                                    </svg>
+                                                                    <span class="sr-only">Close modal</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="pt-3">
+                                                                <div class="grid grid-rows-5">
+                                                                    <div class="">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -167,6 +382,7 @@
     <!--=============== MAIN JS ===============-->
     <i class="fa fa-xingx" aria-hidden="true"></i>
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
@@ -198,52 +414,6 @@
     {{-- <script src="{{ asset('assets/js/charts.js') }}"></script> --}}
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-        // (function(b, o, i, l, e, r) {
-        //     b.GoogleAnalyticsObject = l;
-        //     b[l] || (b[l] =
-        //         function() {
-        //             (b[l].q = b[l].q || []).push(arguments)
-        //         });
-        //     b[l].l = +new Date;
-        //     e = o.createElement(i);
-        //     r = o.getElementsByTagName(i)[0];
-        //     e.src = 'https://www.google-analytics.com/analytics.js';
-        //     r.parentNode.insertBefore(e, r)
-        // }(window, document, 'script', 'ga'));
-        // ga('create', 'UA-XXXXX-X', 'auto');
-        // ga('send', 'pageview');
-
-        FilePond.registerPlugin(
-            FilePondPluginImagePreview,
-            FilePondPluginFileValidateSize,
-            FilePondPluginImageExifOrientation,
-            FilePondPluginImageValidateSize,
-        );
-        // Get a reference to the file input element
-        const pond = FilePond.create(document.querySelector('input[id=""]'), {
-            allowImagePreview: true,
-            imagePreviewMaxHeight: 300,
-            allowMultiple: false,
-            instantUpload: false,
-            acceptedFileTypes: ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'],
-        });
-
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        }
-
-
-        function successCallback(position) {
-            var lokasi = document.getElementById('lokasi');
-            lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-        }
-
-        function errorCallback(params) {
-
-        }
-    </script>
 
 </body>
 

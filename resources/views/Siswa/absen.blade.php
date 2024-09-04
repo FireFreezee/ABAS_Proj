@@ -32,6 +32,8 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    @vite('resources/css/app.css')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -43,47 +45,53 @@
 <body>
     <!--=============== HEADER ===============-->
     <div class="wrapper">
-        <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 14px;">
-            <nav class="nav container-fluid" style="padding-right: 100px;">
-                <div class="logo-img">
-                    <img src="{{ asset('assets/img/logo-abas.png') }}" style="height: 2rem; width: auto;"
-                        alt="lavalite">
-                    <img src="{{ asset('assets/img/logo-title.png') }}" style="height: 2rem; width: auto;"
-                        class="text" alt="lavalite">
-                </div>
+        <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 12px;">
+            <div class="relative -mx-4 flex items-center p-[15px]">
+                <div class="grid grid-cols-3 justify-between w-full px-2">
+                    <div class="flex items-center">
+                        <img src="{{ asset('assets/img/logo-abas.png') }}" class="h-[20px] w-auto md:h-[40px] md:w-auto object-left"
+                            alt="lavalite">
+                        <img src="{{ asset('assets/img/logo-title.png') }}"
+                            class="h-[20px] w-auto  md:h-[40px] md:w-auto sm:h-[6px] sm:w-auto" alt="lavalite">
+                    </div>
 
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav nav-pills justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/siswa" style="font-size: large;">Absen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="font-size: large;">Laporan</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="top-menu d-flex align-items-center">
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
-                                src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
-                                Profile</a>
+                    <div class="flex justify-center items-center" id="nav-menu">
+                        <div class=" grid grid-cols-2 justify-center gap-2">
+                            <a href="{{ route('siswa-dashboard') }}"
+                                class="decoration-transparent items-center group md:text-sm bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                <div
+                                    class=" text-[10px] lg:text-[15px] text-white flex items-center">
+                                    Absen</div>
+                            </a>
+                            <a href="{{ route('siswa-laporan') }}"
+                                class="decoration-transparent group items-center bg-slate-100 hover:bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                <div class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">Laporan</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="top-menu flex justify-end items-center pr-2">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
+                                    src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
+                                    Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                          document.getElementById('logout-form').submit();"><i
-                                    class="ik ik-power dropdown-icon"></i>
-                                {{ __('Logout') }}</a>
+                                    onclick="event.preventDefault();
+                                                  document.getElementById('logout-form').submit();"><i
+                                        class="ik ik-power dropdown-icon"></i>
+                                    {{ __('Logout') }}</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-                <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
-            </nav>
+            </div>
+            <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
         </header>
         <div class="page-wrap">
             <!--=============== HOME ===============-->
@@ -163,6 +171,7 @@
     <script>
         window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
     <script src="{{ asset('assets/plugins/popper.js/dist/umd/popper.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/plugins/bootstrap/dist/js/bootstrap.min.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>

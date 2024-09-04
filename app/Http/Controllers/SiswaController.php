@@ -93,6 +93,7 @@ class SiswaController extends Controller
 
         $riwayatmingguini = Absensi::whereBetween('date', [$startOfWeek, $endOfWeek])
             ->where('nis', $nis) // Sesuaikan dengan kolom NIS siswa
+            ->orderBy('date', 'asc')
             ->get();
 
         // $batas_absen_pulang = '23:10';
@@ -288,6 +289,11 @@ class SiswaController extends Controller
     
             return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
         }
+    }
+
+    public function laporan()
+    {
+        return view('siswa.laporan');
     }
 
     /**
