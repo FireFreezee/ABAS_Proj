@@ -54,7 +54,7 @@ class SiswaController extends Controller
             ->toArray();
 
 
-            // Gabungkan 'Sakit' dan 'Izin' menjadi satu kategori
+        // Gabungkan 'Sakit' dan 'Izin' menjadi satu kategori
         $dataBulanIni['Sakit/Izin'] = ($dataBulanIni['Sakit'] ?? 0) + ($dataBulanIni['Izin'] ?? 0);
         unset($dataBulanIni['Sakit'], $dataBulanIni['Izin']);
 
@@ -78,7 +78,7 @@ class SiswaController extends Controller
         $persentaseAlfaBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Alfa'] / $totalAbsenBulanIni) * 100) : 0;
         $persentaseTerlambatBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Terlambat'] / $totalAbsenBulanIni) * 100) : 0;
         $persentaseTAPBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['TAP'] / $totalAbsenBulanIni) * 100) : 0;
-        
+
 
         // Menghitung persentase hadir bulan sebelumnya
         $totalAbsenBulanSebelumnya = array_sum($dataBulanSebelumnya);
@@ -87,7 +87,7 @@ class SiswaController extends Controller
         $persentaseAlfaBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Alfa'] / $totalAbsenBulanSebelumnya) * 100) : 0;
         $persentaseTerlambatBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Terlambat'] / $totalAbsenBulanSebelumnya) * 100) : 0;
         $persentaseTAPBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['TAP'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-        
+
         $startOfWeek = date('Y-m-d', strtotime('monday this week'));
         $endOfWeek = date('Y-m-d', strtotime('sunday this week'));
 
@@ -251,7 +251,7 @@ class SiswaController extends Controller
         ]);
 
         dd($request->all());
-    
+
         if ($request->hasFile('photo_in')) {
             dd($foto);
             $user = Auth::user();
@@ -259,15 +259,15 @@ class SiswaController extends Controller
             $status = $request->status;
             $date = date("Y-m-d");
             $jam = date("H:i:s");
-    
+
             $lokasiSiswa = $request->lokasi;
-            
+
             foreach ($request->file('photo_in') as $foto) {
                 $extension = $foto->getClientOriginalExtension();
                 $folderPath = "public/uploads/absensi/";
                 $fileName = $nis . "-" . $date . "-" . $status . "-" . uniqid() . "." . $extension;
                 $file = $folderPath . $fileName;
-    
+
                 $data = [
                     'nis' => $nis,
                     'status' => $status,
@@ -277,7 +277,7 @@ class SiswaController extends Controller
                     'jam_masuk' => $jam,
                     'titik_koordinat_masuk' => $lokasiSiswa,
                 ];
-    
+
                 $simpan = DB::table('absensis')->insert($data);
                 if ($simpan) {
                     // Store the file
@@ -286,14 +286,53 @@ class SiswaController extends Controller
                     return redirect()->route('siswa-izin')->with('error', 'Gagal');
                 }
             }
-    
+
             return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
         }
     }
 
-    public function laporan()
+    public function laporan(Request $request)
     {
-        return view('siswa.laporan');
+        // Get the start and end dates from the request
+        $startDate = $request->input('start');
+        $endDate = $request->input('end');
+
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Ensure the user has a related 'siswa' record
+        if (!$user->siswa) {
+            return redirect()->back()->with('error', 'No student data found for this user.');
+        }
+
+        // Get the 'nis' from the 'siswa' record
+        $nis = $user->siswa->nis;
+
+        // Initialize the query
+        $query = Absensi::where('nis', $nis);
+
+        // Apply date range filtering if dates are provided
+        if ($startDate && $endDate) {
+            $query->whereBetween('date', [$startDate, $endDate]);
+        }
+
+        // Get the filtered data for calculating statistics
+        $filteredData = $query->get();
+
+        // Aggregate data by status
+        $statusCounts = $filteredData->groupBy('status')->map->count();
+        $totalCount = $filteredData->count();
+
+        // Calculate percentage for each status
+        $statusPercentages = $statusCounts->map(function ($count) use ($totalCount) {
+            return $totalCount > 0 ? ($count / $totalCount) * 100 : 0;
+        });
+
+        // Paginate the results with a limit of 10 items per page
+        $absensiPaginated = $query->paginate(10)->appends($request->only(['start', 'end']));
+
+        // Pass the attendance data, status counts, and filter dates to the view
+        return view('siswa.laporan', compact('absensiPaginated', 'statusCounts', 'statusPercentages', 'startDate', 'endDate'));
     }
 
     /**

@@ -398,8 +398,10 @@
                                         </h4>
                                     </button>
                                 @else
-                                    <button type="button" class="btn-absen btn-info btn-block pb-30 pt-30"
-                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px;"><i
+                                    <button type="button"
+                                        class="btn-absen btn-info bg-cyan-400 btn-block pb-30 pt-30"
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
+                                        @if ($isAbsenMasukDisabled) disabled @endif><i
                                             class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4
                                             style="font-size: 1rem; font-weight: 500;">Form Izin dan Sakit</h4>
                                     </button>
