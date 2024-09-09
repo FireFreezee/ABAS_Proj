@@ -372,14 +372,14 @@
                         <div class="col-md-6 sm-3 col-sm-12">
                             <a href="{{ route('siswa-absen') }}" style="text-decoration: none">
                                 @if ($cek > 0)
-                                    <button type="button" class="btn-absen btn-danger btn-block pb-30 pt-30"
+                                    <button type="button" class="btn-absen btn-danger bg-red-600 btn-block pb-30 pt-30"
                                         style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i
                                             class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4
                                             style="font-size: 1rem; font-weight: 500;">Jam Absen
                                             {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4></button>
                                 @else
-                                    <button type="button" class="btn-absen btn-primary btn-block pb-30 pt-30"
+                                    <button type="button" class="btn-absen btn-primary bg-blue-500 btn-block pb-30 pt-30"
                                         style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled) disabled @endif>
                                         <i class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4

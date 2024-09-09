@@ -323,46 +323,48 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card">
-                                <div class="card-header flex justify-between">
-                                    <h3>Detail Laporan</h3>
-
-                                    <form method="GET" action="{{ route('siswa-laporan') }}">
-                                        <div id="date-range-picker" class="flex items-center">
-                                            <div class="relative">
-                                                <div
-                                                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                        fill="currentColor" viewBox="0 0 20 20">
-                                                        <path
-                                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                                    </svg>
+                                <div class="card-header">
+                                    <div class="flex flex-wrap justify-between w-full gap-3">
+                                        <h3 class="text-xs!">Detail Laporan</h3>
+    
+                                        <form method="GET" action="{{ route('siswa-laporan') }}">
+                                            <div id="date-range-picker" class="flex items-center">
+                                                <div class="relative">
+                                                    <div
+                                                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                        </svg>
+                                                    </div>
+                                                    <input id="datepicker-range-start" datepicker
+                                                        datepicker-format="yyyy-mm-dd" name="start" type="text"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        placeholder="Select date start" value="{{ request('start') }}">
                                                 </div>
-                                                <input id="datepicker-range-start" datepicker
-                                                    datepicker-format="yyyy-mm-dd" name="start" type="text"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Select date start" value="{{ request('start') }}">
-                                            </div>
-                                            <span class="mx-4 text-gray-500">to</span>
-                                            <div class="relative">
-                                                <div
-                                                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                        fill="currentColor" viewBox="0 0 20 20">
-                                                        <path
-                                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                                    </svg>
+                                                <span class="mx-4 text-gray-500">to</span>
+                                                <div class="relative">
+                                                    <div
+                                                        class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                                        </svg>
+                                                    </div>
+                                                    <input id="datepicker-range-end" datepicker
+                                                        datepicker-format="yyyy-mm-dd" name="end" type="text"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        placeholder="Select date end" value="{{ request('end') }}">
                                                 </div>
-                                                <input id="datepicker-range-end" datepicker
-                                                    datepicker-format="yyyy-mm-dd" name="end" type="text"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Select date end" value="{{ request('end') }}">
+                                                <button type="submit"
+                                                    class="bg-blue-500 text-white p-2 rounded-lg ml-4 hover:bg-blue-800">Filter</button>
                                             </div>
-                                            <button type="submit"
-                                                class="bg-blue-500 text-white p-2 rounded-lg ml-4 hover:bg-blue-800">Filter</button>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                                 @if ($absensiPaginated->isEmpty() && !$startDate && !$endDate)
                                     <p>Please select a date range to view attendance records.</p>

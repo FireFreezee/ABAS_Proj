@@ -116,14 +116,14 @@
                                         </div>
                                         <div class="row clearfix pt-15">
                                             <div class="col-4 col-md-4 col-sm-12">
-                                                <button type="button" class="btn-absen btn-primary btn-block"
+                                                <button type="button" class="btn-absen btn-primary btn-block bg-blue-500"
                                                     id="takeSnapshot"
                                                     style="border-radius: 10px; padding:7px; font-size: 20px">
                                                     <i class="ik ik-maximize"></i>&nbsp;Ambil Gambar
                                                 </button>
                                             </div>
                                             <div class="col-4 col-md-4 col-sm-12">
-                                                <button type="button" class="btn-absen btn-primary btn-block"
+                                                <button type="button" class="btn-absen btn-primary btn-block bg-blue-500"
                                                     id="resetCamera"
                                                     style="border-radius: 10px; padding:7px; font-size: 20px">
                                                     <i class="ik ik-maximize"></i>&nbsp;Ulang
@@ -138,13 +138,13 @@
                                             <div class="col-4 col-md-4 col-sm-12"></div>
                                             <div class="col-4 col-md-4 col-sm-12">
                                                 @if ($cek > 0)
-                                                    <button type="button" class="btn-absen btn-danger btn-block"
+                                                    <button type="button" class="btn-absen btn-danger btn-block bg-red-600"
                                                         id="absen"
                                                         style="border-radius: 10px; padding:7px; font-size: 20px">
                                                         <i class="ik ik-maximize"></i>&nbsp;Absen Pulang
                                                     </button>
                                                 @else
-                                                    <button type="button" class="btn-absen btn-primary btn-block"
+                                                    <button type="button" class="btn-absen btn-primary btn-block bg-blue-500"
                                                         id="absen"
                                                         style="border-radius: 10px; padding:7px; font-size: 20px">
                                                         <i class="ik ik-maximize"></i>&nbsp;Absen Masuk

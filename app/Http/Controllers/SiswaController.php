@@ -245,15 +245,13 @@ class SiswaController extends Controller
     public function izin_store(Request $request)
     {
         $request->validate([
-            'photo_in.*' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+            'photo_in' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
             'keterangan' => 'required|string|max:255',
             'status' => 'required|string',
         ]);
 
-        dd($request->all());
-
         if ($request->hasFile('photo_in')) {
-            dd($foto);
+
             $user = Auth::user();
             $nis = $user->siswa->nis;
             $status = $request->status;

@@ -37,13 +37,14 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+    <link href="filepond.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- FilePond styles -->
-    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
+    {{-- <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" /> --}}
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
 
@@ -127,9 +128,7 @@
                                         <div class="col">
                                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                                 for="file_input">Upload file</label>
-                                            <input
-                                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                aria-describedby="file_input_help" id="photo_in" name="photo_in" type="file">
+                                            <input name="photo_in" type="file">
                                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
                                                 id="file_input_help">PNG, JPG or PDF.</p>
                                         </div>
@@ -160,7 +159,7 @@
                                                 <div class="col-4 col-md-4 col-sm-12"></div>
                                                 <div class="col-4 col-md-4 col-sm-12"></div>
                                                 <div class="col-4 col-md-4 col-sm-12">
-                                                    <button type="submit" class="btn-absen btn-primary btn-block"
+                                                    <button type="submit" class="btn-absen btn-primary btn-block bg-blue-500"
                                                         style="border-radius: 10px; padding:7px; font-size: 20px ">
                                                         <i class="ik ik-maximize"></i>&nbsp;Submit
                                                     </button>
@@ -235,31 +234,31 @@
         // ga('create', 'UA-XXXXX-X', 'auto');
         // ga('send', 'pageview');
 
-        FilePond.registerPlugin(
-            FilePondPluginImagePreview,
-            FilePondPluginFileValidateSize,
-            FilePondPluginFileValidateType
-        );
+        // FilePond.registerPlugin(
+        //     FilePondPluginImagePreview,
+        //     FilePondPluginFileValidateSize,
+        //     FilePondPluginFileValidateType
+        // );
 
-        // Select the file input and use FilePond
-        const inputElement = document.querySelector('input[type=""]');
-        const pond = FilePond.create(inputElement, {
-            allowMultiple: false,
-            maxFileSize: '10MB',
-            acceptedFileTypes: ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'],
-            name: 'photo_in', // Ensure name is properly set for multiple files
-            server: {
-                process: {
-                    url: '/izin/store', // Adjust this to your Laravel route
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    onload: (response) => console.log(response),
-                    onerror: (response) => console.error(response),
-                },
-            }
-        });
+        // // Select the file input and use FilePond
+        // const inputElement = document.querySelector('input[type=""]');
+        // const pond = FilePond.create(inputElement, {
+        //     allowMultiple: false,
+        //     maxFileSize: '10MB',
+        //     acceptedFileTypes: ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'],
+        //     name: 'photo_in', // Ensure name is properly set for multiple files
+        //     server: {
+        //         process: {
+        //             url: '/izin/store', // Adjust this to your Laravel route
+        //             method: 'POST',
+        //             headers: {
+        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //             },
+        //             onload: (response) => console.log(response),
+        //             onerror: (response) => console.error(response),
+        //         },
+        //     }
+        // });
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
