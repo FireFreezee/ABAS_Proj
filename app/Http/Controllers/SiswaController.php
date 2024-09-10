@@ -245,7 +245,7 @@ class SiswaController extends Controller
     public function izin_store(Request $request)
     {
         $request->validate([
-            'photo_in' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+            'photo_in.*' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
             'keterangan' => 'required|string|max:255',
             'status' => 'required|string',
         ]);
@@ -263,8 +263,9 @@ class SiswaController extends Controller
             foreach ($request->file('photo_in') as $foto) {
                 $extension = $foto->getClientOriginalExtension();
                 $folderPath = "public/uploads/absensi/";
-                $fileName = $nis . "-" . $date . "-" . $status . "-" . uniqid() . "." . $extension;
-                $file = $folderPath . $fileName;
+                $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
+                $folder = uniqid('post', true);
+                $foto->storeAs($folderPath . $folder , $fileName);
 
                 $data = [
                     'nis' => $nis,
@@ -276,17 +277,34 @@ class SiswaController extends Controller
                     'titik_koordinat_masuk' => $lokasiSiswa,
                 ];
 
-                $simpan = DB::table('absensis')->insert($data);
-                if ($simpan) {
-                    // Store the file
-                    Storage::put($file, file_get_contents($foto));
-                } else {
-                    return redirect()->route('siswa-izin')->with('error', 'Gagal');
-                }
+                DB::table('absensis')->insert($data);
             }
 
             return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
         }
+    }
+
+    public function fileUpload(Request $request)
+    {
+        // $request->validate([
+        //     'photo_in' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        // ]);
+
+        // if ($request->hasFile('photo_in')) {
+        //     $user = Auth::user();
+        //     $nis = $user->siswa->nis;
+        //     $status = $request->status;
+        //     $date = date("Y-m-d");
+
+        //     $file = $request->file('photo_in');
+        //     $folderPath = "public/uploads/absensi/";
+        //     $fileName = $nis . "-" . $date . "-" . $status . "." . uniqid(true) . '-' . $file->getClientOriginalName();
+        //     $file->storeAs($folderPath , $fileName);
+
+        //     return $fileName;
+        // }
+
+        return '';
     }
 
     public function laporan(Request $request)
@@ -331,6 +349,11 @@ class SiswaController extends Controller
 
         // Pass the attendance data, status counts, and filter dates to the view
         return view('siswa.laporan', compact('absensiPaginated', 'statusCounts', 'statusPercentages', 'startDate', 'endDate'));
+    }
+
+    public function profile()
+    {
+        return view("Siswa.profile");
     }
 
     /**

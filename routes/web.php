@@ -3,7 +3,9 @@
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\WalisiswaController;
 use App\Http\Middleware\Operator;
+use App\Http\Middleware\Walisiswa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,8 @@ Route::get('/', function () {
             return redirect('walikelas');
         } elseif ($role == 'operator') {
             return redirect('operator');
+        } elseif ($role == 'walis') {
+            return redirect('walisiswa');
         } else {
             return redirect('/home');
         }
@@ -47,11 +51,17 @@ Route::middleware(['auth', 'Walikelas:walikelas'])->group(function () {
 
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
     Route::get('siswa', [App\Http\Controllers\siswaController::class, 'index'])->name('siswa-dashboard');
+    Route::get('siswa/profile', [SiswaController::class, 'profile'])->name('siswa-profile');
     Route::get('/siswa/absen', [App\Http\Controllers\siswaController::class, 'absen'])->name('siswa-absen');
     Route::post('/absen/store', [SiswaController::class, 'store']);
     Route::get('/siswa/izin', [SiswaController::class, 'izin'])->name('siswa-izin');
     Route::post('/izin/store', [SiswaController::class, 'izin_store'])->name('izin-store');
     Route::get('/siswa/laporan', [App\Http\Controllers\siswaController::class, 'laporan'])->name('siswa-laporan');
+    Route::get('/fileUpload', [SiswaController::class, 'fileUpload']);
+});
+
+Route::middleware(['auth', 'Walisiswa:walisiswa'])->group(function () {
+   Route::get('walisiswa', [WalisiswaController::class, 'index'])->name('walsis-dashboard');
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {

@@ -61,17 +61,19 @@
                     </div>
 
                     <div class="flex justify-center items-center" id="nav-menu">
-                        <div class=" grid grid-cols-2 justify-center gap-2">
-                            <a href="{{ route('siswa-dashboard') }}"
-                                class="decoration-transparent items-center group md:text-sm bg-slate-100 hover:bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                <div
-                                    class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
-                                    Absen</div>
-                            </a>
-                            <a href="{{ route('siswa-laporan') }}"
-                                class="decoration-transparent group items-center bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                <div class=" text-[10px] lg:text-[15px] text-white flex items-center">Laporan</div>
-                            </a>
+                        <div class="hidden lg:!block" id="nav-menu">
+                            <div class=" grid grid-cols-2 justify-center gap-2">
+                                <a href="{{ route('siswa-dashboard') }}"
+                                    class="decoration-transparent items-center group md:text-sm bg-slate-100 hover:bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    <div
+                                        class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
+                                        Absen</div>
+                                </a>
+                                <a href="{{ route('siswa-laporan') }}"
+                                    class="decoration-transparent group items-center bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    <div class=" text-[10px] lg:text-[15px] text-white flex items-center">Laporan</div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="top-menu flex justify-end items-center pr-2">
@@ -80,7 +82,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
                                     src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
+                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -96,6 +98,32 @@
             </div>
             <!-- <img src="assets/img/perfil.png" alt="" class="nav__img"> -->
         </header>
+        <div
+            class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 lg:hidden">
+            <div class="grid h-full max-w-lg grid-cols-2 mx-auto font-medium">
+                <a type="button" href="{{ route('siswa-dashboard') }}"
+                    class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                    <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                    </svg>
+                    <span
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Absen</span>
+                </a>
+                <a type="button" href="{{ route('siswa-laporan') }}"
+                    class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                    <svg class="w-5 h-5 mb-2 text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 12.25V1m0 11.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M4 19v-2.25m6-13.5V1m0 2.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M10 19V7.75m6 4.5V1m0 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM16 19v-2" />
+                    </svg>
+                    <span
+                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Laporan</span>
+                </a>
+            </div>
+        </div>
+
         <div class="page-wrap">
             <!--=============== HOME ===============-->
             <div class="main-content" style="padding-left: 0px; padding-right: 0px">
@@ -326,7 +354,7 @@
                                 <div class="card-header">
                                     <div class="flex flex-wrap justify-between w-full gap-3">
                                         <h3 class="text-xs!">Detail Laporan</h3>
-    
+
                                         <form method="GET" action="{{ route('siswa-laporan') }}">
                                             <div id="date-range-picker" class="flex items-center">
                                                 <div class="relative">
@@ -342,7 +370,8 @@
                                                     <input id="datepicker-range-start" datepicker
                                                         datepicker-format="yyyy-mm-dd" name="start" type="text"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                        placeholder="Select date start" value="{{ request('start') }}">
+                                                        placeholder="Select date start"
+                                                        value="{{ request('start') }}">
                                                 </div>
                                                 <span class="mx-4 text-gray-500">to</span>
                                                 <div class="relative">
@@ -387,7 +416,8 @@
                                                         <td>{{ $absen->date }}</td>
                                                         <td>{{ $absen->status }}</td>
                                                         <td>
-                                                            <button data-modal-target="crud-modal-{{ $absen->id_absensi }}"
+                                                            <button
+                                                                data-modal-target="crud-modal-{{ $absen->id_absensi }}"
                                                                 data-modal-toggle="crud-modal-{{ $absen->id_absensi }}"
                                                                 class="bg-blue-500 h-fit w-[70px] rounded-full p-1 hover:bg-blue-800 hover:text-white">
                                                                 Detail

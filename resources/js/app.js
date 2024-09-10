@@ -29,7 +29,7 @@ const pond = FilePond.create(inputElement);
 pond.setOptions({
     server: {
         process: {
-            url: '/izin/store', // URL untuk mengirim data file
+            url: '/fileUpload', // URL untuk mengirim data file
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': csrfToken
@@ -38,20 +38,6 @@ pond.setOptions({
         revert: {
             url: '/revert',  // URL untuk membatalkan upload
             method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        },
-        restore: {
-            url: '/restore',// URL untuk melanjutkan upload
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        },
-        load: {
-            url: '/load',      // URL untuk memuat file yang sudah ada
-            method: 'GET',
             headers: {
                 'X-CSRF-TOKEN': csrfToken
             }
