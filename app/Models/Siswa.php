@@ -32,7 +32,7 @@ class Siswa extends Model
 
     public function absensi()
     {
-        return $this->hasMany(Absensi::class, 'nis');
+        return $this->hasMany(Absensi::class, 'nis', 'nis');
     }
 
     public function ortu()

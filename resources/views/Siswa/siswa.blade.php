@@ -490,7 +490,7 @@
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
-                                                            <div class="progress-bar bg-purple" role="progressbar"
+                                                            <div class="progress-bar !bg-gray-700" role="progressbar"
                                                                 style="width: {{ $persentaseTerlambatBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseTerlambatBulanIni }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>
@@ -516,7 +516,7 @@
                                                     <div class="col-3 text-right">{{ $persentaseTAPBulanIni }}%</div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
-                                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                            <div class="progress-bar !bg-red-700" role="progressbar"
                                                                 style="width: {{ $persentaseTAPBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseTAPBulanIni }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>
