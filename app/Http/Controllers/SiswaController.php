@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Absensi;
 use App\Models\Siswa;
 use App\Models\Koordinat_Sekolah;
+use App\Models\Waktu_Absen;
 
 class SiswaController extends Controller
 {
@@ -162,24 +163,29 @@ class SiswaController extends Controller
         $radius = round($jarak["meters"]);
 
         $image = $request->image;
-        $folderPath = "public/uploads/absensi/";
-        $formatName = $nis . "-" . $date;
+        $folderPath = "uploads/absensi/";
+        $formatMasuk = $nis . "-" . $date . "-" . "masuk";
+        $formatPulang = $nis . "-" . $date . "-" . "pulang";
         $image_parts = explode(";base64", $image);
         $image_base64 = base64_decode($image_parts[1]);
-        $fileName = $formatName . ".png";
-        $file = $folderPath . $fileName;
 
         // Get face confidence
         $faceConfidence = $request->faceConfidence;
 
         $batasMasuk = DB::table('waktu__absens')->value('batas_absen_masuk');
 
-        // Determine status
+        $validasiAbsen = Waktu_Absen::first();
 
-        if ($jam > $batasMasuk) {
-            $status = 'Terlambat';
+        $batas_absen_masuk = strtotime($validasiAbsen->batas_absen_masuk);
+        $jam_absen = strtotime($jam);
+
+        if ($jam_absen > $batas_absen_masuk) {
+            $selisihDetik = $jam_absen - $batas_absen_masuk;
+            $menit_terlambat = abs($selisihDetik) / 60;
+            $status = 'terlambat';
         } else {
-            $status = 'Hadir';
+            $status = 'hadir';
+            $menit_terlambat = null;
         }
 
         $cek = DB::table('absensis')->where('date', $date)->where('nis', $nis)->count();
@@ -189,6 +195,8 @@ class SiswaController extends Controller
             echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
         } else {
             if ($cek > 0) {
+                $fileName = $formatPulang . ".png";
+                $file = $folderPath . $fileName;
                 $data_pulang = [
                     'photo_out' => $fileName,
                     'jam_pulang' => $jam,
@@ -202,6 +210,8 @@ class SiswaController extends Controller
                     echo "error|Absen Gagal|out";
                 }
             } else {
+                $fileName = $formatMasuk . ".png";
+                $file = $folderPath . $fileName;
                 $data = [
                     'nis' => $nis,
                     'status' => $status,
@@ -209,6 +219,7 @@ class SiswaController extends Controller
                     'date' => $date,
                     'jam_masuk' => $jam,
                     'titik_koordinat_masuk' => $lokasiSiswa,
+                    'menit_keterlambatan' => $menit_terlambat,
                 ];
 
                 $simpan = DB::table('absensis')->insert($data);

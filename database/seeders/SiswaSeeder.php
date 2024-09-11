@@ -15,7 +15,7 @@ class SiswaSeeder extends Seeder
     {
         siswa::create([
             'nis' => '0061748352',
-            'id_user' => 2,
+            'id_user' => 5,
             'id_kelas' => 1,
             'nik' => '2108410',
             'jenis_kelamin' => 'laki laki',

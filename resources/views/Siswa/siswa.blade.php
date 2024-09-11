@@ -74,12 +74,13 @@
                     </div>
                     <div class="top-menu flex justify-end items-center pr-2">
                         <div class="dropdown">
-                            <a class="" href="#" id="userDropdown" role="" data-toggle="dropdown"
+                            <a class="!bg-white" href="#" id="userDropdown" role="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img class="avatar" src="{{ asset('assets/img/user.jpg') }}" alt="">
+                                <img class="avatar !bg-white" src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i class="ik ik-user dropdown-icon"></i>
+                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
+                                        class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -130,8 +131,8 @@
                         <div class="card-body text-center">
                             <div class="profile-pic mb-20">
                                 <div class="flex justify-center">
-                                    <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt="Foto Profil" width="150"
-                                        class="rounded-circle" alt="user">
+                                    <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        alt="Foto Profil" width="150" class="rounded-circle" alt="user">
                                 </div>
                                 <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
                                 <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>
@@ -349,14 +350,16 @@
                         <div class="col-md-6 sm-3 col-sm-12">
                             <a href="{{ route('siswa-absen') }}" style="text-decoration: none">
                                 @if ($cek > 0)
-                                    <button type="button" class="btn-absen btn-danger bg-red-600 btn-block pb-30 pt-30"
+                                    <button type="button"
+                                        class="btn-absen btn-danger bg-red-600 btn-block pb-30 pt-30"
                                         style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i
                                             class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4
                                             style="font-size: 1rem; font-weight: 500;">Jam Absen
                                             {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4></button>
                                 @else
-                                    <button type="button" class="btn-absen btn-primary bg-blue-500 btn-block pb-30 pt-30"
+                                    <button type="button"
+                                        class="btn-absen btn-primary bg-blue-500 btn-block pb-30 pt-30"
                                         style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
                                         @if ($isAbsenMasukDisabled) disabled @endif>
                                         <i class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4
