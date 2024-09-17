@@ -59,7 +59,7 @@
                             <div class="grid grid-cols-2 justify-center gap-2">
                                 <a href="{{ route('siswa-dashboard') }}"
                                     class="decoration-transparent items-center group lg:text-sm bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Absen</div>
+                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Dashboard</div>
                                 </a>
                                 <a href="{{ route('siswa-laporan') }}"
                                     class="decoration-transparent group items-center bg-slate-100 hover:bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
@@ -74,7 +74,7 @@
                         <div class="dropdown">
                             <a class="" href="#" id="userDropdown" role="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img class="avatar" src="{{ asset('assets/img/user.jpg') }}" alt="">
+                                <img class="avatar !bg-white" src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i class="ik ik-user dropdown-icon"></i>
@@ -104,7 +104,7 @@
                             d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                     </svg>
                     <span
-                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Absen</span>
+                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Dashboard</span>
                 </a>
                 <a type="button" href="{{ route('siswa-laporan') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
@@ -123,55 +123,62 @@
             <div class="main-content" style="padding-left: 0px;">
                 <input type="hidden" id="lokasi">
                 <div class="col-md-12">
-                    <div class="container-fluid">
-                        <div class="card">
+                    <div class="container-fluid mb-12">
+                        <div class="card ">
+                            <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="javascript:history.back()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                </svg>
+                                back
+                            </a>
                             <div class="card-header">
-                                <h3>Presensi</h3>
+                                <h3 class="!text-2xl">Presensi</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="ambilfotowrapper">
-                                            <div class="webcam-container">
-                                                <div class="webcam-capture" id="webcamCapture"></div>
-                                                <img id="result" class="foto" alt="bukti">
+                                        <div class="ambilfotowrapper !w-[275px] !h-[275px] sm:!w-[600px] sm:!h-[450px]">
+                                            <div class="webcam-container !w-[275px] !h-[275px] sm:!w-[600px] sm:!h-[450px]">
+                                                <div class="webcam-capture !w-[275px] !h-[275px] sm:!w-[600px] sm:!h-[450px]" id="webcamCapture"></div>
+                                                <img id="result" class="foto !w-[275px] !h-[275px] sm:!w-[600px] sm:!h-[450px]" alt="bukti">
                                                 <canvas id="faceCanvas"
                                                     style="position: absolute; top: 0; left: 0;"></canvas>
                                             </div>
                                         </div>
-                                        <div class="row clearfix pt-15">
-                                            <div class="col-4 col-md-4 col-sm-12">
-                                                <button type="button" class="btn-absen btn-primary btn-block bg-blue-500"
+                                        <div class="grid grid-cols-2 sm:grid-cols-3  pt-15 mb-3 gap-2">
+                                            <div class="">
+                                                <button type="button" class="btn-absen btn-primary btn-block text-xs sm:text-lg bg-blue-500"
                                                     id="takeSnapshot"
-                                                    style="border-radius: 10px; padding:7px; font-size: 20px">
+                                                    style="border-radius: 10px; padding:7px;">
                                                     <i class="ik ik-maximize"></i>&nbsp;Ambil Gambar
                                                 </button>
                                             </div>
-                                            <div class="col-4 col-md-4 col-sm-12">
-                                                <button type="button" class="btn-absen btn-primary btn-block bg-blue-500"
+                                            <div class="">
+                                                <button type="button" class="btn-absen btn-primary btn-block text-xs sm:text-lg bg-blue-500"
                                                     id="resetCamera"
-                                                    style="border-radius: 10px; padding:7px; font-size: 20px">
+                                                    style="border-radius: 10px; padding:7px;">
                                                     <i class="ik ik-maximize"></i>&nbsp;Ulang
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div id="map"></div>
-                                        <div class="row clearfix pt-15">
-                                            <div class="col-4 col-md-4 col-sm-12"></div>
-                                            <div class="col-4 col-md-4 col-sm-12"></div>
-                                            <div class="col-4 col-md-4 col-sm-12">
+                                        <div id="map" class="!h-[300px] sm:!h-[450px] z-10"></div>
+                                        <div class="grid grid-cols-2 pt-15">
+                                            <div class=""></div>
+                                            <div class="">
                                                 @if ($cek > 0)
-                                                    <button type="button" class="btn-absen btn-danger btn-block bg-red-600"
+                                                    <button type="button" class="btn-absen btn-danger btn-block text-xs sm:text-lg bg-red-600"
                                                         id="absen"
-                                                        style="border-radius: 10px; padding:7px; font-size: 20px">
+                                                        style="border-radius: 10px; padding:7px;">
                                                         <i class="ik ik-maximize"></i>&nbsp;Absen Pulang
                                                     </button>
                                                 @else
-                                                    <button type="button" class="btn-absen btn-primary btn-block bg-blue-500"
+                                                    <button type="button" class="btn-absen btn-primary btn-block text-xs sm:text-lg bg-blue-500"
                                                         id="absen"
-                                                        style="border-radius: 10px; padding:7px; font-size: 20px">
+                                                        style="border-radius: 10px; padding:7px;">
                                                         <i class="ik ik-maximize"></i>&nbsp;Absen Masuk
                                                     </button>
                                                 @endif

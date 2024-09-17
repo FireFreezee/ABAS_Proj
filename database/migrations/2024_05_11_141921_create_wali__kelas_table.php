@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('wali__kelas', function (Blueprint $table) {
             $table->string("nuptk")->primary();
-
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);

@@ -67,7 +67,7 @@
                                     class="decoration-transparent items-center group md:text-sm bg-slate-100 hover:bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
                                     <div
                                         class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
-                                        Absen</div>
+                                        Dashboard</div>
                                 </a>
                                 <a href="{{ route('siswa-laporan') }}"
                                     class="decoration-transparent group items-center bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
@@ -79,10 +79,11 @@
                     <div class="top-menu flex justify-end items-center pr-2">
                         <div class="dropdown">
                             <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
-                                    src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar !bg-white"
+                                src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt=""></a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i class="ik ik-user dropdown-icon"></i>
+                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
+                                        class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -109,7 +110,7 @@
                             d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                     </svg>
                     <span
-                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Absen</span>
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Dashboard</span>
                 </a>
                 <a type="button" href="{{ route('siswa-laporan') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
@@ -128,32 +129,40 @@
             <!--=============== HOME ===============-->
             <div class="main-content" style="padding-left: 0px; padding-right: 0px">
                 <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
+                    <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="javascript:history.back()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                        back
+                    </a>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card">
-                                <div class="card-header d-block py-24">
+                                <div class="card-header d-block !pt-1 sm:!pt-5 !pb-1 sm:!pb-5">
                                     <h3 class="py-2.5">Jumlah</h3>
                                 </div>
-                                <div class="grid grid-rows-6 gap-2 p-4">
+                                <div class="grid grid-rows-6 gap-2 !p-4 !pt-1">
 
                                     <!-- Hadir -->
                                     <div class="flex items-center">
                                         <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
                                             <div class="flex justify-between">
-                                                <div class="flex">
+                                                <div class="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-green-500 h-[30px] w-[30px]" fill="none"
+                                                        class="stroke-green-500 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
                                                     </svg>
                                                     <div
-                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
                                                         Hadir : {{ $statusCounts['Hadir'] ?? 0 }}x
                                                     </div>
                                                 </div>
-                                                <div class="text-dark-3 font-semibold text-base">
+                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
                                                     {{ number_format($statusPercentages['Hadir'] ?? 0) }}%</div>
                                             </div>
                                             <div class="w-full">
@@ -175,7 +184,7 @@
                                         <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
                                             <div class="flex justify-between">
                                                 <div class="flex">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-[30px] w-[30px]"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2"
                                                         width="24" height="24" viewBox="0 0 24 24"
                                                         style="fill: #06b6d4;transform: ;msFilter:;">
                                                         <path
@@ -186,11 +195,11 @@
                                                         <path d="M12 14c-3 0-4 3-4 3h8s-1-3-4-3z"></path>
                                                     </svg>
                                                     <div
-                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
                                                         Sakit : {{ $statusCounts['Sakit'] ?? 0 }}x
                                                     </div>
                                                 </div>
-                                                <div class="text-dark-3 font-semibold text-base">
+                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
                                                     {{ number_format($statusPercentages['Sakit'] ?? 0) }}%</div>
                                             </div>
                                             <div class="w-full">
@@ -214,18 +223,18 @@
                                                 <div class="flex">
                                                     <!-- SVG for Izin -->
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-orange-400 h-[30px] w-[30px]" fill="none"
+                                                        class="stroke-orange-400 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
                                                     </svg>
                                                     <div
-                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
                                                         Izin : {{ $statusCounts['Izin'] ?? 0 }}x
                                                     </div>
                                                 </div>
-                                                <div class="text-dark-3 font-semibold text-base">
+                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
                                                     {{ number_format($statusPercentages['Izin'] ?? 0) }}%</div>
                                             </div>
                                             <div class="w-full">
@@ -248,18 +257,18 @@
                                             <div class="flex justify-between">
                                                 <div class="flex">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-gray-700 h-[30px] w-[30px]" fill="none"
+                                                        class="stroke-gray-700 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                     </svg>
                                                     <div
-                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
                                                         Terlambat : {{ $statusCounts['Terlambat'] ?? 0 }}x
                                                     </div>
                                                 </div>
-                                                <div class="text-dark-3 font-semibold text-base">
+                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
                                                     {{ number_format($statusPercentages['Terlambat'] ?? 0) }}%</div>
                                             </div>
                                             <div class="w-full">
@@ -282,18 +291,18 @@
                                             <div class="flex justify-between">
                                                 <div class="flex">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-red-700 h-[30px] w-[30px]" fill="none"
+                                                        class="stroke-red-700 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                     </svg>
                                                     <div
-                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
                                                         Alfa : {{ $statusCounts['Alfa'] ?? 0 }}x
                                                     </div>
                                                 </div>
-                                                <div class="text-dark-3 font-semibold text-base">
+                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
                                                     {{ number_format($statusPercentages['Alfa'] ?? 0) }}%</div>
                                             </div>
                                             <div class="w-full">
@@ -317,18 +326,18 @@
                                                 <div class="flex">
                                                     <!-- SVG for TAP -->
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-[30px] w-[30px] stroke-red-700" fill="none"
+                                                        class="h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2 stroke-red-700" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                         <!-- Path for TAP icon -->
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="...">
                                                         </path>
                                                     </svg>
                                                     <div
-                                                        class="text-dark-3 font-semibold text-base place-content-center">
+                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
                                                         TAP : {{ $statusCounts['TAP'] ?? 0 }}x
                                                     </div>
                                                 </div>
-                                                <div class="text-dark-3 font-semibold text-base">
+                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
                                                     {{ number_format($statusPercentages['TAP'] ?? 0) }}%</div>
                                             </div>
                                             <div class="w-full">
@@ -349,18 +358,18 @@
 
                             </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-8 mb-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="flex flex-wrap justify-between w-full gap-3">
-                                        <h3 class="text-xs!">Detail Laporan</h3>
+                                    <div class="flex flex-wrap justify-between w-full gap-3 ">
+                                        <h3 class="!text-[14px] sm:!text-base">Detail Laporan</h3>
 
                                         <form method="GET" action="{{ route('siswa-laporan') }}">
-                                            <div id="date-range-picker" class="flex items-center">
-                                                <div class="relative">
+                                            <div id="date-range-picker" class="flex flex-wrap items-center gap-4">
+                                                <div class="relative w-full sm:w-auto flex-1">
                                                     <div
                                                         class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                        <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400"
                                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                             fill="currentColor" viewBox="0 0 20 20">
                                                             <path
@@ -369,15 +378,17 @@
                                                     </div>
                                                     <input id="datepicker-range-start" datepicker
                                                         datepicker-format="yyyy-mm-dd" name="start" type="text"
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                         placeholder="Select date start"
                                                         value="{{ request('start') }}">
                                                 </div>
-                                                <span class="mx-4 text-gray-500">to</span>
-                                                <div class="relative">
+
+                                                <span class="text-gray-500 dark:text-gray-400">to</span>
+
+                                                <div class="relative w-full sm:w-auto flex-1">
                                                     <div
                                                         class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                                        <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400"
                                                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                                             fill="currentColor" viewBox="0 0 20 20">
                                                             <path
@@ -386,11 +397,14 @@
                                                     </div>
                                                     <input id="datepicker-range-end" datepicker
                                                         datepicker-format="yyyy-mm-dd" name="end" type="text"
-                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                         placeholder="Select date end" value="{{ request('end') }}">
                                                 </div>
+
                                                 <button type="submit"
-                                                    class="bg-blue-500 text-white p-2 rounded-lg ml-4 hover:bg-blue-800">Filter</button>
+                                                    class="bg-blue-500 text-white p-2 rounded-lg w-full sm:w-auto hover:bg-blue-800">
+                                                    Filter
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -404,21 +418,21 @@
                                         <table class="table text-center">
                                             <thead>
                                                 <tr>
-                                                    <th>Tanggal</th>
-                                                    <th>Status</th>
-                                                    <th>Detail Kehadiran</th>
+                                                    <th class="!text-[11px] sm:!text-base">Tanggal</th>
+                                                    <th class="!text-[11px] sm:!text-base">Status</th>
+                                                    <th class="!text-[11px] sm:!text-base">Detail Kehadiran</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($absensiPaginated as $absen)
                                                     <tr id="row-{{ $absen->id_absensi }}"
                                                         class="status-row {{ $absen->status }}">
-                                                        <td>{{ $absen->date }}</td>
-                                                        <td>{{ $absen->status }}</td>
-                                                        <td>
+                                                        <td class="!text-[11px] sm:!text-base">{{ $absen->date }}</td>
+                                                        <td class="!text-[11px] sm:!text-base">{{ $absen->status }}</td>
+                                                        <td class="!text-[11px] sm:!text-base">
                                                             <button
-                                                                data-modal-target="crud-modal-{{ $absen->id_absensi }}"
-                                                                data-modal-toggle="crud-modal-{{ $absen->id_absensi }}"
+                                                                data-modal-target="default-modal-{{ $absen->id_absensi }}"
+                                                                data-modal-toggle="default-modal-{{ $absen->id_absensi }}"
                                                                 class="bg-blue-500 h-fit w-[70px] rounded-full p-1 hover:bg-blue-800 hover:text-white">
                                                                 Detail
                                                             </button>
@@ -426,7 +440,7 @@
                                                     </tr>
 
                                                     <!-- Modal for each record -->
-                                                    <div id="crud-modal-{{ $absen->id_absensi }}" tabindex="-1"
+                                                    <div id="default-modal-{{ $absen->id_absensi }}" tabindex="-1"
                                                         aria-hidden="true"
                                                         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                                         <div class="relative p-4 w-full max-w-md max-h-full">
@@ -437,20 +451,12 @@
                                                                     <h3
                                                                         class="text-lg font-semibold text-gray-900 dark:text-white">
                                                                         Detail Absen</h3>
-                                                                    <button type="button"
-                                                                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                                        data-modal-toggle="crud-modal-{{ $absen->id }}">
-                                                                        <svg class="w-3 h-3" aria-hidden="true"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            fill="none" viewBox="0 0 14 14">
-                                                                            <path stroke="currentColor"
-                                                                                stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                stroke-width="2"
-                                                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                                                        </svg>
-                                                                        <span class="sr-only">Close modal</span>
-                                                                    </button>
+                                                                        <button type="button" data-modal-hide="default-modal-{{ $absen->id_absensi }}" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                                                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                                            </svg>
+                                                                            <span class="sr-only">Close modal</span>
+                                                                        </button>
                                                                 </div>
                                                                 <div class="pt-3">
                                                                     <p><strong>Status:</strong> {{ $absen->status }}
@@ -467,7 +473,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        <div class="pagination flex justify-end p-3 text-lg">
+                                        <div class="pagination flex justify-end p-3 text-sm sm:text-lg ">
                                             {{ $absensiPaginated->links('vendor.pagination.bootstrap-5') }}
                                         </div>
                                     </div>

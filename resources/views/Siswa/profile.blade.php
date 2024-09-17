@@ -67,7 +67,7 @@
                                     class="decoration-transparent items-center group md:text-sm bg-slate-100 hover:bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
                                     <div
                                         class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
-                                        Absen</div>
+                                        Dashboard</div>
                                 </a>
                                 <a href="{{ route('siswa-laporan') }}"
                                     class="decoration-transparent group items-center bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
@@ -79,8 +79,8 @@
                     <div class="top-menu flex justify-end items-center pr-2">
                         <div class="dropdown">
                             <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar"
-                                    src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar !bg-white"
+                                src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt=""></a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
                                         class="ik ik-user dropdown-icon"></i>
@@ -110,41 +110,86 @@
                             d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                     </svg>
                     <span
-                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Absen</span>
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Dashboard</span>
                 </a>
                 <a type="button" href="{{ route('siswa-laporan') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
-                    <svg class="w-5 h-5 mb-2 text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
+                    <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 12.25V1m0 11.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M4 19v-2.25m6-13.5V1m0 2.25a2.25 2.25 0 0 0 0 4.5m0-4.5a2.25 2.25 0 0 1 0 4.5M10 19V7.75m6 4.5V1m0 11.25a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5ZM16 19v-2" />
                     </svg>
                     <span
-                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Laporan</span>
+                        class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Laporan</span>
                 </a>
             </div>
         </div>
 
         <div class="page-wrap">
             <!--=============== HOME ===============-->
-            <div class="main-content" style="padding-left: 0px; padding-right: 0px">
+            <div class="main-content bg-gradient-to-br from-slate-100 to-white" style="padding-left: 0px; padding-right: 0px">
                 <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
+                    <div class="row ">
+                        <div class="col-md-12 flex justify-center">
+                            <div class="card w-[900px]">
+                                <a class="flex items-center p-3 text-sm sm:text-lg gap-1"
+                                    href="javascript:history.back()">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                    </svg>
+                                    back
+                                </a>
                                 <div class="card-header">
                                     <div class="flex flex-wrap justify-between w-full gap-3">
                                         <h3 class="text-xs!">Profile</h3>
                                     </div>
                                 </div>
-                                <div class="card-body text-center">
+                                <div class="card-body">
                                     <div class="profile-pic mb-20">
                                         <div class="flex justify-center">
-                                            <img src="{{ asset('assets/page-siswa2/img/user.jpg') }}" width="150"
-                                                class="rounded-circle" alt="user">
+                                            <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                                alt="Foto Profil" width="150" class="rounded-circle"
+                                                alt="user">
                                         </div>
-                                        <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
-                                        <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>
+                                        <div class="text-center">
+                                            <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
+                                            <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <div>
+                                            <label for="Nama" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                                            <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ Auth::user()->nama }}" disabled/>
+                                        </div>
+                                        <div>
+                                            <label for="NIS" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">NIS</label>
+                                            <input type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ Auth::user()->siswa->nis }}" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="Email" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                            <input type="email" id="Email" name="email"
+                                            value="{{ Auth::user()->email }}"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+                                        </div>  
+                                        <div class="grid grid-cols-2 gap-3">
+                                            <div>
+                                                <label for="password" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Ganti Password</label>
+                                                <input type="password" id="password" name="password" placeholder="masukkan password baru" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                            </div>
+                                            <div>
+                                                <label for="password" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Konfirmasi Password</label>
+                                                <input type="password" id="kpassword" name="kPassword"
+                                                placeholder="masukkan password baru" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-end w-full mt-3">
+                                            <button type="submit" class="btn-absen btn-primary text-xs sm:text-lg w-full justify-center px-2 bg-blue-500"
+                                                style="border-radius: 10px; padding:7px;">
+                                                <i class="ik ik-maximize"></i>Simpan
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -69,7 +69,7 @@
                             <div class="grid grid-cols-2 justify-center gap-2">
                                 <a href="{{ route('siswa-dashboard') }}"
                                     class="decoration-transparent items-center group lg:text-sm bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Absen</div>
+                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Dashboard</div>
                                 </a>
                                 <a href="{{ route('siswa-laporan') }}"
                                     class="decoration-transparent group items-center bg-slate-100 hover:bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
@@ -84,7 +84,7 @@
                         <div class="dropdown">
                             <a class="" href="#" id="userDropdown" role="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img class="avatar" src="{{ asset('assets/img/user.jpg') }}" alt="">
+                                <img class="avatar !bg-white" src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i class="ik ik-user dropdown-icon"></i>
@@ -114,7 +114,7 @@
                             d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                     </svg>
                     <span
-                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Absen</span>
+                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Dashboard</span>
                 </a>
                 <a type="button" href="{{ route('siswa-laporan') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
@@ -140,9 +140,17 @@
                         });
                     </script>
                 @endif
-                <div class="col-md-12">
+                <div class="col-md-12 mb-7">
                     <div class="container-fluid">
                         <div class="card">
+                            <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="javascript:history.back()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                </svg>
+                                back
+                            </a>
                             <div class="card-header">
                                 <h3>Izin / Sakit</h3>
                             </div>
@@ -151,10 +159,10 @@
                                     @csrf
                                         <input type="hidden" id="lokasi" name="lokasi">
                                         <div class="flex flex-wrap">
-                                            <div class="w-full">
+                                            <div class="w-full mb-3">
                                                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                                     for="file_input">Upload file</label>
-                                                <input id="photo_in" name="photo_in" type="file">
+                                                <input class="text-sm sm:text-xl" id="photo_in" name="photo_in" type="file">
                                                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
                                                     id="file_input_help">PNG, JPG or PDF.</p>
                                             </div>
@@ -185,8 +193,8 @@
                                                     <div class="col-4 col-md-4 col-sm-12"></div>
                                                     <div class="col-4 col-md-4 col-sm-12"></div>
                                                     <div class="col-4 col-md-4 col-sm-12 flex justify-end w-full">
-                                                        <button type="submit" class="btn-absen btn-primary w-auto justify-center px-2 bg-blue-500"
-                                                            style="border-radius: 10px; padding:7px; font-size: 20px ">
+                                                        <button type="submit" class="btn-absen btn-primary text-xs sm:text-lg w-auto justify-center px-2 bg-blue-500"
+                                                            style="border-radius: 10px; padding:7px;">
                                                             <i class="ik ik-maximize"></i>Submit
                                                         </button>
                                                     </div>

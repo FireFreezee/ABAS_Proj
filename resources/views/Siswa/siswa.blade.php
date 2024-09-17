@@ -61,7 +61,7 @@
                             <div class="grid grid-cols-2 justify-center gap-2">
                                 <a href="{{ route('siswa-dashboard') }}"
                                     class="decoration-transparent items-center group lg:text-sm bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Absen</div>
+                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Dashboard</div>
                                 </a>
                                 <a href="{{ route('siswa-laporan') }}"
                                     class="decoration-transparent group items-center bg-slate-100 hover:bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
@@ -76,7 +76,9 @@
                         <div class="dropdown">
                             <a class="!bg-white" href="#" id="userDropdown" role="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img class="avatar !bg-white" src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt="">
+                                <img class="avatar !bg-white"
+                                    src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                    alt="">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
@@ -95,19 +97,65 @@
                 </div>
             </div>
         </header>
-
+        @php
+            $isAbsenMasukDisabled = $jam < $jam_absen || $jam >= $batas_absen_pulang;
+            $isAbsenPulang = $statusAbsen === 'Sudah Pulang';
+            $isIzin = $statusAbsen === 'Izin' || $statusAbsen === 'Sakit';
+            // $isJarak = $userLatLng > $schoolLatLng;
+        @endphp
         <div
-            class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 lg:hidden">
+            class="fixed bottom-[63px] left-0 z-50 w-full h-16 bg-white border-t border-gray-400 rounded-t-3xl dark:bg-gray-700 dark:border-gray-600 lg:hidden">
+            <div class="grid h-full max-w-lg grid-cols-2 mx-auto py-2.5 !gap-3 place-items-center">
+                <a href="{{ route('siswa-absen') }}" style="text-decoration: none">
+                    @if ($cek > 0)
+                        <button class="btn-absen btn-danger bg-red-600 px-1 w-36 rounded-xl font-bold"
+                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
+                            @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i class="ik ik-maximize"></i>&nbsp; Absen
+                            Pulang
+                            <h4 class="text-[10px] font-normal">Jam Absen
+                                {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4>
+                        </button>
+                    @else
+                        <button class="btn-absen btn-primary bg-blue-500 px-1 w-36 rounded-xl font-bold"
+                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
+                            @if ($isAbsenMasukDisabled) disabled @endif><i class="ik ik-maximize"></i>&nbsp; Absen
+                            Pulang
+                            <h4 class="text-[10px] font-normal">Jam Absen
+                                {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4>
+                        </button>
+                    @endif
+                </a>
+                <a href="{{ route('siswa-izin') }}" style="text-decoration: none">
+                    @if ($cek > 0)
+                        <button class="btn-absen btn-info bg-cyan-400 px-1 w-36 rounded-xl font-bold"
+                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;"
+                            disabled><i class="ik ik-user-x"></i>&nbsp;
+                            Izin/Sakit <h4 class="text-[10px] font-normal">Form Izin dan Sakit</h4>
+                        </button>
+                    @else
+                        <button class="btn-absen btn-info bg-cyan-400 px-1 w-36 rounded-xl font-bold"
+                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
+                            @if ($isAbsenMasukDisabled) disabled @endif><i class="ik ik-user-x"></i>&nbsp;
+                            Izin/Sakit <h4 class="text-[10px] font-normal">Form Izin dan Sakit</h4>
+                        </button>
+                    @endif
+                </a>
+
+            </div>
+        </div>
+        <div
+            class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t dark:bg-gray-700 dark:border-gray-600 lg:hidden">
             <div class="grid h-full max-w-lg grid-cols-2 mx-auto font-medium">
                 <a type="button" href="{{ route('siswa-dashboard') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                     <svg class="w-5 h-5 mb-2 text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 20 20">
                         <path
                             d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
                     </svg>
                     <span
-                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Absen</span>
+                        class="text-sm text-blue-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Dashboard</span>
                 </a>
                 <a type="button" href="{{ route('siswa-laporan') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
@@ -124,6 +172,7 @@
 
         <div class="page-wrap">
             <!--=============== HOME ===============-->
+            <div class="bg-gradient-to-r to-blue-500 from-blue-600 w-full h-56 absolute shadow-2xl"></div>
             <div class="main-content" style="padding-left: 0px; padding-right: 0px">
                 <input type="hidden" id="lokasi">
                 <div class="col-md-12">
@@ -137,41 +186,37 @@
                                 <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
                                 <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>
                             </div>
-                            <div class="badge badge-pill badge-dark">Dashboard</div>
-                            <div class="badge badge-pill badge-dark">UI</div>
-                            <div class="badge badge-pill badge-dark">UX</div>
-                            <div class="badge badge-pill badge-info" data-toggle="tooltip" data-placement="top"
-                                title="" data-original-title="3 more">+3</div>
                         </div>
                     </div>
-                </div>
 
+                </div>
                 <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
 
                     <div class="row clearfix">
-                        <div class="col-md-3 sm-3 col-sm-12">
+                        <div class="col-6 col-md-3 col-sm-12">
                             <div class="widget bg-purple card-keterangan">
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="state">
-                                            <h6 style="font-size: 0.9rem; font-weight: 500">Tanggal</h6>
-                                            <h5 id="date" style="font-size: 0.9rem; font-weight: 500">Senin 15
+                                        <div class="state mr-1.5">
+                                            <h6 class="text-[14px] sm:text-base !font-bold mb-2">Tanggal</h6>
+                                            <h5 id="date" class="text-[10px] sm:text-xs md:text-base !mb-0">Senin
+                                                15
                                                 September 2024</h5>
                                         </div>
-                                        <div class="icon">
+                                        <div class="icon !text-[20px] sm:!text-[37px]">
                                             <i class="ik ik-shopping-cart"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 sm-3 col-sm-12">
+                        <div class="col-6 col-md-3 col-sm-12">
                             <div class="widget bg-success card-keterangan">
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="state">
-                                            <h6 style="font-size: 0.9rem; font-weight: 500">Jam Sekarang</h6>
-                                            <h5 class="clock" style="font-size: 0.9rem; font-weight: 500">
+                                        <div class="state mr-1.5">
+                                            <h6 class="text-[14px] sm:text-base !font-bold mb-2">Jam Sekarang</h6>
+                                            <h5 class="clock text-[15px] sm:text-base !mb-0">
                                                 <span id="jam">00</span>
                                                 <span>:</span>
                                                 <span id="menit">00</span>
@@ -179,39 +224,41 @@
                                                 <span id="detik">00</span>
                                             </h5>
                                         </div>
-                                        <div class="icon">
+                                        <div class="icon !text-[20px] sm:!text-[37px] sm:py-0 py-2.5">
                                             <i class="ik ik-shopping-cart"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 sm-3 col-sm-12">
+                        <div class="col-md-3 col-6 col-sm-12">
                             <div class="widget bg-yellow card-keterangan">
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
-                                            <h6 style="font-size: 0.9rem; font-weight: 500">Jarak dari sekolah</h6>
-                                            <h5 id="distance" style="font-size: 0.9rem; font-weight: 500">Jarak </h5>
+                                            <h6 class="text-[14px] sm:text-base !font-bold mb-2">Jarak dari sekolah
+                                            </h6>
+                                            <h5 id="distance" class="text-[13px] sm:text-base !mb-0">Jarak </h5>
                                         </div>
-                                        <div class="icon">
+                                        <div class="icon !text-[20px] sm:!text-[37px]">
                                             <i class="ik ik-inbox"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 sm-3 col-sm-12">
+                        <div class="col-md-3 col-6 col-sm-12">
                             @if ($statusAbsen == 'Belum Absen')
                                 <div class="widget card-keterangan" style="background-color: grey; color: white">
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6 style="font-size: 0.9rem; font-weight: 500">Status Kehadiran</h6>
-                                                <h5 style="font-size: 0.9rem; font-weight: 500">{{ $statusAbsen }}
+                                                <h6 class="text-[14px] sm:text-base !font-bold mb-2">Status Kehadiran
+                                                </h6>
+                                                <h5 class="text-[13px] sm:text-base !mb-0">{{ $statusAbsen }}
                                                 </h5>
                                             </div>
-                                            <div class="icon">
+                                            <div class="icon !text-[20px] sm:!text-[37px]">
                                                 <i class="ik ik-inbox" style="color: white"></i>
                                             </div>
                                         </div>
@@ -223,10 +270,11 @@
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6>Status Kehadiran</h6>
-                                                <h5>{{ $statusAbsen }}</h5>
+                                                <h6 class="text-[14px] sm:text-base !font-bold mb-2">Status Kehadiran
+                                                </h6>
+                                                <h5 class="text-[13px] sm:text-base !mb-0">{{ $statusAbsen }}</h5>
                                             </div>
-                                            <div class="icon">
+                                            <div class="icon !text-[20px] sm:!text-[37px]">
                                                 <i class="ik ik-inbox" style="color: white"></i>
                                             </div>
                                         </div>
@@ -238,10 +286,11 @@
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6>Status Kehadiran</h6>
-                                                <h5>{{ $statusAbsen }}</h5>
+                                                <h6 class="text-[14px] sm:text-base !font-bold mb-2">Status Kehadiran
+                                                </h6>
+                                                <h5 class="text-[13px] sm:text-base !mb-0">{{ $statusAbsen }}</h5>
                                             </div>
-                                            <div class="icon">
+                                            <div class="icon !text-[20px] sm:!text-[37px]">
                                                 <i class="ik ik-inbox" style="color: white"></i>
                                             </div>
                                         </div>
@@ -253,10 +302,11 @@
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6>Status Kehadiran</h6>
-                                                <h5>{{ $statusAbsen }}</h5>
+                                                <h6 class="text-[14px] sm:text-base !font-bold mb-2">Status Kehadiran
+                                                </h6>
+                                                <h5 class="text-[13px] sm:text-base !mb-0">{{ $statusAbsen }}</h5>
                                             </div>
-                                            <div class="icon">
+                                            <div class="icon !text-[20px] sm:!text-[37px]">
                                                 <i class="ik ik-inbox" style="color: white"></i>
                                             </div>
                                         </div>
@@ -268,10 +318,11 @@
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6>Status Kehadiran</h6>
-                                                <h5>{{ $statusAbsen }}</h5>
+                                                <h6 class="text-[14px] sm:text-base !font-bold mb-2">Status Kehadiran
+                                                </h6>
+                                                <h5 class="text-[13px] sm:text-base !mb-0">{{ $statusAbsen }}</h5>
                                             </div>
-                                            <div class="icon">
+                                            <div class="icon !text-[20px] sm:!text-[37px]">
                                                 <i class="ik ik-inbox" style="color: white"></i>
                                             </div>
                                         </div>
@@ -283,10 +334,11 @@
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6>Status Kehadiran</h6>
-                                                <h5>{{ $statusAbsen }}</h5>
+                                                <h6 class="text-[14px] sm:text-base !font-bold mb-2">Status Kehadiran
+                                                </h6>
+                                                <h5 class="text-[13px] sm:text-base !mb-0">{{ $statusAbsen }}</h5>
                                             </div>
-                                            <div class="icon">
+                                            <div class="icon !text-[20px] sm:!text-[37px]">
                                                 <i class="ik ik-inbox" style="color: white"></i>
                                             </div>
                                         </div>
@@ -298,10 +350,11 @@
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
-                                                <h6>Status Kehadiran</h6>
-                                                <h5>Sudah Pulang</h5>
+                                                <h6 class="text-[14px] sm:text-base !font-bold mb-2">Status Kehadiran
+                                                </h6>
+                                                <h5 class="text-[13px] sm:text-base !mb-0">Sudah Pulang</h5>
                                             </div>
-                                            <div class="icon">
+                                            <div class="icon !text-[20px] sm:!text-[37px]">
                                                 <i class="ik ik-inbox" style="color: white"></i>
                                             </div>
                                         </div>
@@ -314,10 +367,10 @@
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
-                                            <h6>Absen Masuk</h6>
-                                            <h4>10:10</h4>
+                                            <h6 class="text-[14px] sm:text-base !font-bold mb-2">Absen Masuk</h6>
+                                            <h4 class="text-[13px] sm:text-base !mb-0">10:10</h4>
                                         </div>
-                                        <div class="icon">
+                                        <div class="icon !text-[20px] sm:!text-[37px]">
                                             <i class="ik ik-inbox"></i>
                                         </div>
                                     </div>
@@ -329,10 +382,10 @@
                                 <div class="widget-body ">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
-                                            <h6>Absen Pulang</h6>
-                                            <h4>10:10</h4>
+                                            <h6 class="text-[14px] sm:text-base !font-bold mb-2">Absen Pulang</h6>
+                                            <h4 class="text-[13px] sm:text-base !mb-0">10:10</h4>
                                         </div>
-                                        <div class="icon">
+                                        <div class="icon !text-[20px] sm:!text-[37px]">
                                             <i class="ik ik-inbox"></i>
                                         </div>
                                     </div>
@@ -340,14 +393,8 @@
                             </div>
                         </div>
                     </div>
-                    @php
-                        $isAbsenMasukDisabled = $jam < $jam_absen || $jam >= $batas_absen_pulang;
-                        $isAbsenPulang = $statusAbsen === 'Sudah Pulang';
-                        $isIzin = $statusAbsen === 'Izin' || $statusAbsen === 'Sakit';
-                        // $isJarak = $userLatLng > $schoolLatLng;
-                    @endphp
-                    <div class="row clearfix">
-                        <div class="col-md-6 sm-3 col-sm-12">
+                    <div class="row clearfix ">
+                        <div class="col-md-6 sm-3 col-sm-12 !hidden lg:!block">
                             <a href="{{ route('siswa-absen') }}" style="text-decoration: none">
                                 @if ($cek > 0)
                                     <button type="button"
@@ -368,7 +415,7 @@
                                 @endif
                             </a>
                         </div>
-                        <div class="col-md-6 sm-3 col-sm-12">
+                        <div class="col-md-6 sm-3 col-sm-12 !hidden lg:!block">
                             <a href="{{ route('siswa-izin') }}" style="text-decoration: none">
                                 @if ($cek > 0)
                                     <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
@@ -393,24 +440,24 @@
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header d-block">
-                                    <h3>Absen Minggu Ini</h3>
+                                    <h3 class="!text-sm sm:!text-[23px] !font-semibold">Absen Minggu Ini</h3>
                                 </div>
                                 <div class="card-body p-0 table-border-style">
                                     <div class="table-responsive">
                                         <table class="table" style="text-align: center">
                                             <thead>
                                                 <tr>
-                                                    <th>Tanggal</th>
-                                                    <th>Status</th>
-                                                    <th>Absen Masuk</th>
-                                                    <th>Absen Pulang</th>
+                                                    <th class="!text-xs sm:!text-base">Tanggal</th>
+                                                    <th class="!text-xs sm:!text-base">Status</th>
+                                                    <th class="!text-xs sm:!text-base">Absen Masuk</th>
+                                                    <th class="!text-xs sm:!text-base">Absen Pulang</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($riwayatmingguini as $riwayatM)
                                                     <tr>
-                                                        <th>{{ $riwayatM->date }}</th>
-                                                        <td>
+                                                        <th class="!text-xs sm:!text-base">{{ $riwayatM->date }}</th>
+                                                        <td class="!text-xs sm:!text-base">
                                                             @if ($riwayatM->status == 'Hadir')
                                                                 <span
                                                                     class="status hadir">{{ $riwayatM->status }}</span>
@@ -428,8 +475,10 @@
                                                                     class="status alfa">{{ $riwayatM->status }}</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $riwayatM->jam_masuk }}</td>
-                                                        <td>{{ $riwayatM->jam_pulang }}</td>
+                                                        <td class="!text-xs sm:!text-base">{{ $riwayatM->jam_masuk }}
+                                                        </td>
+                                                        <td class="!text-xs sm:!text-base">{{ $riwayatM->jam_pulang }}
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -438,16 +487,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-[90px] sm:mb-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h3 class="card-title">Jumlah Kehadiran Anda</h3>
-                                    <div class="d-flex">
-                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                                data-bs-target="#bulan_ini" type="button" role="tab"
-                                                aria-controls="nav-home" aria-selected="true">Bulan Ini</button>
-                                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                    <h3 class="card-title !text-sm sm:!text-[23px] !font-semibold">Jumlah Kehadiran
+                                        Anda</h3>
+                                    <div class="w-full">
+                                        <div class="nav-tabs grid grid-cols-2 mx-3 mt-3" id="nav-tab"
+                                            role="tablist">
+                                            <button class="nav-link active !text-xs sm:!text-base w-full p-2"
+                                                id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#bulan_ini"
+                                                type="button" role="tab" aria-controls="nav-home"
+                                                aria-selected="true">Bulan Ini</button>
+                                            <button class="nav-link !text-xs sm:!text-base w-full"
+                                                id="nav-profile-tab" data-bs-toggle="tab"
                                                 data-bs-target="#bulan_sebelumnya" type="button" role="tab"
                                                 aria-controls="nav-profile" aria-selected="false">Bulan
                                                 Sebelumnya</button>
@@ -459,9 +512,11 @@
                                             aria-labelledby="home-tab" tabindex="0">
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="row mb-15">
-                                                    <div class="col-9">Hadir : {{ $dataBulanIni['Hadir'] ?? 0 }}
+                                                    <div class="col-9 !text-xs sm:!text-base">Hadir :
+                                                        {{ $dataBulanIni['Hadir'] ?? 0 }}
                                                     </div>
-                                                    <div class="col-3 text-right">{{ $persentaseHadirBulanIni }}%
+                                                    <div class="col-3 text-right !text-xs sm:!text-base">
+                                                        {{ $persentaseHadirBulanIni }}%
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
@@ -473,9 +528,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-15">
-                                                    <div class="col-9">Sakit/Izin :
+                                                    <div class="col-9 !text-xs sm:!text-base">Sakit/Izin :
                                                         {{ $dataBulanIni['Sakit/Izin'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right">{{ $persentaseSakitIzinBulanIni }}%
+                                                    <div class="col-3 text-right !text-xs sm:!text-base">
+                                                        {{ $persentaseSakitIzinBulanIni }}%
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
@@ -487,9 +543,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-15">
-                                                    <div class="col-9">Terlambat :
+                                                    <div class="col-9 !text-xs sm:!text-base">Terlambat :
                                                         {{ $dataBulanIni['Terlambat'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right">{{ $persentaseTerlambatBulanIni }}%
+                                                    <div class="col-3 text-right !text-xs sm:!text-base">
+                                                        {{ $persentaseTerlambatBulanIni }}%
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
@@ -501,9 +558,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-15">
-                                                    <div class="col-9">Alfa :
+                                                    <div class="col-9 !text-xs sm:!text-base">Alfa :
                                                         {{ $dataBulanIni['Alfa'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right">{{ $persentaseAlfaBulanIni }}%</div>
+                                                    <div class="col-3 text-right !text-xs sm:!text-base">
+                                                        {{ $persentaseAlfaBulanIni }}%</div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
                                                             <div class="progress-bar bg-danger" role="progressbar"
@@ -514,9 +572,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-15">
-                                                    <div class="col-9">TAP :
+                                                    <div class="col-9 !text-xs sm:!text-base">TAP :
                                                         {{ $dataBulanIni['TAP'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right">{{ $persentaseTAPBulanIni }}%</div>
+                                                    <div class="col-3 text-right !text-xs sm:!text-base">
+                                                        {{ $persentaseTAPBulanIni }}%</div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
                                                             <div class="progress-bar !bg-red-700" role="progressbar"
@@ -527,7 +586,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-9">Total
+                                                    <div class="col-9 !text-xs sm:!text-base">Total
                                                         Keterlambatan :
                                                         {{ $late }} Menit</div>
                                                 </div>
