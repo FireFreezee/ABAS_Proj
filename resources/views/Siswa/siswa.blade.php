@@ -76,9 +76,11 @@
                         <div class="dropdown">
                             <a class="!bg-white" href="#" id="userDropdown" role="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img class="avatar !bg-white"
-                                    src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
-                                    alt="">
+                                <div class="avatar overflow-hidden !flex !justify-center">
+                                    <img class="!bg-white !h-full !max-w-fit"
+                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        alt="">
+                                </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
@@ -180,8 +182,10 @@
                         <div class="card-body text-center">
                             <div class="profile-pic mb-20">
                                 <div class="flex justify-center">
-                                    <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
-                                        alt="Foto Profil" width="150" class="rounded-circle" alt="user">
+                                    <div class="rounded-circle !overflow-hidden !h-[150px] !w-[150px] !flex !justify-center">
+                                        <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                            alt="Foto Profil" class="!h-full !max-w-max">
+                                    </div>
                                 </div>
                                 <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
                                 <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>

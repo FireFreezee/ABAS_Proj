@@ -10,6 +10,7 @@ use App\Models\Absensi;
 use App\Models\Siswa;
 use App\Models\Koordinat_Sekolah;
 use App\Models\Waktu_Absen;
+use Illuminate\Support\Facades\Log;
 
 class SiswaController extends Controller
 {
@@ -256,13 +257,12 @@ class SiswaController extends Controller
     public function izin_store(Request $request)
     {
         $request->validate([
-            'photo_in.*' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+            'photo_in' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
             'keterangan' => 'required|string|max:255',
             'status' => 'required|string',
         ]);
 
         if ($request->hasFile('photo_in')) {
-
             $user = Auth::user();
             $nis = $user->siswa->nis;
             $status = $request->status;
@@ -271,51 +271,54 @@ class SiswaController extends Controller
 
             $lokasiSiswa = $request->lokasi;
 
-            foreach ($request->file('photo_in') as $foto) {
-                $extension = $foto->getClientOriginalExtension();
-                $folderPath = "public/uploads/absensi/";
-                $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
-                $folder = uniqid('post', true);
-                $foto->storeAs($folderPath . $folder , $fileName);
+            $file = $request->file('photo_in');
+            $extension = $file->getClientOriginalExtension();
+            $folderPath = "public/uploads/absensi/";
+            $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
+            $folder = uniqid('post', true);
+            $file->storeAs($folderPath . $folder, $fileName);
 
-                $data = [
-                    'nis' => $nis,
-                    'status' => $status,
-                    'photo_in' => $fileName,
-                    'keterangan' => $request->keterangan,
-                    'date' => $date,
-                    'jam_masuk' => $jam,
-                    'titik_koordinat_masuk' => $lokasiSiswa,
-                ];
+            // Insert data into the database
+            $data = [
+                'nis' => $nis,
+                'status' => $status,
+                'photo_in' => $fileName,
+                'keterangan' => $request->keterangan,
+                'date' => $date,
+                'jam_masuk' => $jam,
+                'titik_koordinat_masuk' => $lokasiSiswa,
+            ];
+            Log::error('Inserting absensi data:', $data);
 
-                DB::table('absensis')->insert($data);
-            }
+            DB::table('absensis')->insert($data);
 
             return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
         }
+
+        return back()->withErrors('File upload failed!');
     }
 
     public function fileUpload(Request $request)
     {
-        // $request->validate([
-        //     'photo_in' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        // ]);
+        $request->validate([
+            'photo_in' => 'required|image|mimes:jpeg,png,jpg,pdf|max:2048',
+        ]);
 
-        // if ($request->hasFile('photo_in')) {
-        //     $user = Auth::user();
-        //     $nis = $user->siswa->nis;
-        //     $status = $request->status;
-        //     $date = date("Y-m-d");
+        if ($request->hasFile('photo_in')) {
+            $user = Auth::user();
+            $nis = $user->siswa->nis;
+            $status = $request->status ?? 'Izin'; // Ensure status is set
 
-        //     $file = $request->file('photo_in');
-        //     $folderPath = "public/uploads/absensi/";
-        //     $fileName = $nis . "-" . $date . "-" . $status . "." . uniqid(true) . '-' . $file->getClientOriginalName();
-        //     $file->storeAs($folderPath , $fileName);
+            $date = date("Y-m-d");
+            $file = $request->file('photo_in');
+            $fileName = $nis . "-" . $date . "-" . $status . "." . uniqid(true) . '-' . $file->getClientOriginalName();
+            $folderPath = "public/uploads/absensi/";
+            $file->storeAs($folderPath, $fileName);
 
-        //     return $fileName;
-        // }
+            return response()->json($fileName); // Return the filename as JSON
+        }
 
-        return '';
+        return response()->json(['error' => 'File upload failed'], 500);
     }
 
     public function laporan(Request $request)

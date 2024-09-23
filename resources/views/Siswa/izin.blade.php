@@ -45,7 +45,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- FilePond styles -->
     <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet">
     {{-- @vite('resources/js/app.js') --}}
     @vite('resources/css/app.css')
 
@@ -84,10 +85,15 @@
                         <div class="dropdown">
                             <a class="" href="#" id="userDropdown" role="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img class="avatar !bg-white" src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt="">
+                                <div class="avatar overflow-hidden !flex !justify-center">
+                                    <img class="!bg-white !h-full !max-w-fit"
+                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        alt="">
+                                </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i class="ik ik-user dropdown-icon"></i>
+                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
+                                        class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -143,8 +149,10 @@
                 <div class="col-md-12 mb-7">
                     <div class="container-fluid">
                         <div class="card">
-                            <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="javascript:history.back()">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
+                            <a class="flex items-center p-3 text-sm sm:text-lg gap-1"
+                                href="javascript:history.back()">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -155,52 +163,55 @@
                                 <h3>Izin / Sakit</h3>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('izin-store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('izin-store') }}" method="POST"
+                                    enctype="multipart/form-data">
                                     @csrf
-                                        <input type="hidden" id="lokasi" name="lokasi">
-                                        <div class="flex flex-wrap">
-                                            <div class="w-full mb-3">
-                                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                    for="file_input">Upload file</label>
-                                                <input class="text-sm sm:text-xl" id="photo_in" name="photo_in" type="file">
-                                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
-                                                    id="file_input_help">PNG, JPG or PDF.</p>
+                                    <input type="hidden" id="lokasi" name="lokasi">
+                                    <div class="flex flex-wrap">
+                                        <div class="w-full mb-3">
+                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="file_input">Upload file</label>
+                                            <input class="text-sm sm:text-xl" id="photo_in" name="photo_in"
+                                                type="file">
+                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                                                id="file_input_help">PNG, JPG or PDF.</p>
+                                        </div>
+                                        <div class="w-full">
+                                            <div class="form-group">
+                                                <label for="exampleTextarea1">Keterangan</label>
+                                                <textarea class="form-control" id="keterangan" name="keterangan" rows="4"></textarea>
                                             </div>
-                                            <div class="w-full">
-                                                <div class="form-group">
-                                                    <label for="exampleTextarea1">Keterangan</label>
-                                                    <textarea class="form-control" id="keterangan" name="keterangan" rows="4"></textarea>
-                                                </div>
-                                                <div class="form-radio mb-30">
-                                                    <form>
-                                                        <div class="radio radiofill radio-info radio-inline">
-                                                            <label>
-                                                                <input type="radio" id="status" name="status"
-                                                                    value="Sakit" checked="checked">
-                                                                <i class="helper"></i>Sakit
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio radiofill radio-warning radio-inline">
-                                                            <label>
-                                                                <input type="radio" id="status" name="status"
-                                                                    value="Izin" checked="checked">
-                                                                <i class="helper"></i>Izin
-                                                            </label>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="row clearfix pt-15">
-                                                    <div class="col-4 col-md-4 col-sm-12"></div>
-                                                    <div class="col-4 col-md-4 col-sm-12"></div>
-                                                    <div class="col-4 col-md-4 col-sm-12 flex justify-end w-full">
-                                                        <button type="submit" class="btn-absen btn-primary text-xs sm:text-lg w-auto justify-center px-2 bg-blue-500"
-                                                            style="border-radius: 10px; padding:7px;">
-                                                            <i class="ik ik-maximize"></i>Submit
-                                                        </button>
+                                            <div class="form-radio mb-30">
+                                                <form>
+                                                    <div class="radio radiofill radio-info radio-inline">
+                                                        <label>
+                                                            <input type="radio" id="status" name="status"
+                                                                value="Sakit" checked="checked">
+                                                            <i class="helper"></i>Sakit
+                                                        </label>
                                                     </div>
+                                                    <div class="radio radiofill radio-warning radio-inline">
+                                                        <label>
+                                                            <input type="radio" id="status" name="status"
+                                                                value="Izin" checked="checked">
+                                                            <i class="helper"></i>Izin
+                                                        </label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="row clearfix pt-15">
+                                                <div class="col-4 col-md-4 col-sm-12"></div>
+                                                <div class="col-4 col-md-4 col-sm-12"></div>
+                                                <div class="col-4 col-md-4 col-sm-12 flex justify-end w-full">
+                                                    <button type="submit"
+                                                        class="btn-absen btn-primary text-xs sm:text-lg w-auto justify-center px-2 bg-blue-500"
+                                                        style="border-radius: 10px; padding:7px;">
+                                                        <i class="ik ik-maximize"></i>Submit
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -253,7 +264,7 @@
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
-
+        
         FilePond.registerPlugin(
             FilePondPluginImagePreview,
             FilePondPluginFileValidateSize,
@@ -264,7 +275,7 @@
         FilePond.create(document.querySelector('input[id="photo_in"]'), {
             server: {
                 process: {
-                    url: '/fileUpload',
+                    url: '{{ route('file-upload') }}', // Define the correct route here
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'

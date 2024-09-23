@@ -79,8 +79,13 @@
                     <div class="top-menu flex justify-end items-center pr-2">
                         <div class="dropdown">
                             <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar !bg-white"
-                                src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}" alt=""></a>
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="avatar overflow-hidden !flex !justify-center">
+                                    <img class="!bg-white !h-full !max-w-fit"
+                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        alt="">
+                                </div>
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
                                         class="ik ik-user dropdown-icon"></i>

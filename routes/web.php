@@ -57,7 +57,7 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
     Route::get('/siswa/izin', [SiswaController::class, 'izin'])->name('siswa-izin');
     Route::post('/izin/store', [SiswaController::class, 'izin_store'])->name('izin-store');
     Route::get('/siswa/laporan', [App\Http\Controllers\siswaController::class, 'laporan'])->name('siswa-laporan');
-    Route::get('/fileUpload', [SiswaController::class, 'fileUpload']);
+    Route::post('/fileUpload', [SiswaController::class, 'fileUpload'])->name('file-upload');
 });
 
 Route::middleware(['auth', 'Walisiswa:walisiswa'])->group(function () {
