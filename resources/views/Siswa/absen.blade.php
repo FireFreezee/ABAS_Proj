@@ -13,7 +13,7 @@
 
     <!--=============== Icon ===============-->
     <link rel="icon" href="{{ asset('assets/img/logo-abas.png') }}" type="image/x-icon" />
-    
+
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="{{ asset('assets/page-siswa2/assets/css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
@@ -76,7 +76,7 @@
                                 aria-haspopup="true" aria-expanded="false">
                                 <div class="avatar overflow-hidden !flex !justify-center">
                                     <img class="!bg-white !h-full !max-w-fit"
-                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
                                         alt="">
                                 </div>
                             </a>

@@ -165,7 +165,7 @@ class SiswaController extends Controller
         $radius = round($jarak["meters"]);
 
         $image = $request->image;
-        $folderPath = "uploads/absensi/";
+        $folderPath = "public/uploads/profile/";
         $formatMasuk = $nis . "-" . $date . "-" . "masuk";
         $formatPulang = $nis . "-" . $date . "-" . "pulang";
         $image_parts = explode(";base64", $image);
@@ -312,7 +312,7 @@ class SiswaController extends Controller
             $date = date("Y-m-d");
             $file = $request->file('photo_in');
             $fileName = $nis . "-" . $date . "." . uniqid(true) . '-' . $file->getClientOriginalName();
-            $folderPath = "uploads/absensi/";
+            $folderPath = "public/uploads/profile/";
             $file->storeAs($folderPath, $fileName);
 
             return $fileName;
@@ -373,7 +373,7 @@ class SiswaController extends Controller
     public function editprofil(Request $r)
     {
         $f = false;
-        $P = false;
+        $p = false;
 
         //password
         $count = strlen($r->password);
@@ -387,21 +387,10 @@ class SiswaController extends Controller
         }
 
         //foto
-        if ($r->hasFile('foto')) {
-            $foto = $r->file('foto');
+        $f = User::where('id', $r->id)->update([
+            'foto' => $r->profile,
+        ]);
 
-            $folderPath = "public/foto_profil/";
-
-            $extension = $foto->getClientOriginalExtension();
-            $fileName = $r->nis . '.' . $extension;
-            $file = $folderPath . $fileName;
-
-            Storage::put($file, file_get_contents($foto));
-
-            $f = User::where('id', $r->id)->update([
-                'foto' => $fileName
-            ]);
-        }
 
         // email
         $u = User::where('id', $r->id)->update([
@@ -414,6 +403,27 @@ class SiswaController extends Controller
         } else {
             return redirect()->back()->with('failed', "Data Gagal di Update");
         }
+    }
+
+    public function photo_profile(Request $request)
+    {
+        $request->validate([
+            'profile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('profile')) {
+
+            // $status = $request->status;
+
+            $file = $request->file('profile');
+            $fileName =  $file->getClientOriginalName();
+            $folderPath = "public/uploads/profile/";
+            $file->storeAs($folderPath, $fileName);
+
+            return $fileName;
+        }
+
+        return '';
     }
 
     /**

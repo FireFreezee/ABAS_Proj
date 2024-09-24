@@ -50,14 +50,15 @@ Route::middleware(['auth', 'Walikelas:walikelas'])->group(function () {
 });
 
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
-    Route::get('siswa', [App\Http\Controllers\siswaController::class, 'index'])->name('siswa-dashboard');
+    Route::get('siswa', [SiswaController::class, 'index'])->name('siswa-dashboard');
     Route::get('siswa/profile', [SiswaController::class, 'profile'])->name('siswa-profile');
-    Route::post('/siswa/editprofil', [App\Http\Controllers\siswaController::class, 'editprofil'])->name('edit-profil');
-    Route::get('/siswa/absen', [App\Http\Controllers\siswaController::class, 'absen'])->name('siswa-absen');
+    Route::post('/siswa/editprofil', [SiswaController::class, 'editprofil'])->name('edit-profil');
+    Route::post('/profile-update', [SiswaController::class, 'photo_profile'])->name('update-profile');
+    Route::get('/siswa/absen', [SiswaController::class, 'absen'])->name('siswa-absen');
     Route::post('/absen/store', [SiswaController::class, 'store']);
     Route::get('/siswa/izin', [SiswaController::class, 'izin'])->name('siswa-izin');
     Route::post('/izin/store', [SiswaController::class, 'izin_store'])->name('izin-store');
-    Route::get('/siswa/laporan', [App\Http\Controllers\siswaController::class, 'laporan'])->name('siswa-laporan');
+    Route::get('/siswa/laporan', [SiswaController::class, 'laporan'])->name('siswa-laporan');
     Route::post('/fileUpload', [SiswaController::class, 'fileUpload'])->name('file-upload');
 });
 
@@ -68,8 +69,8 @@ Route::middleware(['auth', 'Walisiswa:walisiswa'])->group(function () {
 Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::get('operator', [App\Http\Controllers\operatorController::class, 'lokasisekolah'])->name('Dashboard');
 
-    Route::get('/operator/data-walikelas', [App\Http\Controllers\operatorController::class, 'dataWali'])->name('data-wali');
-    Route::post('/store-wali-kelas', [App\Http\Controllers\operatorController::class, 'store'])->name('store-wali-kelas');
+    Route::get('/operator/data-walikelas', [OperatorController::class, 'dataWali'])->name('data-wali');
+    Route::post('/store-wali-kelas', [OperatorController::class, 'store'])->name('store-wali-kelas');
     Route::post('/editwalikelas/{id}', [OperatorController::class, 'editwali'])->name('edit-wali-kelas');
     Route::delete('hapuswalikelas/{id}', [OperatorController::class, 'hapuswali'])->name('hapuswali');
     Route::post('/walikelas/import', [OperatorController::class, 'importWali'])->name('import-wali');
@@ -95,8 +96,8 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::post('/edit-kesiswaan/{id}', [OperatorController::class, 'editKesiswaan'])->name('edit-kesiswaan');
     Route::delete('/hapus-kesiswaan/{id}', [OperatorController::class, 'hapusKesiswaan'])->name('hapus-kesiswaan');
 
-    Route::post('/operator/updatelokasisekolah', [App\Http\Controllers\operatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
-    Route::post('/operator/updatewaktu', [App\Http\Controllers\operatorController::class, 'updatewaktu'])->name('updatewaktu');
+    Route::post('/operator/updatelokasisekolah', [OperatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
+    Route::post('/operator/updatewaktu', [OperatorController::class, 'updatewaktu'])->name('updatewaktu');
 
 });
 

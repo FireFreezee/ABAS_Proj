@@ -87,7 +87,7 @@
                                 aria-haspopup="true" aria-expanded="false">
                                 <div class="avatar overflow-hidden !flex !justify-center">
                                     <img class="!bg-white !h-full !max-w-fit"
-                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
                                         alt="">
                                 </div>
                             </a>
@@ -176,7 +176,7 @@
                                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                                 for="file_input">Upload file</label>
                                             <input class="text-sm sm:text-xl" id="photo_in" name="photo_in"
-                                                type="file">
+                                                type="file" accept="image/png, image/jpeg, application/pdf">
                                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
                                                 id="file_input_help">PNG, JPG or PDF.</p>
                                         </div>

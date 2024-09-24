@@ -42,6 +42,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <title>ABAS - Laporan</title>
@@ -82,7 +85,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="avatar overflow-hidden !flex !justify-center">
                                     <img class="!bg-white !h-full !max-w-fit"
-                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
                                         alt="">
                                 </div>
                             </a>
@@ -188,8 +191,39 @@
                                             <div class="flex justify-center">
                                                 <div
                                                     class="rounded-circle !overflow-hidden !h-[150px] !w-[150px] !flex !justify-center">
-                                                    <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
-                                                        alt="Foto Profil" class="!h-full !max-w-max">
+                                                    <a href="#" data-toggle="modal"
+                                                        data-target="#edit{{ Auth::user()->id }}">
+                                                        <img src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
+                                                            alt="Foto Profil" class="!h-full !max-w-max">
+                                                    </a>
+                                                    <div class="modal fade" id="edit{{ Auth::user()->id }}"
+                                                        tabindex="-1" role="dialog"
+                                                        aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered"
+                                                            role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title"
+                                                                        id="exampleModalCenterLabel">Edit Data</h5>
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="flex justify-center">
+                                                                        <input type="file" class="h-[300px] w-[300px]" id="photo_in" name="profile"
+                                                                            accept="image/png, image/jpeg," />
+                                                                    </div>
+                                                                    <button type="submit"
+                                                                        class="btn-absen btn-primary text-xs sm:text-lg w-full justify-center px-2 bg-blue-500"
+                                                                        style="border-radius: 10px; padding:7px;">
+                                                                        <i class="ik ik-maximize"></i>Simpan
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="text-center">
@@ -265,10 +299,19 @@
     <!--=============== MAIN JS ===============-->
     <i class="fa fa-xingx" aria-hidden="true"></i>
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.js">
+    </script>
+    <!-- FilePond library -->
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <!-- FilePond plugin for file validation -->
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js">
+    </script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js">
     </script>
     <script src="https://unpkg.com/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.js">
     </script>
@@ -318,6 +361,45 @@
                     }
                 });
             }
+        });
+
+        FilePond.registerPlugin(
+            FilePondPluginFileValidateType,
+            FilePondPluginImageExifOrientation,
+            FilePondPluginImagePreview,
+            FilePondPluginImageCrop,
+            FilePondPluginImageResize,
+            FilePondPluginImageTransform,
+            FilePondPluginImageEdit
+        );
+
+        // Select the file input and use
+        // create() to turn it into a pond
+        FilePond.create(document.querySelector('input[id="photo_in"]'), {
+            server: {
+                process: {
+                    url: '{{ route('update-profile') }}', // Define the correct route here
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                },
+                revert: null,
+                restore: null,
+                load: null,
+                fetch: null,
+            },
+            labelIdle: `Drag & Drop your picture or <span class="filepond--label-action">Browse</span>`,
+            imagePreviewHeight: 170,
+            imageCropAspectRatio: '1:1',
+            imageResizeTargetWidth: 200,
+            imageResizeTargetHeight: 200,
+            stylePanelLayout: 'compact circle',
+            styleLoadIndicatorPosition: 'center bottom',
+            styleProgressIndicatorPosition: 'right bottom',
+            styleButtonRemoveItemPosition: 'left bottom',
+            styleButtonProcessItemPosition: 'right bottom',
+
         });
     </script>
 </body>

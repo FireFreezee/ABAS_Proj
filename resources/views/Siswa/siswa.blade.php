@@ -79,7 +79,7 @@
                                 aria-haspopup="true" aria-expanded="false">
                                 <div class="avatar overflow-hidden !flex !justify-center">
                                     <img class="!bg-white !h-full !max-w-fit"
-                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
                                         alt="">
                                 </div>
                             </a>
@@ -197,7 +197,7 @@
                             <div class="profile-pic mb-20">
                                 <div class="flex justify-center">
                                     <div class="rounded-circle !overflow-hidden !h-[150px] !w-[150px] !flex !justify-center">
-                                        <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        <img src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
                                             alt="Foto Profil" class="!h-full !max-w-max">
                                     </div>
                                 </div>

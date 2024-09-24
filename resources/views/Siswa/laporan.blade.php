@@ -82,7 +82,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="avatar overflow-hidden !flex !justify-center">
                                     <img class="!bg-white !h-full !max-w-fit"
-                                        src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                        src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
                                         alt="">
                                 </div>
                             </a>
