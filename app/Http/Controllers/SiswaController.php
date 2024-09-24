@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Absensi;
 use App\Models\Siswa;
 use App\Models\Koordinat_Sekolah;
+use App\Models\User;
 use App\Models\Waktu_Absen;
 use Illuminate\Support\Facades\Log;
 
@@ -257,12 +258,11 @@ class SiswaController extends Controller
     public function izin_store(Request $request)
     {
         $request->validate([
-            'photo_in' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+            'photo_in' => 'required|string',
             'keterangan' => 'required|string|max:255',
             'status' => 'required|string',
         ]);
 
-        if ($request->hasFile('photo_in')) {
             $user = Auth::user();
             $nis = $user->siswa->nis;
             $status = $request->status;
@@ -271,31 +271,31 @@ class SiswaController extends Controller
 
             $lokasiSiswa = $request->lokasi;
 
-            $file = $request->file('photo_in');
-            $extension = $file->getClientOriginalExtension();
-            $folderPath = "public/uploads/absensi/";
-            $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
-            $folder = uniqid('post', true);
-            $file->storeAs($folderPath . $folder, $fileName);
+            // $file = $request->file('photo_in');
+            // $extension = $file->getClientOriginalExtension();
+            // $folderPath = "public/uploads/absensi/";
+            // $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
 
             // Insert data into the database
             $data = [
                 'nis' => $nis,
                 'status' => $status,
-                'photo_in' => $fileName,
+                'photo_in' => $request->photo_in,
                 'keterangan' => $request->keterangan,
                 'date' => $date,
                 'jam_masuk' => $jam,
                 'titik_koordinat_masuk' => $lokasiSiswa,
             ];
-            Log::error('Inserting absensi data:', $data);
 
-            DB::table('absensis')->insert($data);
+            if ($data) {
+                DB::table('absensis')->insert($data);
+                return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
+            }
+            else {
+                return redirect()->back()->with('failed', 'Absensi gagal disimpan!');
+            }
 
-            return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
-        }
 
-        return back()->withErrors('File upload failed!');
     }
 
     public function fileUpload(Request $request)
@@ -307,18 +307,18 @@ class SiswaController extends Controller
         if ($request->hasFile('photo_in')) {
             $user = Auth::user();
             $nis = $user->siswa->nis;
-            $status = $request->status ?? 'Izin'; // Ensure status is set
+            // $status = $request->status;
 
             $date = date("Y-m-d");
             $file = $request->file('photo_in');
-            $fileName = $nis . "-" . $date . "-" . $status . "." . uniqid(true) . '-' . $file->getClientOriginalName();
-            $folderPath = "public/uploads/absensi/";
+            $fileName = $nis . "-" . $date . "." . uniqid(true) . '-' . $file->getClientOriginalName();
+            $folderPath = "uploads/absensi/";
             $file->storeAs($folderPath, $fileName);
 
-            return response()->json($fileName); // Return the filename as JSON
+            return $fileName;
         }
 
-        return response()->json(['error' => 'File upload failed'], 500);
+        return '';
     }
 
     public function laporan(Request $request)
@@ -368,6 +368,52 @@ class SiswaController extends Controller
     public function profile()
     {
         return view("Siswa.profile");
+    }
+
+    public function editprofil(Request $r)
+    {
+        $f = false;
+        $P = false;
+
+        //password
+        $count = strlen($r->password);
+        if ($count > 0) {
+            $p = User::where('id', $r->id)->update([
+                'password' => password_hash($r->password, PASSWORD_DEFAULT)
+            ]);
+        }
+        if ($r->password != $r->kPassword) {
+            return redirect()->back()->with('failed', 'Password Berbeda');
+        }
+
+        //foto
+        if ($r->hasFile('foto')) {
+            $foto = $r->file('foto');
+
+            $folderPath = "public/foto_profil/";
+
+            $extension = $foto->getClientOriginalExtension();
+            $fileName = $r->nis . '.' . $extension;
+            $file = $folderPath . $fileName;
+
+            Storage::put($file, file_get_contents($foto));
+
+            $f = User::where('id', $r->id)->update([
+                'foto' => $fileName
+            ]);
+        }
+
+        // email
+        $u = User::where('id', $r->id)->update([
+            'email' => $r->email,
+        ]);
+
+        //redirecting
+        if ($u || $f || $p) {
+            return redirect()->back()->with('success', "Data Berhasil di Update");
+        } else {
+            return redirect()->back()->with('failed', "Data Gagal di Update");
+        }
     }
 
     /**

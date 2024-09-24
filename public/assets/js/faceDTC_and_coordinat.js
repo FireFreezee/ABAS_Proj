@@ -175,14 +175,20 @@ $(document).ready(function () {
                     Swal.fire({
                         title: "Berhasil",
                         text: status[1],
-                        icon: "success"
+                        icon: "success",
+                        customClass: {
+                            confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                        }
                     });
                     setTimeout("location.href='/siswa'", 3000)
                 } else {
                     Swal.fire({
                         title: "Gagal",
                         text: status[1],
-                        icon: "error"
+                        icon: "error",
+                        customClass: {
+                            confirmButton: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                        }
                     });
                 }
             },

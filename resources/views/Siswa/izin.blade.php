@@ -137,12 +137,16 @@
         <div class="page-wrap">
             <!--=============== HOME ===============-->
             <div class="main-content" style="padding-left: 0px;">
-                @if (Session::get('error'))
+                @if (Session::has('failed'))
                     <script>
                         Swal.fire({
-                            title: "Gagal",
-                            text: {{ session[1] }},
-                            icon: "error"
+                            title: 'Gagal!',
+                            text: '{{ Session::get('failed') }}',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                            }
                         });
                     </script>
                 @endif
@@ -264,7 +268,6 @@
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
-        
         FilePond.registerPlugin(
             FilePondPluginImagePreview,
             FilePondPluginFileValidateSize,

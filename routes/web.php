@@ -52,6 +52,7 @@ Route::middleware(['auth', 'Walikelas:walikelas'])->group(function () {
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
     Route::get('siswa', [App\Http\Controllers\siswaController::class, 'index'])->name('siswa-dashboard');
     Route::get('siswa/profile', [SiswaController::class, 'profile'])->name('siswa-profile');
+    Route::post('/siswa/editprofil', [App\Http\Controllers\siswaController::class, 'editprofil'])->name('edit-profil');
     Route::get('/siswa/absen', [App\Http\Controllers\siswaController::class, 'absen'])->name('siswa-absen');
     Route::post('/absen/store', [SiswaController::class, 'store']);
     Route::get('/siswa/izin', [SiswaController::class, 'izin'])->name('siswa-izin');

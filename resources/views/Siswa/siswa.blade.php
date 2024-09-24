@@ -35,6 +35,7 @@
     {{-- <script src="{{ asset('assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script> --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -176,6 +177,19 @@
             <!--=============== HOME ===============-->
             <div class="bg-gradient-to-r to-blue-500 from-blue-600 w-full h-56 absolute shadow-2xl"></div>
             <div class="main-content" style="padding-left: 0px; padding-right: 0px">
+                @if (Session::has('success'))
+                    <script>
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: '{{ Session::get('success') }}',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                            }
+                        });
+                    </script>
+                @endif
                 <input type="hidden" id="lokasi">
                 <div class="col-md-12">
                     <div class="card">

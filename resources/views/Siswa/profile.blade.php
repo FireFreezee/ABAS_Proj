@@ -132,7 +132,8 @@
 
         <div class="page-wrap">
             <!--=============== HOME ===============-->
-            <div class="main-content bg-gradient-to-br from-slate-100 to-white" style="padding-left: 0px; padding-right: 0px">
+            <div class="main-content bg-gradient-to-br from-slate-100 to-white"
+                style="padding-left: 0px; padding-right: 0px">
                 <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
                     <div class="row ">
                         <div class="col-md-12 flex justify-center">
@@ -152,52 +153,106 @@
                                         <h3 class="text-xs!">Profile</h3>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="profile-pic mb-20">
-                                        <div class="flex justify-center">
-                                            <div class="rounded-circle !overflow-hidden !h-[150px] !w-[150px] !flex !justify-center">
-                                                <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
-                                                    alt="Foto Profil" class="!h-full !max-w-max">
+                                <form action={{ route('edit-profil') }} method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="id" value={{ Auth::user()->id }}>
+                                    @if (Session::has('success'))
+                                        <script>
+                                            Swal.fire({
+                                                title: 'Sukses!',
+                                                text: '{{ Session::get('success') }}',
+                                                icon: 'success',
+                                                confirmButtonText: 'OK',
+                                                customClass: {
+                                                    confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                                                }
+                                            });
+                                        </script>
+                                    @endif
+
+                                    @if (Session::has('failed'))
+                                        <script>
+                                            Swal.fire({
+                                                title: 'Gagal!',
+                                                text: '{{ Session::get('failed') }}',
+                                                icon: 'error',
+                                                confirmButtonText: 'OK',
+                                                customClass: {
+                                                    confirmButton: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                                }
+                                            });
+                                        </script>
+                                    @endif
+                                    <div class="card-body">
+                                        <div class="profile-pic mb-20">
+                                            <div class="flex justify-center">
+                                                <div
+                                                    class="rounded-circle !overflow-hidden !h-[150px] !w-[150px] !flex !justify-center">
+                                                    <img src="{{ asset('storage/uploads/foto_profil/' . Auth::user()->foto) }}"
+                                                        alt="Foto Profil" class="!h-full !max-w-max">
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
+                                                <a href="#"
+                                                    style="text-decoration: none">{{ Auth::user()->email }}</a>
+                                                <h4 class="text-lg font-bold">
+                                                    {{ Auth::user()->siswa->kelas->tingkat }}
+                                                    {{ Auth::user()->siswa->kelas->id_jurusan }}
+                                                    {{ Auth::user()->siswa->kelas->nomor_kelas }}</h4>
                                             </div>
                                         </div>
-                                        <div class="text-center">
-                                            <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
-                                            <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>
+                                        <div class="">
+                                            <div>
+                                                <label for="Nama"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                                                <input type="text" id="first_name"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value="{{ Auth::user()->nama }}" disabled />
+                                            </div>
+                                            <div>
+                                                <label for="NIS"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">NIS</label>
+                                                <input type="text" id="last_name"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value="{{ Auth::user()->siswa->nis }}" disabled />
+                                            </div>
+                                            <div>
+                                                <label for="Email"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                                                <input type="Email" id="Email" name="email"
+                                                    value="{{ Auth::user()->email }}"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <div>
+                                                    <label for="password"
+                                                        class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Ganti
+                                                        Password</label>
+                                                    <input type="password" id="password" name="password"
+                                                        placeholder="masukkan password baru"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                                </div>
+                                                <div>
+                                                    <label for="password"
+                                                        class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Konfirmasi
+                                                        Password</label>
+                                                    <input type="password" id="kpassword" name="kPassword"
+                                                        placeholder="masukkan password baru"
+                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        placeholder="flowbite.com" />
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-end w-full mt-3">
+                                                <button type="submit"
+                                                    class="btn-absen btn-primary text-xs sm:text-lg w-full justify-center px-2 bg-blue-500"
+                                                    style="border-radius: 10px; padding:7px;">
+                                                    <i class="ik ik-maximize"></i>Simpan
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="">
-                                        <div>
-                                            <label for="Nama" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                            <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ Auth::user()->nama }}" disabled/>
-                                        </div>
-                                        <div>
-                                            <label for="NIS" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">NIS</label>
-                                            <input type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ Auth::user()->siswa->nis }}" disabled />
-                                        </div>
-                                        <div>
-                                            <label for="Email" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                            <input type="email" id="Email" name="email"
-                                            value="{{ Auth::user()->email }}"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-                                        </div>  
-                                        <div class="grid grid-cols-2 gap-3">
-                                            <div>
-                                                <label for="password" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Ganti Password</label>
-                                                <input type="password" id="password" name="password" placeholder="masukkan password baru" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                                            </div>
-                                            <div>
-                                                <label for="password" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">Konfirmasi Password</label>
-                                                <input type="password" id="kpassword" name="kPassword"
-                                                placeholder="masukkan password baru" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-end w-full mt-3">
-                                            <button type="submit" class="btn-absen btn-primary text-xs sm:text-lg w-full justify-center px-2 bg-blue-500"
-                                                style="border-radius: 10px; padding:7px;">
-                                                <i class="ik ik-maximize"></i>Simpan
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
