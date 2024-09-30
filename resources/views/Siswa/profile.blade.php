@@ -190,37 +190,45 @@
                                         <div class="profile-pic mb-20">
                                             <div class="flex justify-center">
                                                 <div
-                                                    class="rounded-circle !overflow-hidden !h-[150px] !w-[150px] !flex !justify-center">
+                                                    class="rounded-circle !overflow-hidden !h-[100px] !w-[100px] sm:!h-[150px] sm:!w-[150px] !flex !justify-center hover:brightness-50">
+                                                    <div class="group-hover:block absolute bottom-5">
+                                                        <h4
+                                                            class="flex justify-center items-center text-white ">
+                                                            Ganti Profile
+                                                        </h4>
+                                                    </div>
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#edit{{ Auth::user()->id }}">
                                                         <img src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
-                                                            alt="Foto Profil" class="!h-full !max-w-max">
+                                                            alt="Foto Profil" class="z-10">
                                                     </a>
-                                                    <div class="modal fade" id="edit{{ Auth::user()->id }}"
-                                                        tabindex="-1" role="dialog"
-                                                        aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered"
-                                                            role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title"
-                                                                        id="exampleModalCenterLabel">Edit Data</h5>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
+                                                </div>
+                                                <div class="modal fade" id="edit{{ Auth::user()->id }}"
+                                                    tabindex="-1" role="dialog"
+                                                    aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalCenterLabel">
+                                                                    Edit Data</h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="flex justify-center">
+                                                                    <input type="file"
+                                                                        class="sm:h-[300px] sm:w-[300px]"
+                                                                        id="photo_in" name="profile"
+                                                                        accept="image/png, image/jpeg,"
+                                                                        value="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}" />
                                                                 </div>
-                                                                <div class="modal-body">
-                                                                    <div class="flex justify-center">
-                                                                        <input type="file" class="h-[300px] w-[300px]" id="photo_in" name="profile"
-                                                                            accept="image/png, image/jpeg," />
-                                                                    </div>
-                                                                    <button type="submit"
-                                                                        class="btn-absen btn-primary text-xs sm:text-lg w-full justify-center px-2 bg-blue-500"
-                                                                        style="border-radius: 10px; padding:7px;">
-                                                                        <i class="ik ik-maximize"></i>Simpan
-                                                                    </button>
-                                                                </div>
+                                                                <button type="submit"
+                                                                    class="btn-absen btn-primary text-xs sm:text-lg w-full justify-center px-2 bg-blue-500"
+                                                                    style="border-radius: 10px; padding:7px;">
+                                                                    <i class="ik ik-maximize"></i>Simpan
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>

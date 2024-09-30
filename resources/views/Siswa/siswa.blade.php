@@ -196,9 +196,9 @@
                         <div class="card-body text-center">
                             <div class="profile-pic mb-20">
                                 <div class="flex justify-center">
-                                    <div class="rounded-circle !overflow-hidden !h-[150px] !w-[150px] !flex !justify-center">
+                                    <div class="rounded-circle !overflow-hidden !h-[120px] !w-[120px] sm:!h-[150px] sm:!w-[150px] !flex !justify-center">
                                         <img src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
-                                            alt="Foto Profil" class="!h-full !max-w-max">
+                                            alt="Foto Profil">
                                     </div>
                                 </div>
                                 <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
