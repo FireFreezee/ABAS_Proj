@@ -262,7 +262,7 @@
                                             <div class="flex justify-between">
                                                 <div class="flex">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-gray-700 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
+                                                        class="stroke-gray-400 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -278,7 +278,7 @@
                                             </div>
                                             <div class="w-full">
                                                 <div class="progress mt-2">
-                                                    <div class="progress-bar bg-gray-700" role="progressbar"
+                                                    <div class="progress-bar bg-gray-400" role="progressbar"
                                                         style="width: {{ number_format($statusPercentages['Terlambat'] ?? 0) }}%"
                                                         aria-valuenow="{{ number_format($statusPercentages['Terlambat'] ?? 0) }}"
                                                         aria-valuemin="0" aria-valuemax="100"></div>
@@ -331,7 +331,7 @@
                                                 <div class="flex">
                                                     <!-- SVG for TAP -->
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2 stroke-red-700" fill="none"
+                                                        class="h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2 stroke-gray-900" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                         <!-- Path for TAP icon -->
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="...">
@@ -347,7 +347,7 @@
                                             </div>
                                             <div class="w-full">
                                                 <div class="progress mt-2">
-                                                    <div class="progress-bar bg-red-700" role="progressbar"
+                                                    <div class="progress-bar bg-gray-900" role="progressbar"
                                                         style="width: {{ number_format($statusPercentages['TAP'] ?? 0) }}%"
                                                         aria-valuenow="{{ number_format($statusPercentages['TAP'] ?? 0) }}"
                                                         aria-valuemin="0" aria-valuemax="100"></div>

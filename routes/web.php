@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\KesiswaanController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\WalisiswaController;
@@ -101,3 +102,6 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
 
 });
 
+Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
+ Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name("index");
+});
