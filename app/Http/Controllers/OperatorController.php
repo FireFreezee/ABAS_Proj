@@ -299,7 +299,7 @@ class OperatorController extends Controller
     {
         if (strlen($request->password) > 0) {
             $user = User::create([
-                'name' => $request->name,
+                'nama' => $request->nama,
                 'email' => $request->email,
                 'password' => password_hash($request->password, PASSWORD_DEFAULT),
                 'role' => 'siswa'
@@ -314,7 +314,7 @@ class OperatorController extends Controller
             ]);
         } else {
             $user = User::create([
-                'name' => $request->name,
+                'nama' => $request->nama,
                 'email' => $request->email,
                 'role' => 'wali'
             ]);
