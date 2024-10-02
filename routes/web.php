@@ -40,7 +40,7 @@ Route::get('/', function () {
         }
     }
     return view('Login.login');
-});
+})->name('log');
 
 Auth::routes();
 
@@ -103,5 +103,5 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
 });
 
 Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
- Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name("index");
+ Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name("kesiswaan.index");
 });

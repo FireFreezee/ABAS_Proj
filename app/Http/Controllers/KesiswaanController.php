@@ -13,15 +13,19 @@ class KesiswaanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $currentDay = now()->day;
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
 
         // Fetch all classes
-        $kelasList = Kelas::with('siswa.absensi')->get();
+        // $kelasList = Kelas::with('siswa.absensi')->get();
 
         // Get total attendance data for all classes in the current month
         $totalAbsensi = Absensi::whereDay('date', $currentDay)
+            ->whereMonth('date', $currentMonth)
+            ->whereYear('date', $currentYear)
             ->get();
 
         // Calculate total counts and percentages for all classes
@@ -41,12 +45,104 @@ class KesiswaanController extends Controller
         $percentageTerlambat = ($totalRecords > 0) ? ($countTerlambat / $totalRecords) * 100 : 0;
         $percentageTAP = ($totalRecords > 0) ? ($countTAP / $totalRecords) * 100 : 0;
 
+        $startDate = $request->input('start');
+        $endDate = $request->input('end');
+
+        // Apply date range filtering if dates are provided
+        if ($startDate && $endDate) {
+            $query = Absensi::whereBetween('date', [$startDate, $endDate]);
+        } else {
+            $query = Absensi::query(); // Default query if no date range is provided
+        }
+
+        $filteredData = $query->orderBy('date', 'asc')->get();
+
+        // Group by date and then by status, counting each combination
+        $dailyStatusCounts = $filteredData->groupBy('date')->map(function ($dayData) {
+            return $dayData->groupBy('status')->map->count();
+        });
+
+
+
         // Store attendance statistics for each class
+
+        // $kelasData = [];
+        // foreach ($kelasList as $kelas) {
+        //     $siswaIds = $kelas->siswa->pluck('nis');
+        //     $kelasAbsensi = Absensi::whereDay('date', $currentDay)
+        //         ->whereIn('nis', $siswaIds)
+        //         ->get();
+
+        //     $totalKelasRecords = $kelasAbsensi->count();
+
+        //     $kelasHadir = $kelasAbsensi->where('status', 'Hadir')->count();
+        //     $kelasSakitIzin = ($kelasAbsensi->where('status', 'Sakit')->count()) + ($kelasAbsensi->where('status', 'Izin')->count());
+        //     // $kelasIzin = $kelasAbsensi->where('status', 'Izin')->count();
+        //     $kelasAlfa = $kelasAbsensi->where('status', 'Alfa')->count();
+        //     $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
+        //     $kelasTAP = $kelasAbsensi->where('status', 'TAP')->count();
+
+
+        //     // Calculate percentages for the class
+        //     $kelasPercentageHadir = ($totalKelasRecords > 0) ? ($kelasHadir / $totalKelasRecords) * 100 : 0;
+        //     $kelasPercentageSakitIzin = ($totalKelasRecords > 0) ? ($kelasSakitIzin / $totalKelasRecords) * 100 : 0;
+        //     // $kelasPercentageIzin = ($totalKelasRecords > 0) ? ($kelasIzin / $totalKelasRecords) * 100 : 0;
+        //     $kelasPercentageAlfa = ($totalKelasRecords > 0) ? ($kelasAlfa / $totalKelasRecords) * 100 : 0;
+        //     $kelasPercentageTerlambat = ($totalKelasRecords > 0) ? ($kelasTerlambat / $totalKelasRecords) * 100 : 0;
+        //     $kelasPercentageTAP = ($totalKelasRecords > 0) ? ($kelasTAP / $totalKelasRecords) * 100 : 0;
+
+        //     $kelasData[] = [
+        //         'kelas' => $kelas->tingkat . ' ' . $kelas->nomor_kelas,
+        //         'total' => $totalKelasRecords,
+        //         'countHadir' => $kelasHadir,
+        //         'percentageHadir' => $kelasPercentageHadir,
+        //         'countSakitIzin' => $kelasSakitIzin,
+        //         'percentageSakitIzin' => $kelasPercentageSakitIzin,
+        //         // 'countIzin' => $kelasIzin,
+        //         // 'percentageIzin' => $kelasPercentageIzin,
+        //         'countAlfa' => $kelasAlfa,
+        //         'percentageAlfa' => $kelasPercentageAlfa,
+        //         'countTerlambat' => $kelasTerlambat,
+        //         'percentageTerlambat' => $kelasPercentageTerlambat,
+        //         'countTAP' => $kelasTAP,
+        //         'percentageTAP' => $kelasPercentageTAP,
+        //     ];
+        // }
+
+        return view('kesiswaan.kesiswaan', [
+            'title' => 'Dashboard',
+            'countHadir' => $countHadir,
+            'countSakitIzin' => $countSakitIzin,
+            // 'countIzin' => $countIzin,
+            'countAlfa' => $countAlfa,
+            'countTerlambat' => $countTerlambat,
+            'countTAP' => $countTAP,
+            'percentageHadir' => $percentageHadir,
+            'percentageSakitIzin' => $percentageSakitIzin,
+            // 'percentageIzin' => $percentageIzin,
+            'percentageAlfa' => $percentageAlfa,
+            'percentageTerlambat' => $percentageTerlambat,
+            'percentageTAP' => $percentageTAP,
+            // 'kelasData' => $kelasData,
+            'dailyStatusCounts' => $dailyStatusCounts
+        ]);
+    }
+
+    public function laporanKelas()
+    {
+        $currentDay = now()->day;
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
+        // Fetch all classes
+        $kelasList = Kelas::with('siswa.absensi')->get();
 
         $kelasData = [];
         foreach ($kelasList as $kelas) {
             $siswaIds = $kelas->siswa->pluck('nis');
             $kelasAbsensi = Absensi::whereDay('date', $currentDay)
+                ->whereMonth('date', $currentMonth)
+                ->whereYear('date', $currentYear)
                 ->whereIn('nis', $siswaIds)
                 ->get();
 
@@ -59,7 +155,7 @@ class KesiswaanController extends Controller
             $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
             $kelasTAP = $kelasAbsensi->where('status', 'TAP')->count();
 
-            
+
             // Calculate percentages for the class
             $kelasPercentageHadir = ($totalKelasRecords > 0) ? ($kelasHadir / $totalKelasRecords) * 100 : 0;
             $kelasPercentageSakitIzin = ($totalKelasRecords > 0) ? ($kelasSakitIzin / $totalKelasRecords) * 100 : 0;
@@ -88,18 +184,6 @@ class KesiswaanController extends Controller
 
         return view('kesiswaan.kesiswaan', [
             'title' => 'Dashboard',
-            'countHadir' => $countHadir,
-            'countSakitIzin' => $countSakitIzin,
-            // 'countIzin' => $countIzin,
-            'countAlfa' => $countAlfa,
-            'countTerlambat' => $countTerlambat,
-            'countTAP' => $countTAP,
-            'percentageHadir' => $percentageHadir,
-            'percentageSakitIzin' => $percentageSakitIzin,
-            // 'percentageIzin' => $percentageIzin,
-            'percentageAlfa' => $percentageAlfa,
-            'percentageTerlambat' => $percentageTerlambat,
-            'percentageTAP' => $percentageTAP,
             'kelasData' => $kelasData,
         ]);
     }

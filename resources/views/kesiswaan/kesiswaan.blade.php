@@ -3,6 +3,50 @@
 @section('content')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <style>
+        /* Reduce the size of the datepicker popup */
+        .datepicker-dropdown {
+            transform: scale(0.9);
+            /* Adjust this value to make the calendar smaller or larger */
+            transform-origin: top left;
+            /* Ensure the calendar scales from the top-left corner */
+        }
+
+        /* Adjust the size of the header (month and year) */
+        .datepicker-dropdown .datepicker-switch {
+            font-size: 10px !important;
+            /* Smaller header text */
+            padding: 2px 5px !important;
+            /* Smaller padding */
+        }
+
+        /* Adjust the size of navigation arrows */
+        .datepicker-dropdown .prev,
+        .datepicker-dropdown .next {
+            font-size: 10px !important;
+        }
+
+        /* Adjust the size of day cells */
+        .datepicker-dropdown .datepicker-days td,
+        .datepicker-dropdown .datepicker-days th {
+            width: 15px !important;
+            height: 15px !important;
+            line-height: 15px !important;
+        }
+
+        /* Adjust the size of month and year selection cells */
+        .datepicker-dropdown .datepicker-months td,
+        .datepicker-dropdown .datepicker-years td {
+            width: 25px !important;
+            height: 25px !important;
+        }
+
+        /* Smaller today and clear buttons */
+        .datepicker-dropdown .datepicker-buttons .btn {
+            font-size: 8px !important;
+            padding: 2px 5px !important;
+        }
+    </style>
     <div class="app-sidebar colored">
         <div class="sidebar-header">
             <a class="header-brand" href="index.html">
@@ -185,59 +229,55 @@
             <div class="max-w-full w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
                 <div class="flex justify-between mb-5">
                     <div>
-                        <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Statistik Kehadiran</h5>
+                        <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Statistik Kehadiran
+                        </h5>
                     </div>
-                </div>
-                <div id="legend-chart"></div>
-                <div
-                    class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between mt-5">
-                    <div class="flex justify-between items-center pt-5">
-                        <!-- Button -->
-                        <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
-                            data-dropdown-placement="bottom"
-                            class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-                            type="button">
-                            Last 7 days
-                            <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 1 4 4 4-4" />
-                            </svg>
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div id="lastDaysdropdown"
-                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownDefaultButton">
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                        7 days</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                        30 days</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last
-                                        90 days</a>
-                                </li>
-                            </ul>
+                    <form action="{{ route('kesiswaan.index') }}" method="GET">
+                        <div id="date-range-picker" class="flex flex-wrap items-center gap-4 pb-2">
+                            <div class="relative w-full sm:w-auto flex-1">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input id="datepicker-range-start" datepicker datepicker-format="yyyy-mm-dd"
+                                    name="start" type="text"
+                                    class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Select date start" value="{{ request('start') }}">
+                            </div>
+
+                            <span class="text-gray-500 dark:text-gray-400">to</span>
+
+                            <div class="relative w-full sm:w-auto flex-1">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input id="datepicker-range-end" datepicker datepicker-format="yyyy-mm-dd" name="end"
+                                    type="text"
+                                    class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Select date end" value="{{ request('end') }}">
+                            </div>
+
+                            <button type="submit"
+                                class="bg-blue-500 text-white h-8 p-2 rounded-lg w-full sm:w-auto hover:bg-blue-800">
+                                Filter
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
+                <div id="legend-chart" class="!my-4"></div>
             </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script>
+        var dailyStatusCounts = @json($dailyStatusCounts);
+    </script>
 @endsection

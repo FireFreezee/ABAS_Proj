@@ -224,7 +224,7 @@ class SiswaController extends Controller
                     'menit_keterlambatan' => $menit_terlambat,
                 ];
 
-                $simpan = DB::table('absensis')->insert($data);
+                $simpan = DB::table('absensis')->update($data);
 
                 if ($simpan) {
                     echo "success|Terimakasih, Selamat Belajar!|in";
