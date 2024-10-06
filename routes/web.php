@@ -64,7 +64,7 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
 });
 
 Route::middleware(['auth', 'Walisiswa:walisiswa'])->group(function () {
-   Route::get('walisiswa', [WalisiswaController::class, 'index'])->name('walsis-dashboard');
+    Route::get('walisiswa', [WalisiswaController::class, 'index'])->name('walsis-dashboard');
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {
@@ -99,9 +99,10 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
 
     Route::post('/operator/updatelokasisekolah', [OperatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
     Route::post('/operator/updatewaktu', [OperatorController::class, 'updatewaktu'])->name('updatewaktu');
-
 });
 
 Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
- Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name("kesiswaan.index");
+    Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name("kesiswaan.index");
+    Route::get('/laporan-kelas', [KesiswaanController::class, 'laporanKelas'])->name("kesiswaan.kelas");
+    Route::get('/laporan-siswa/{kelas_id}', [KesiswaanController::class, 'laporanSiswa'])->name("kesiswaan.siswa");
 });

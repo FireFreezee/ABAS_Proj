@@ -65,11 +65,11 @@
             <div class="nav-container">
                 <nav id="main-menu-navigation" class="navigation-main">
                     <div class="nav-lavel">Home</div>
-                    <div class="nav-item active">
+                    <div class="nav-item">
                         <a href="{{ route('kesiswaan.index') }}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
                     </div>
                     <div class="nav-lavel">Laporan</div>
-                    <div class="nav-item">
+                    <div class="nav-item active">
                         <a href="{{ route('kesiswaan.kelas') }}"><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
                     </div>
                 </nav>
@@ -79,14 +79,58 @@
     <div class="main-content">
         <div class="container-fluid">
             <h5 class="font-bold text-[20px] mb-4">
-                Kehadiran Seluruh Siswa Hari Ini
+                Laporan Absensi
             </h5>
-            <div class="grid grid-cols-5 gap-2">
+            <div class="grid grid-cols-2">
+                <div></div>
+                <form action="{{ route('kesiswaan.siswa', ['kelas_id' => $kelas->id_kelas] ) }}" method="GET">
+                    <div id="date-range-picker" class="flex justify-end items-center gap-4 pb-2">
+                        <div class="relative w-full sm:w-auto flex-1">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input id="datepicker-range-start" datepicker datepicker-format="yyyy-mm-dd" name="start"
+                                type="text"
+                                class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Select date start" value="{{ request('start') }}">
+                        </div>
+
+                        <span class="text-gray-500 dark:text-gray-400">to</span>
+
+                        <div class="relative w-full sm:w-auto flex-1">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input id="datepicker-range-end" datepicker datepicker-format="yyyy-mm-dd" name="end"
+                                type="text"
+                                class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Select date end" value="{{ request('end') }}">
+                        </div>
+
+                        <button type="submit"
+                            class="bg-blue-500 text-white h-8 p-2 rounded-lg w-full sm:w-auto hover:bg-blue-800">
+                            Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <h5 class="font-bold text-[20px] mb-4">
+                Rata-Rata
+            </h5>
+            <div class="grid grid-cols-5 gap-4">
                 <div class="card ">
                     <div class="card-body border-l-8 border-green-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-green-500 text-lg">{{ $countHadir }}</h3>
+                                <h3 class="text-green-500 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Hadir</p>
                             </div>
                             <div class="icon">
@@ -99,13 +143,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-green-200" style="height: 6px;">
-                            <div class="progress-bar bg-green-500 " role="progressbar"
-                                style="width: {{ number_format($percentageHadir) }}%;" aria-valuenow="25" aria-valuemin="0"
-                                aria-valuemax="100">
+                            <div class="progress-bar bg-green-500 " role="progressbar" style="width: {{ $averageAttendancePercentages['Hadir'] }}%;" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($percentageHadir) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Hadir']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -114,7 +157,7 @@
                     <div class="card-body border-l-8 border-cyan-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-aqua text-lg">{{ $countSakitIzin }}</h3>
+                                <h3 class="text-aqua text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Sakit/Izin</p>
                             </div>
                             <div class="icon">
@@ -127,13 +170,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-cyan-200" style="height: 6px;">
-                            <div class="progress-bar bg-aqua" role="progressbar"
-                                style="width: {{ number_format($percentageSakitIzin) }}%;" aria-valuenow="25"
+                            <div class="progress-bar bg-aqua" role="progressbar" style="width: {{ $averageAttendancePercentages['Sakit/Izin'] }}%;" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($percentageSakitIzin) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Sakit/Izin']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -142,7 +184,7 @@
                     <div class="card-body border-l-8 border-red-700">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-red-700 text-lg">{{ $countAlfa }}</h3>
+                                <h3 class="text-red-700 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Alfa</p>
                             </div>
                             <div class="icon">
@@ -155,13 +197,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-red-200" style="height: 6px;">
-                            <div class="progress-bar bg-red-700" role="progressbar"
-                                style="width: {{ number_format($percentageAlfa) }}%;" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-red-700" role="progressbar" style="width: {{ $averageAttendancePercentages['Alfa'] }}%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($percentageAlfa) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Alfa']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -170,7 +211,7 @@
                     <div class="card-body border-l-8 border-gray-400">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-400 text-lg">{{ $countTerlambat }}</h3>
+                                <h3 class="text-gray-400 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Terlambat</p>
                             </div>
                             <div class="icon">
@@ -183,13 +224,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-gray-200" style="height: 6px;">
-                            <div class="progress-bar bg-gray-400" role="progressbar"
-                                style="width: {{ number_format($percentageTerlambat) }}%;" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-gray-400" role="progressbar" style="width: {{ $averageAttendancePercentages['Terlambat'] }}%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($percentageTerlambat) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Terlambat']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -197,7 +237,7 @@
                     <div class="card-body border-l-8 border-gray-900">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-900 text-lg">{{ $countTAP }}</h3>
+                                <h3 class="text-gray-900 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">TAP</p>
                             </div>
                             <div class="icon">
@@ -210,69 +250,57 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-gray-300" style="height: 6px;">
-                            <div class="progress-bar bg-gray-900" role="progressbar"
-                                style="width: {{ number_format($percentageTAP) }}%;" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-gray-900" role="progressbar" style="width: {{ $averageAttendancePercentages['TAP'] }}%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($percentageTAP) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['TAP']) }}%</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="max-w-full w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                <div class="flex justify-between mb-5">
-                    <div>
-                        <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Statistik Kehadiran
-                        </h5>
-                    </div>
-                    <form action="{{ route('kesiswaan.index') }}" method="GET">
-                        <div id="date-range-picker" class="flex flex-wrap items-center gap-4 pb-2">
-                            <div class="relative w-full sm:w-auto flex-1">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                    </svg>
+            <div class="mt-8">
+                <h5 class="font-bold text-[20px] mb-4">
+                    {{ $kelas->tingkat }} {{ $kelas->id_jurusan }} {{ $kelas->nomor_kelas }}
+                </h5>
+                @foreach ($studentsData as $student)
+                    <div class="bg-slate-200 w-full h-auto rounded-lg my-4">
+                        <div class="p-2">
+                            <div class="flex justify-between">
+                                <div class="w-full m-2">
+                                    <div class="flex justify-between">
+                                        <h5 class="font-bold text-[17px]">
+                                            {{ $student['name'] }}
+                                        </h5>
+                                        <h5 class="font-bold text-[17px]">
+                                           NIS : {{ $student['nis'] }}
+                                        </h5>
+                                    </div>
+                                    <div class="progress mt-3 mb-1 !h-4 bg-gray-300" style="height: 6px;">
+                                        <div class="progress-bar bg-green-500" role="progressbar" style="width: {{ $student['attendancePercentages']['Hadir'] }}%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="text-xs">Hadir {{ number_format($student['attendancePercentages']['Hadir']) }}%</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <input id="datepicker-range-start" datepicker datepicker-format="yyyy-mm-dd"
-                                    name="start" type="text"
-                                    class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Select date start" value="{{ request('start') }}">
-                            </div>
-
-                            <span class="text-gray-500 dark:text-gray-400">to</span>
-
-                            <div class="relative w-full sm:w-auto flex-1">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                <button
+                                    class="bg-white w-28 h-auto m-2 rounded-lg text-lg font-bold flex items-center p-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="size-6">
+                                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                        <path fill-rule="evenodd"
+                                            d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                            clip-rule="evenodd" />
                                     </svg>
-                                </div>
-                                <input id="datepicker-range-end" datepicker datepicker-format="yyyy-mm-dd" name="end"
-                                    type="text"
-                                    class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Select date end" value="{{ request('end') }}">
+                                    Detail</button>
                             </div>
-
-                            <button type="submit"
-                                class="bg-blue-500 text-white h-8 p-2 rounded-lg w-full sm:w-auto hover:bg-blue-800">
-                                Filter
-                            </button>
                         </div>
-                    </form>
-                </div>
-                <div id="legend-chart" class="!my-4"></div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-    <script>
-        var dailyStatusCounts = @json($dailyStatusCounts);
-    </script>
 @endsection

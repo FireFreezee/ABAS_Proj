@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Wali_Kelas;
 use App\Models\Siswa;
+use Carbon\Carbon;
 
 class KesiswaanController extends Controller
 {
@@ -33,14 +34,12 @@ class KesiswaanController extends Controller
 
         $countHadir = $totalAbsensi->where('status', 'Hadir')->count();
         $countSakitIzin = ($totalAbsensi->where('status', 'Sakit')->count()) + ($totalAbsensi->where('status', 'Izin')->count());
-        // $countIzin = $totalAbsensi->where('status', 'Izin')->count();
         $countAlfa = $totalAbsensi->where('status', 'Alfa')->count();
         $countTerlambat = $totalAbsensi->where('status', 'Terlambat')->count();
         $countTAP = $totalAbsensi->where('status', 'TAP')->count();
 
         $percentageHadir = ($totalRecords > 0) ? ($countHadir / $totalRecords) * 100 : 0;
         $percentageSakitIzin = ($totalRecords > 0) ? ($countSakitIzin / $totalRecords) * 100 : 0;
-        // $percentageIzin = ($totalRecords > 0) ? ($countIzin / $totalRecords) * 100 : 0;
         $percentageAlfa = ($totalRecords > 0) ? ($countAlfa / $totalRecords) * 100 : 0;
         $percentageTerlambat = ($totalRecords > 0) ? ($countTerlambat / $totalRecords) * 100 : 0;
         $percentageTAP = ($totalRecords > 0) ? ($countTAP / $totalRecords) * 100 : 0;
@@ -48,12 +47,14 @@ class KesiswaanController extends Controller
         $startDate = $request->input('start');
         $endDate = $request->input('end');
 
-        // Apply date range filtering if dates are provided
-        if ($startDate && $endDate) {
-            $query = Absensi::whereBetween('date', [$startDate, $endDate]);
-        } else {
-            $query = Absensi::query(); // Default query if no date range is provided
+        // Set default to current month if no dates are provided
+        if (!$startDate || !$endDate) {
+            $startDate = Carbon::now()->startOfMonth()->toDateString();
+            $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
+
+        // Apply date range filtering
+        $query = Absensi::whereBetween('date', [$startDate, $endDate]);
 
         $filteredData = $query->orderBy('date', 'asc')->get();
 
@@ -62,87 +63,46 @@ class KesiswaanController extends Controller
             return $dayData->groupBy('status')->map->count();
         });
 
-
-
-        // Store attendance statistics for each class
-
-        // $kelasData = [];
-        // foreach ($kelasList as $kelas) {
-        //     $siswaIds = $kelas->siswa->pluck('nis');
-        //     $kelasAbsensi = Absensi::whereDay('date', $currentDay)
-        //         ->whereIn('nis', $siswaIds)
-        //         ->get();
-
-        //     $totalKelasRecords = $kelasAbsensi->count();
-
-        //     $kelasHadir = $kelasAbsensi->where('status', 'Hadir')->count();
-        //     $kelasSakitIzin = ($kelasAbsensi->where('status', 'Sakit')->count()) + ($kelasAbsensi->where('status', 'Izin')->count());
-        //     // $kelasIzin = $kelasAbsensi->where('status', 'Izin')->count();
-        //     $kelasAlfa = $kelasAbsensi->where('status', 'Alfa')->count();
-        //     $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
-        //     $kelasTAP = $kelasAbsensi->where('status', 'TAP')->count();
-
-
-        //     // Calculate percentages for the class
-        //     $kelasPercentageHadir = ($totalKelasRecords > 0) ? ($kelasHadir / $totalKelasRecords) * 100 : 0;
-        //     $kelasPercentageSakitIzin = ($totalKelasRecords > 0) ? ($kelasSakitIzin / $totalKelasRecords) * 100 : 0;
-        //     // $kelasPercentageIzin = ($totalKelasRecords > 0) ? ($kelasIzin / $totalKelasRecords) * 100 : 0;
-        //     $kelasPercentageAlfa = ($totalKelasRecords > 0) ? ($kelasAlfa / $totalKelasRecords) * 100 : 0;
-        //     $kelasPercentageTerlambat = ($totalKelasRecords > 0) ? ($kelasTerlambat / $totalKelasRecords) * 100 : 0;
-        //     $kelasPercentageTAP = ($totalKelasRecords > 0) ? ($kelasTAP / $totalKelasRecords) * 100 : 0;
-
-        //     $kelasData[] = [
-        //         'kelas' => $kelas->tingkat . ' ' . $kelas->nomor_kelas,
-        //         'total' => $totalKelasRecords,
-        //         'countHadir' => $kelasHadir,
-        //         'percentageHadir' => $kelasPercentageHadir,
-        //         'countSakitIzin' => $kelasSakitIzin,
-        //         'percentageSakitIzin' => $kelasPercentageSakitIzin,
-        //         // 'countIzin' => $kelasIzin,
-        //         // 'percentageIzin' => $kelasPercentageIzin,
-        //         'countAlfa' => $kelasAlfa,
-        //         'percentageAlfa' => $kelasPercentageAlfa,
-        //         'countTerlambat' => $kelasTerlambat,
-        //         'percentageTerlambat' => $kelasPercentageTerlambat,
-        //         'countTAP' => $kelasTAP,
-        //         'percentageTAP' => $kelasPercentageTAP,
-        //     ];
-        // }
-
         return view('kesiswaan.kesiswaan', [
             'title' => 'Dashboard',
             'countHadir' => $countHadir,
             'countSakitIzin' => $countSakitIzin,
-            // 'countIzin' => $countIzin,
             'countAlfa' => $countAlfa,
             'countTerlambat' => $countTerlambat,
             'countTAP' => $countTAP,
             'percentageHadir' => $percentageHadir,
             'percentageSakitIzin' => $percentageSakitIzin,
-            // 'percentageIzin' => $percentageIzin,
             'percentageAlfa' => $percentageAlfa,
             'percentageTerlambat' => $percentageTerlambat,
             'percentageTAP' => $percentageTAP,
-            // 'kelasData' => $kelasData,
             'dailyStatusCounts' => $dailyStatusCounts
         ]);
     }
 
-    public function laporanKelas()
+    public function laporanKelas(Request $request)
     {
-        $currentDay = now()->day;
-        $currentMonth = now()->month;
-        $currentYear = now()->year;
+        // Retrieve the date range from the request
+        $startDate = $request->input('start');
+        $endDate = $request->input('end');
+
+        // Set default to current month if no dates are provided
+        if (!$startDate || !$endDate) {
+            $startDate = Carbon::now()->startOfMonth()->toDateString();
+            $endDate = Carbon::now()->endOfMonth()->toDateString();
+        }
 
         // Fetch all classes
         $kelasList = Kelas::with('siswa.absensi')->get();
 
         $kelasData = [];
+        $totalPercentageHadir = 0;
+        $totalClasses = count($kelasList);
+
         foreach ($kelasList as $kelas) {
             $siswaIds = $kelas->siswa->pluck('nis');
-            $kelasAbsensi = Absensi::whereDay('date', $currentDay)
-                ->whereMonth('date', $currentMonth)
-                ->whereYear('date', $currentYear)
+
+            // Modify the query to filter by date range
+            $kelasAbsensi = Absensi::whereBetween('date', [$startDate, $endDate])
                 ->whereIn('nis', $siswaIds)
                 ->get();
 
@@ -150,29 +110,26 @@ class KesiswaanController extends Controller
 
             $kelasHadir = $kelasAbsensi->where('status', 'Hadir')->count();
             $kelasSakitIzin = ($kelasAbsensi->where('status', 'Sakit')->count()) + ($kelasAbsensi->where('status', 'Izin')->count());
-            // $kelasIzin = $kelasAbsensi->where('status', 'Izin')->count();
             $kelasAlfa = $kelasAbsensi->where('status', 'Alfa')->count();
             $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
             $kelasTAP = $kelasAbsensi->where('status', 'TAP')->count();
 
-
             // Calculate percentages for the class
             $kelasPercentageHadir = ($totalKelasRecords > 0) ? ($kelasHadir / $totalKelasRecords) * 100 : 0;
+            $totalPercentageHadir += $kelasPercentageHadir;
             $kelasPercentageSakitIzin = ($totalKelasRecords > 0) ? ($kelasSakitIzin / $totalKelasRecords) * 100 : 0;
-            // $kelasPercentageIzin = ($totalKelasRecords > 0) ? ($kelasIzin / $totalKelasRecords) * 100 : 0;
             $kelasPercentageAlfa = ($totalKelasRecords > 0) ? ($kelasAlfa / $totalKelasRecords) * 100 : 0;
             $kelasPercentageTerlambat = ($totalKelasRecords > 0) ? ($kelasTerlambat / $totalKelasRecords) * 100 : 0;
             $kelasPercentageTAP = ($totalKelasRecords > 0) ? ($kelasTAP / $totalKelasRecords) * 100 : 0;
 
             $kelasData[] = [
-                'kelas' => $kelas->tingkat . ' ' . $kelas->nomor_kelas,
+                'kelas_id' => $kelas->id_kelas,
+                'kelas' => $kelas->tingkat . ' ' . $kelas->id_jurusan . '' . $kelas->nomor_kelas,
                 'total' => $totalKelasRecords,
                 'countHadir' => $kelasHadir,
                 'percentageHadir' => $kelasPercentageHadir,
                 'countSakitIzin' => $kelasSakitIzin,
                 'percentageSakitIzin' => $kelasPercentageSakitIzin,
-                // 'countIzin' => $kelasIzin,
-                // 'percentageIzin' => $kelasPercentageIzin,
                 'countAlfa' => $kelasAlfa,
                 'percentageAlfa' => $kelasPercentageAlfa,
                 'countTerlambat' => $kelasTerlambat,
@@ -182,11 +139,105 @@ class KesiswaanController extends Controller
             ];
         }
 
-        return view('kesiswaan.kesiswaan', [
+        $averagePercentageHadir = ($totalClasses > 0) ? ($totalPercentageHadir / $totalClasses) : 0;
+
+        return view('kesiswaan.kelas', [
             'title' => 'Dashboard',
             'kelasData' => $kelasData,
+            'averagePercentageHadir' => $averagePercentageHadir,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ]);
     }
+
+    public function laporanSiswa(Request $request, $kelas_id)
+    {
+        // Retrieve the date range from the request
+        $startDate = $request->input('start');
+        $endDate = $request->input('end');
+
+        // Set default to the current month if no dates are provided
+        if (!$startDate || !$endDate) {
+            $startDate = Carbon::now()->startOfMonth()->toDateString();
+            $endDate = Carbon::now()->endOfMonth()->toDateString();
+        }
+
+        // Fetch students in the class
+        $kelas = Kelas::where('id_kelas', $kelas_id)->first(); // Use first() to get a single Kelas object
+        $students = Siswa::where('id_kelas', $kelas_id)->with('user')->get();
+        $siswaIds = $students->pluck('nis');
+
+        // Fetch attendance records for the students within the specified date range
+        $siswaAbsensi = Absensi::whereIn('nis', $siswaIds)
+            ->whereBetween('date', [$startDate, $endDate]) // Filter by date range
+            ->get();
+
+        $totalStudents = count($students);
+        $attendanceCounts = [
+            'Hadir' => $siswaAbsensi->where('status', 'Hadir')->count(),
+            'Sakit' => $siswaAbsensi->where('status', 'Sakit')->count(),
+            'Izin' => $siswaAbsensi->where('status', 'Izin')->count(),
+            'Alfa' => $siswaAbsensi->where('status', 'Alfa')->count(),
+            'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
+            'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
+        ];
+
+        // Calculate the percentage of attendance for each student
+        $studentsData = []; // Initialize the array to hold student data
+
+        foreach ($students as $student) {
+            // Get attendance records for the current student within the specified date range
+            $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
+
+            $totalAttendance = $studentAttendance->count();
+            $studentData = [
+                'nis' => $student->nis,
+                'name' => $student->user->nama,
+                'attendancePercentages' => [],
+            ];
+
+            if ($totalAttendance > 0) {
+                foreach ($attendanceCounts as $status => $count) {
+                    $studentStatusCount = $studentAttendance->where('status', $status)->count();
+                    $percentage = ($studentStatusCount / $totalAttendance) * 100;
+                    $studentData['attendancePercentages'][$status] = $percentage;
+                }
+            } else {
+                // If no attendance records, set all percentages to 0
+                $studentData['attendancePercentages'] = array_fill_keys(array_keys($attendanceCounts), 0);
+            }
+
+            $studentsData[] = $studentData; // Add student data to the array
+        }
+
+        // Calculate average attendance percentages for all statuses
+        $averageAttendancePercentages = [];
+
+        // Combine 'Sakit' and 'Izin' for average calculations
+        $attendanceCounts['Sakit/Izin'] = $attendanceCounts['Sakit'] + $attendanceCounts['Izin'];
+
+        foreach ($attendanceCounts as $status => $count) {
+            $totalPercentage = 0;
+
+            // Sum the individual percentages for this status
+            foreach ($studentsData as $studentData) {
+                // Check if the status is 'Sakit/Izin' and combine values
+                if ($status === 'Sakit/Izin') {
+                    $totalPercentage += $studentData['attendancePercentages']['Sakit'] ?? 0;
+                    $totalPercentage += $studentData['attendancePercentages']['Izin'] ?? 0;
+                } else {
+                    $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
+                }
+            }
+
+            // Calculate the average percentage
+            $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
+        }
+
+        // Pass the data to the view
+        return view('kesiswaan.siswa', compact('studentsData', 'attendanceCounts', 'averageAttendancePercentages', 'kelas'));
+    }
+
 
     /**
      * Show the form for creating a new resource.
