@@ -11,6 +11,7 @@ use App\Models\Siswa;
 use App\Models\Koordinat_Sekolah;
 use App\Models\User;
 use App\Models\Waktu_Absen;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class SiswaController extends Controller
@@ -326,6 +327,12 @@ class SiswaController extends Controller
         // Get the start and end dates from the request
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+
+        // Set default to the current month if no dates are provided
+        if (!$startDate || !$endDate) {
+            $startDate = Carbon::now()->startOfMonth()->toDateString();
+            $endDate = Carbon::now()->endOfMonth()->toDateString();
+        }
 
         // Get the authenticated user
         $user = Auth::user();

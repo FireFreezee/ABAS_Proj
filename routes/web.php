@@ -105,4 +105,5 @@ Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
     Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name("kesiswaan.index");
     Route::get('/laporan-kelas', [KesiswaanController::class, 'laporanKelas'])->name("kesiswaan.kelas");
     Route::get('/laporan-siswa/{kelas_id}', [KesiswaanController::class, 'laporanSiswa'])->name("kesiswaan.siswa");
+    Route::get('/laporan-detail-siswa/{id}', [KesiswaanController::class, 'detailSiswa'])->name("kesiswaan.detail.siswa");
 });

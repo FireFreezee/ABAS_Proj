@@ -240,7 +240,7 @@
                                 <input id="datepicker-range-start" datepicker datepicker-format="yyyy-mm-dd"
                                     name="start" type="text"
                                     class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Select date start" value="{{ request('start') }}">
+                                    placeholder="Select date start" value="{{$startDate}}">
                             </div>
 
                             <span class="text-gray-500 dark:text-gray-400">to</span>
@@ -256,7 +256,7 @@
                                 <input id="datepicker-range-end" datepicker datepicker-format="yyyy-mm-dd" name="end"
                                     type="text"
                                     class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Select date end" value="{{ request('end') }}">
+                                    placeholder="Select date end" value="{{ $endDate }}">
                             </div>
 
                             <button type="submit"
