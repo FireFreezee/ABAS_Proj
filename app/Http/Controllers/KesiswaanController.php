@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\Wali_Kelas;
 use App\Models\Siswa;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class KesiswaanController extends Controller
 {
@@ -140,12 +141,26 @@ class KesiswaanController extends Controller
                 'percentageTAP' => $kelasPercentageTAP,
             ];
         }
-
         $averagePercentageHadir = ($totalClasses > 0) ? ($totalPercentageHadir / $totalClasses) : 0;
 
+        $kelasDataCollection = collect($kelasData);
+
+        // Paginate the collection
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $paginateData = new LengthAwarePaginator(
+            $kelasDataCollection->forPage($currentPage, $perPage),
+            $kelasDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
+        
         return view('kesiswaan.kelas', [
             'title' => 'Dashboard',
-            'kelasData' => $kelasData,
+            'kelasData' => $paginatedData,
             'averagePercentageHadir' => $averagePercentageHadir,
             'startDate' => $startDate,
             'endDate' => $endDate,
@@ -236,8 +251,29 @@ class KesiswaanController extends Controller
             $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
         }
 
+        $siswaDataCollection = collect($studentsData);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $paginateData = new LengthAwarePaginator(
+        $siswaDataCollection->forPage($currentPage, $perPage),
+        $siswaDataCollection->count(),
+        $perPage, 
+        $currentPage, 
+        ['path'=> LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start','end']));
+
         // Pass the data to the view
-        return view('kesiswaan.siswa', compact('studentsData', 'attendanceCounts', 'averageAttendancePercentages', 'kelas', 'startDate', 'endDate'));
+        return view('kesiswaan.siswa', [
+            'studentsData' => $paginatedData,
+            'attendanceCounts' => $attendanceCounts, 
+            'averageAttendancePercentages' => $averageAttendancePercentages, 
+            'kelas' => $kelas, 
+            'startDate' => $startDate, 
+            'endDate' => $endDate
+        ]);
     }
 
     public function detailSiswa(Request $request, $id)
@@ -252,7 +288,7 @@ class KesiswaanController extends Controller
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'asc')->paginate('10')->appends($request->only(['start', 'end']));
+        $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'asc')->get();
 
         $students = Siswa::where('nis', $id)->with('user')->first();
 
@@ -276,7 +312,28 @@ class KesiswaanController extends Controller
             'percentageTAP' => ($totalRecords > 0) ? ($attendanceCounts['TAP'] / $totalRecords) * 100 : 0,
         ];
 
-        return view('kesiswaan.detailsiswa', compact('present' ,'students','attendanceCounts','attendancePercentage', 'startDate', 'endDate'));
+        $presentDataCollection = collect($present);
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 10;
+        $paginateData = new LengthAwarePaginator(
+            $presentDataCollection->forPage($currentPage, $perPage),
+            $presentDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path'=> LengthAwarePaginator::resolveCurrentPath()]
+        );
+
+        $paginatedData = $paginateData->appends($request->only(['start','end']));
+
+        return view('kesiswaan.detailsiswa', [
+            'present' => $paginatedData ,
+            'students' => $students,
+            'attendanceCounts' => $attendanceCounts,
+            'attendancePercentage' =>$attendancePercentage, 
+            'startDate' => $startDate, 
+            'endDate' => $endDate
+        ]);
     }
 
     /**

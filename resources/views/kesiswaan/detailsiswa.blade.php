@@ -337,9 +337,9 @@
                                                     </button>
                                                 </div>
                                                 <div class="pt-3">
-                                                    <p><strong>Status:</strong> {{ $absensi->status }}
+                                                    <p><strong>Keterangan:</strong> {{ $absensi->status }}
                                                     </p>
-                                                    <p><strong>Date:</strong> {{ $absensi->date }}</p>
+                                                    <p><strong>Tanggal Absen:</strong> {{ $absensi->date }}</p>
                                                     <p><strong>Jam Masuk:</strong>
                                                         {{ $absensi->jam_masuk }}</p>
                                                     <p><strong>Jam Pulang:</strong>

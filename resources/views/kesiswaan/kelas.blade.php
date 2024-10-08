@@ -170,6 +170,9 @@
                         </div>
                     </div>
                 @endforeach
+                <div class="pagination flex justify-end p-3 text-sm sm:text-lg ">
+                    {{ $kelasData->links('vendor.pagination.bootstrap-5') }}
+                </div>
             </div>
         </div>
     </div>

@@ -134,7 +134,7 @@
             <!--=============== HOME ===============-->
             <div class="main-content" style="padding-left: 0px; padding-right: 0px">
                 <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
-                    <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="javascript:history.back()">
+                    <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="/siswa">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -385,7 +385,7 @@
                                                         datepicker-format="yyyy-mm-dd" name="start" type="text"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                         placeholder="Select date start"
-                                                        value="{{ request('start') }}">
+                                                        value="{{ $startDate }}">
                                                 </div>
 
                                                 <span class="text-gray-500 dark:text-gray-400">to</span>
@@ -403,7 +403,7 @@
                                                     <input id="datepicker-range-end" datepicker
                                                         datepicker-format="yyyy-mm-dd" name="end" type="text"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                        placeholder="Select date end" value="{{ request('end') }}">
+                                                        placeholder="Select date end" value="{{ $endDate }}">
                                                 </div>
 
                                                 <button type="submit"
@@ -464,13 +464,17 @@
                                                                         </button>
                                                                 </div>
                                                                 <div class="pt-3">
-                                                                    <p><strong>Status:</strong> {{ $absen->status }}
+                                                                    <p><strong>Keterangan:</strong> {{ $absen->status }}
                                                                     </p>
-                                                                    <p><strong>Date:</strong> {{ $absen->date }}</p>
+                                                                    <p><strong>Tanggal:</strong> {{ $absen->date }}</p>
                                                                     <p><strong>Jam Masuk:</strong>
                                                                         {{ $absen->jam_masuk }}</p>
                                                                     <p><strong>Jam Pulang:</strong>
                                                                         {{ $absen->jam_pulang }}</p>
+                                                                    @if ($absen->menit_keterlambatan > 0)
+                                                                    <p><strong>Keterlambatan:</strong>
+                                                                        {{ $absen->menit_keterlambatan }} Menit</p>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>

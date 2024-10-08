@@ -154,7 +154,7 @@
                     <div class="container-fluid">
                         <div class="card">
                             <a class="flex items-center p-3 text-sm sm:text-lg gap-1"
-                                href="javascript:history.back()">
+                                href="/siswa">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

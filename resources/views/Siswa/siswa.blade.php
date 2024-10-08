@@ -202,7 +202,7 @@
                                     </div>
                                 </div>
                                 <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
-                                <a href="#" style="text-decoration: none">{{ Auth::user()->email }}</a>
+                                <h4 href="#" style="text-decoration: none"><code>{{ Auth::user()->siswa->nis }}</code></h4>
                             </div>
                         </div>
                     </div>
