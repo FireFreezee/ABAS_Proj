@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KesiswaanController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\SiswaController;
@@ -21,26 +21,51 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
+//     if (auth()->check()) {
+//         $role = auth()->user()->role;
+
+        // if ($role == 'kesiswaan') {
+        //     return redirect('kesiswaan');
+        // } elseif ($role == 'siswa') {
+        //     return redirect('siswa');
+        // } elseif ($role == 'wali') {
+        //     return redirect('walikelas');
+        // } elseif ($role == 'operator') {
+        //     return redirect('operator');
+        // } elseif ($role == 'walis') {
+        //     return redirect('walisiswa');
+        // } else {
+        //     return redirect('/home');
+        // }
+//     }
+//     return view('Login.login');
+// })->name('log');
+
+
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/', [AuthController::class, 'index'])->name('log');
+    Route::post('/postlogin', [AuthController::class, 'postlogin'])->name('postlogin');
+});
+
+Route::get('/check', function () {
     if (auth()->check()) {
         $role = auth()->user()->role;
 
-        if ($role == 'kesiswaan') {
-            return redirect('kesiswaan');
+        if ($role == 'operator') {
+            return redirect('operator');
         } elseif ($role == 'siswa') {
             return redirect('siswa');
         } elseif ($role == 'wali') {
-            return redirect('walikelas');
-        } elseif ($role == 'operator') {
-            return redirect('operator');
+            return redirect('wali');
+        } elseif ($role == 'kesiswaan') {
+            return redirect('kesiswaan');
         } elseif ($role == 'walis') {
-            return redirect('walisiswa');
-        } else {
-            return redirect('/home');
+            return redirect('walis');
         }
     }
-    return view('Login.login');
-})->name('log');
+    return route('log');
+})->name('check');
 
 Auth::routes();
 

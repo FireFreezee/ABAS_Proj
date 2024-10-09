@@ -537,7 +537,7 @@
                                                         {{ $persentaseHadirBulanIni }}%
                                                     </div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
+                                                        <div class="progress mt-2 !bg-green-100">
                                                             <div class="progress-bar bg-green" role="progressbar"
                                                                 style="width: {{ $persentaseHadirBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseHadirBulanIni }}"
@@ -552,7 +552,7 @@
                                                         {{ $persentaseSakitIzinBulanIni }}%
                                                     </div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
+                                                        <div class="progress mt-2 !bg-cyan-100">
                                                             <div class="progress-bar bg-aqua" role="progressbar"
                                                                 style="width: {{ $persentaseSakitIzinBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseSakitIzinBulanIni }}"
@@ -568,7 +568,7 @@
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
-                                                            <div class="progress-bar !bg-gray-700" role="progressbar"
+                                                            <div class="progress-bar !bg-gray-400" role="progressbar"
                                                                 style="width: {{ $persentaseTerlambatBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseTerlambatBulanIni }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>
@@ -581,7 +581,7 @@
                                                     <div class="col-3 text-right !text-xs sm:!text-base">
                                                         {{ $persentaseAlfaBulanIni }}%</div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
+                                                        <div class="progress mt-2 !bg-red-100">
                                                             <div class="progress-bar bg-danger" role="progressbar"
                                                                 style="width: {{ $persentaseAlfaBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseAlfaBulanIni }}"
@@ -595,8 +595,8 @@
                                                     <div class="col-3 text-right !text-xs sm:!text-base">
                                                         {{ $persentaseTAPBulanIni }}%</div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
-                                                            <div class="progress-bar !bg-red-700" role="progressbar"
+                                                        <div class="progress mt-2 bg-gray-200">
+                                                            <div class="progress-bar !bg-gray-900" role="progressbar"
                                                                 style="width: {{ $persentaseTAPBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseTAPBulanIni }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>
@@ -619,7 +619,7 @@
                                                     <div class="col-3 text-right">
                                                         {{ $persentaseHadirBulanSebelumnya }}%</div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
+                                                        <div class="progress mt-2 !bg-green-100">
                                                             <div class="progress-bar bg-green" role="progressbar"
                                                                 style="width: {{ $persentaseHadirBulanSebelumnya }}%"
                                                                 aria-valuenow="{{ $persentaseHadirBulanSebelumnya }}"
@@ -633,7 +633,7 @@
                                                     <div class="col-3 text-right">
                                                         {{ $persentaseSakitIzinBulanSebelumnya }}%</div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
+                                                        <div class="progress mt-2 !bg-cyan-100">
                                                             <div class="progress-bar bg-aqua" role="progressbar"
                                                                 style="width: {{ $persentaseSakitIzinBulanSebelumnya }}%"
                                                                 aria-valuenow="{{ $persentaseSakitIzinBulanSebelumnya }}"
@@ -648,7 +648,7 @@
                                                         {{ $persentaseTerlambatBulanSebelumnya }}%</div>
                                                     <div class="col-12">
                                                         <div class="progress mt-2">
-                                                            <div class="progress-bar bg-purple" role="progressbar"
+                                                            <div class="progress-bar !bg-gray-400" role="progressbar"
                                                                 style="width: {{ $persentaseTerlambatBulanSebelumnya }}%"
                                                                 aria-valuenow="{{ $persentaseTerlambatBulanSebelumnya }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>
@@ -661,7 +661,7 @@
                                                     <div class="col-3 text-right">
                                                         {{ $persentaseAlfaBulanSebelumnya }}%</div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
+                                                        <div class="progress mt-2 !bg-red-100">
                                                             <div class="progress-bar bg-danger" role="progressbar"
                                                                 style="width: {{ $persentaseAlfaBulanSebelumnya }}%"
                                                                 aria-valuenow="{{ $persentaseAlfaBulanSebelumnya }}"
@@ -675,8 +675,8 @@
                                                     <div class="col-3 text-right">{{ $persentaseTAPBulanSebelumnya }}%
                                                     </div>
                                                     <div class="col-12">
-                                                        <div class="progress mt-2">
-                                                            <div class="progress-bar bg-danger" role="progressbar"
+                                                        <div class="progress mt-2 !bg-gray-200">
+                                                            <div class="progress-bar !bg-gray-900" role="progressbar"
                                                                 style="width: {{ $persentaseTAPBulanSebelumnya }}%"
                                                                 aria-valuenow="{{ $persentaseTAPBulanSebelumnya }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>

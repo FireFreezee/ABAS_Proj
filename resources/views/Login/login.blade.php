@@ -41,12 +41,12 @@
                                 <a href=""><img src="{{ asset('assets/img/logo-abas.png') }}" alt="" class="responsive-logo"></a>
                             </div>
                             <h3>Sign In to ABAS</h3>
-                            <form method="POST" action="{{ route('login') }}">
+                            <form action="{{ route('postlogin') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                    <input id="email" type="text" placeholder="Email" class="form-control" name="identifier" value="{{ old('identifier') }}" required autofocus>
                                     <i class="ik ik-user"></i>
-                                    @error('email')
+                                    @error('identifier')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -62,7 +62,7 @@
                                 @enderror
                                 </div>
                                 <div class="sign-btn text-center">
-                                    <button class="btn btn-theme">{{ __('Sign In') }}</button>
+                                    <button type="submit" class="btn btn-theme">{{ __('Sign In') }}</button>
                                 </div>
                             </form>
                         </div>
