@@ -56,9 +56,17 @@ class AuthController extends Controller
             }
         }
 
-        return back()->withErrors([
-            'identifier' => 'Data login tidak valid.',
-        ]);
+        elseif ($user = User::where('email')->first() != $request->identifier) {
+            return back()->withErrors([
+                'identifier' => 'Data Tidak Terdaftar',
+            ]);
+        }
+
+        elseif ($user = User::where('email')->first() != $request->password) {
+            return back()->withErrors([
+                'password' => 'Password Salah',
+            ]);
+        }
     }
 
 }
