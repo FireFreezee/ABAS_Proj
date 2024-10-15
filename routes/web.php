@@ -57,11 +57,11 @@ Route::get('/check', function () {
         } elseif ($role == 'siswa') {
             return redirect('siswa');
         } elseif ($role == 'wali') {
-            return redirect('wali');
+            return redirect('walikelas');
         } elseif ($role == 'kesiswaan') {
             return redirect('kesiswaan');
         } elseif ($role == 'walis') {
-            return redirect('walis');
+            return redirect('walisiswa');
         }
     }
     return route('log');
@@ -72,7 +72,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'Walikelas:walikelas'])->group(function () {
-    Route::resource('walikelas', App\Http\Controllers\WalikelasController::class);
+    Route::get('walikelas', [App\Http\Controllers\WalikelasController::class, 'index'])->name('walikelas-dashboard');
 });
 
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {

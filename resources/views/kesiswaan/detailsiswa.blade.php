@@ -287,7 +287,7 @@
                             <tbody>
                                 @foreach ($present as $absensi)
                                     <tr class="text-center">
-                                        <th scope="row">{{ $absensi->date }}</th>
+                                        <th>{{ $absensi->date }}</th>
                                         <td>{{ $absensi->status }}</td>
                                         <td>
                                             <button data-modal-target="default-modal-{{ $absensi->id_absensi }}"

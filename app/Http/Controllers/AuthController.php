@@ -31,6 +31,11 @@ class AuthController extends Controller
                 Auth::login($user);
                 return redirect()->route('check');
             }
+            else {
+                return back()->withErrors([
+                    'password' => 'Password Salah',
+                ]);
+            }
         }
         // Mencari pengguna di tabel User berdasarkan NIK
         elseif ($waliSiswa = Wali_Siswa::where('nik', $request->identifier)->first()) {
@@ -38,6 +43,11 @@ class AuthController extends Controller
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
                 return redirect()->route('check');
+            }
+            else {
+                return back()->withErrors([
+                    'password' => 'Password Salah',
+                ]);
             }
         }
         // Mencari pengguna di tabel User berdasarkan NUPTK
@@ -47,6 +57,11 @@ class AuthController extends Controller
                 Auth::login($user);
                 return redirect()->route('check');
             }
+            else {
+                return back()->withErrors([
+                    'password' => 'Password Salah',
+                ]);
+            }
         }
         // Mencari pengguna di tabel User berdasarkan Email
         elseif ($user = User::where('email', $request->identifier)->first()) {
@@ -54,17 +69,15 @@ class AuthController extends Controller
                 Auth::login($user);
                 return redirect()->route('check');
             }
+            else {
+                return back()->withErrors([
+                    'password' => 'Password Salah',
+                ]);
+            }
         }
-
-        elseif ($user = User::where('email')->first() != $request->identifier) {
+        else {
             return back()->withErrors([
                 'identifier' => 'Data Tidak Terdaftar',
-            ]);
-        }
-
-        elseif ($user = User::where('email')->first() != $request->password) {
-            return back()->withErrors([
-                'password' => 'Password Salah',
             ]);
         }
     }

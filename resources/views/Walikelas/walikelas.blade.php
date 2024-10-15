@@ -1,339 +1,278 @@
 @extends('layouts.header')
 
 @section('content')
-<div class="app-sidebar colored">
-    <div class="sidebar-header">
-        <a class="header-brand" href="index.html">
-            <div class="logo-img">
-                <img src="{{ asset('assets/img/logo-abas.png') }}" style="height: 2rem; width: auto;" alt="lavalite">
-                <img src="{{ asset('assets/img/logo-title.png') }}" style="height: 2rem; width: auto;" class="text"
-                    alt="lavalite">
-            </div>
-        </a>
-        <button type="button" class="nav-toggle"><i data-toggle="expanded"
-                class="ik ik-toggle-right toggle-icon"></i></button>
-        <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
-    </div>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <style>
+        /* Reduce the size of the datepicker popup */
+        .datepicker-dropdown {
+            transform: scale(0.9);
+            /* Adjust this value to make the calendar smaller or larger */
+            transform-origin: top left;
+            /* Ensure the calendar scales from the top-left corner */
+        }
 
-    <div class="sidebar-content">
-        <div class="nav-container">
-            <nav id="main-menu-navigation" class="navigation-main">
-                <div class="nav-lavel">Navigation</div>
-                <div class="nav-item active">
-                    <a href="index.html"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+        /* Adjust the size of the header (month and year) */
+        .datepicker-dropdown .datepicker-switch {
+            font-size: 10px !important;
+            /* Smaller header text */
+            padding: 2px 5px !important;
+            /* Smaller padding */
+        }
+
+        /* Adjust the size of navigation arrows */
+        .datepicker-dropdown .prev,
+        .datepicker-dropdown .next {
+            font-size: 10px !important;
+        }
+
+        /* Adjust the size of day cells */
+        .datepicker-dropdown .datepicker-days td,
+        .datepicker-dropdown .datepicker-days th {
+            width: 15px !important;
+            height: 15px !important;
+            line-height: 15px !important;
+        }
+
+        /* Adjust the size of month and year selection cells */
+        .datepicker-dropdown .datepicker-months td,
+        .datepicker-dropdown .datepicker-years td {
+            width: 25px !important;
+            height: 25px !important;
+        }
+
+        /* Smaller today and clear buttons */
+        .datepicker-dropdown .datepicker-buttons .btn {
+            font-size: 8px !important;
+            padding: 2px 5px !important;
+        }
+    </style>
+    <div class="app-sidebar colored">
+        <div class="sidebar-header">
+            <a class="header-brand" href="index.html">
+                <div class="flex">
+                    <img src="{{ asset('assets/img/logo-abas.png') }}" style="height: auto; width: 2rem;" alt="lavalite">
+                    <img src="{{ asset('assets/img/logo-title.png') }}" style="height: 2rem; width: auto;" class="text"
+                        alt="lavalite">
                 </div>
-                <div class="nav-lavel">UI Element</div>
-                <div class="nav-item">
-                    <a href="pages/list-siswa.html"><i class="ik ik-inbox"></i><span>Daftar
-                            Siswa</span></a>
-                </div>
-                <div class="nav-item">
-                    <a href="pages/laporan-absensi.html"><i class="ik ik-calendar"></i><span>Laporan
-                            Absensi</span></a>
-                </div>
-            </nav>
+            </a>
+            <button type="button" class="nav-toggle"><i data-toggle="expanded"
+                    class="ik ik-toggle-right toggle-icon"></i></button>
+            <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="nav-container">
+                <nav id="main-menu-navigation" class="navigation-main">
+                    <div class="nav-lavel">Home</div>
+                    <div class="nav-item active">
+                        <a href=""><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                    </div>
+                    <div class="nav-lavel">Laporan</div>
+                    <div class="nav-item">
+                        <a href=""><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
+                    </div>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
-<div class="main-content">
-    <div class="container-fluid">
-        <div class="row clearfix">
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="widget">
-                    <div class="widget-body">
+    <div class="main-content">
+        <div class="container-fluid">
+            <h5 class="font-bold text-[20px] mb-4">
+                Kehadiran Seluruh Siswa Hari Ini
+            </h5>
+            <div class="grid grid-cols-5 gap-2">
+                <div class="card ">
+                    <div class="card-body border-l-8 border-green-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h6>Siswa Hadir</h6>
-                                <h2>33</h2>
+                                <h3 class="text-green-500 text-lg">{{ $countHadir }}</h3>
+                                <p class="card-subtitle text-muted fw-500 text-xl">Hadir</p>
                             </div>
                             <div class="icon">
-                                <i class="ik ik-award"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-6">
+                                    <path fill-rule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866Zm2.023 6.828a.75.75 0 1 0-1.06-1.06 3.75 3.75 0 0 1-5.304 0 .75.75 0 0 0-1.06 1.06 5.25 5.25 0 0 0 7.424 0Z"
+                                        clip-rule="evenodd" />
+                                </svg>
                             </div>
                         </div>
-                    </div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="62"
-                            aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="widget">
-                    <div class="widget-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="state">
-                                <h6>Siswa Izin</h6>
-                                <h2>1</h2>
-                            </div>
-                            <div class="icon">
-                                <i class="ik ik-thumbs-up"></i>
+                        <div class="progress mt-3 mb-1 !h-2 bg-green-200" style="height: 6px;">
+                            <div class="progress-bar bg-green-500 " role="progressbar"
+                                style="width: {{ $percentageHadir }}%;" aria-valuenow="25" aria-valuemin="0"
+                                aria-valuemax="100">
                             </div>
                         </div>
-                    </div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="78"
-                            aria-valuemin="0" aria-valuemax="100" style="width: 3%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="widget">
-                    <div class="widget-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="state">
-                                <h6>Siswa Alfa</h6>
-                                <h2>1</h2>
-                            </div>
-                            <div class="icon">
-                                <i class="ik ik-calendar"></i>
-                            </div>
+                        <div class="text-muted f12">
+                            <span class="float-right">%</span>
                         </div>
                     </div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="31"
-                            aria-valuemin="0" aria-valuemax="100" style="width: 3%;"></div>
-                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="widget">
-                    <div class="widget-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="state">
-                                <h6>Siswa Terlambat</h6>
-                                <h2>1</h2>
-                            </div>
-                            <div class="icon">
-                                <i class="ik ik-message-square"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="20"
-                            aria-valuemin="0" aria-valuemax="100" style="width: 3%;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
+
                 <div class="card">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-lg-8 col-md-12">
-                                <h3 class="card-title">Visitors By Countries</h3>
-                                <div id="visitfromworld" style="width:100%; height:350px">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="dt-responsive">
-                                                <div>
-                                                    <div id="lang-dt_wrapper"
-                                                        class="dataTables_wrapper dt-bootstrap4">
-                                                        <div class="row">
-                                                            <div class="col-sm-12 col-md-6">
-                                                                <div class="dataTables_length"
-                                                                    id="lang-dt_length"><label></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-md-6">
-                                                                <div id="lang-dt_filter"
-                                                                    class="dataTables_filter">
-                                                                    <label>Search:<input type="search"
-                                                                            class="form-control form-control-sm"
-                                                                            placeholder=""
-                                                                            aria-controls="lang-dt"></label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <table id="lang-dt"
-                                                                    class="table table-striped table-bordered nowrap dataTable"
-                                                                    role="grid"
-                                                                    aria-describedby="lang-dt_info">
-                                                                    <thead>
-                                                                        <tr role="row">
-                                                                            <th class="sorting_asc"
-                                                                                tabindex="0"
-                                                                                aria-controls="lang-dt"
-                                                                                rowspan="1"
-                                                                                colspan="1"
-                                                                                aria-sort="ascending"
-                                                                                aria-label="Hadir: activate to sort column descending"
-                                                                                style="width: 43.2812px;">
-                                                                                Hadir</th>
-                                                                            <th class="sorting"
-                                                                                tabindex="0"
-                                                                                aria-controls="lang-dt"
-                                                                                rowspan="1"
-                                                                                colspan="1"
-                                                                                aria-label="Izin: activate to sort column ascending"
-                                                                                style="width: 28.5px;">Izin
-                                                                            </th>
-                                                                            <th class="sorting"
-                                                                                tabindex="0"
-                                                                                aria-controls="lang-dt"
-                                                                                rowspan="1"
-                                                                                colspan="1"
-                                                                                aria-label="Alfa: activate to sort column ascending"
-                                                                                style="width: 34.0312px;">
-                                                                                Alfa</th>
-                                                                            <th class="sorting"
-                                                                                tabindex="0"
-                                                                                aria-controls="lang-dt"
-                                                                                rowspan="1"
-                                                                                colspan="1"
-                                                                                aria-label="Terlambat: activate to sort column ascending"
-                                                                                style="width: 76.2812px;">
-                                                                                Terlambat</th>
-                                                                            <th class="sorting"
-                                                                                tabindex="0"
-                                                                                aria-controls="lang-dt"
-                                                                                rowspan="1"
-                                                                                colspan="1"
-                                                                                aria-label="Tanggal: activate to sort column ascending"
-                                                                                style="width: 61.2344px;">
-                                                                                Tanggal</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-
-
-
-                                                                        <tr role="row" class="odd">
-                                                                            <td class="sorting_1">30</td>
-                                                                            <td>3</td>
-                                                                            <td>2</td>
-                                                                            <td>1</td>
-                                                                            <td>05/06/2024</td>
-                                                                        </tr>
-                                                                        <tr role="row" class="even">
-                                                                            <td class="sorting_1">33</td>
-                                                                            <td>1</td>
-                                                                            <td>1</td>
-                                                                            <td>2</td>
-                                                                            <td>03/06/2024</td>
-                                                                        </tr>
-                                                                        <tr role="row" class="odd">
-                                                                            <td class="sorting_1">33</td>
-                                                                            <td>1</td>
-                                                                            <td>0</td>
-                                                                            <td>0</td>
-                                                                            <td>04/06/2024</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                    <tfoot>
-                                                                        <tr>
-                                                                            <th rowspan="1"
-                                                                                colspan="1">Hadir</th>
-                                                                            <th rowspan="1"
-                                                                                colspan="1">Izin</th>
-                                                                            <th rowspan="1"
-                                                                                colspan="1">Alfa</th>
-                                                                            <th rowspan="1"
-                                                                                colspan="1">Terlambat
-                                                                            </th>
-                                                                            <th rowspan="1"
-                                                                                colspan="1">Tanggal</th>
-                                                                        </tr>
-                                                                    </tfoot>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-12 col-md-5">
-                                                                <div class="dataTables_info"
-                                                                    id="lang-dt_info" role="status"
-                                                                    aria-live="polite">Showing 1 to 3 of 3
-                                                                    entries</div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-md-7">
-                                                                <div class="dataTables_paginate paging_simple_numbers"
-                                                                    id="lang-dt_paginate">
-                                                                    <ul class="pagination">
-                                                                        <li class="paginate_button page-item previous disabled"
-                                                                            id="lang-dt_previous"><a
-                                                                                href="#"
-                                                                                aria-controls="lang-dt"
-                                                                                data-dt-idx="0"
-                                                                                tabindex="0"
-                                                                                class="page-link">Previous</a>
-                                                                        </li>
-                                                                        <li
-                                                                            class="paginate_button page-item active">
-                                                                            <a href="#"
-                                                                                aria-controls="lang-dt"
-                                                                                data-dt-idx="1"
-                                                                                tabindex="0"
-                                                                                class="page-link">1</a>
-                                                                        </li>
-                                                                        <li class="paginate_button page-item next disabled"
-                                                                            id="lang-dt_next"><a
-                                                                                href="#"
-                                                                                aria-controls="lang-dt"
-                                                                                data-dt-idx="2"
-                                                                                tabindex="0"
-                                                                                class="page-link">Next</a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="card-body border-l-8 border-cyan-500">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="state">
+                                <h3 class="text-aqua text-lg"></h3>
+                                <p class="card-subtitle text-muted fw-500 text-xl">Sakit/Izin</p>
                             </div>
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-6">
+                                    <path fill-rule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866Zm-4.34 7.964a.75.75 0 0 1-1.061-1.06 5.236 5.236 0 0 1 3.73-1.538 5.236 5.236 0 0 1 3.695 1.538.75.75 0 1 1-1.061 1.06 3.736 3.736 0 0 0-2.639-1.098 3.736 3.736 0 0 0-2.664 1.098Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="progress mt-3 mb-1 !h-2 bg-cyan-200" style="height: 6px;">
+                            <div class="progress-bar bg-aqua" role="progressbar"
+                                style="width: %;" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <div class="text-muted f12">
+                            <span class="float-right">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body border-l-8 border-red-700">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="state">
+                                <h3 class="text-red-700 text-lg"></h3>
+                                <p class="card-subtitle text-muted fw-500 text-xl">Alfa</p>
+                            </div>
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-6">
+                                    <path fill-rule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="progress mt-3 mb-1 !h-2 bg-red-200" style="height: 6px;">
+                            <div class="progress-bar bg-red-700" role="progressbar"
+                                style="width: %;" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <div class="text-muted f12">
+                            <span class="float-right">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body border-l-8 border-gray-400">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="state">
+                                <h3 class="text-gray-400 text-lg"></h3>
+                                <p class="card-subtitle text-muted fw-500 text-xl">Terlambat</p>
+                            </div>
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-6">
+                                    <path fill-rule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="progress mt-3 mb-1 !h-2 bg-gray-200" style="height: 6px;">
+                            <div class="progress-bar bg-gray-400" role="progressbar"
+                                style="width: %;" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <div class="text-muted f12">
+                            <span class="float-right">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body border-l-8 border-gray-900">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="state">
+                                <h3 class="text-gray-900 text-lg"></h3>
+                                <p class="card-subtitle text-muted fw-500 text-xl">TAP</p>
+                            </div>
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                    class="size-6">
+                                    <path fill-rule="evenodd"
+                                        d="M16.5 3.75a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5V15a.75.75 0 0 0-1.5 0v3.75a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V5.25a3 3 0 0 0-3-3h-6a3 3 0 0 0-3 3V9A.75.75 0 1 0 9 9V5.25a1.5 1.5 0 0 1 1.5-1.5h6ZM5.78 8.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 0 0 0 1.06l3 3a.75.75 0 0 0 1.06-1.06l-1.72-1.72H15a.75.75 0 0 0 0-1.5H4.06l1.72-1.72a.75.75 0 0 0 0-1.06Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="progress mt-3 mb-1 !h-2 bg-gray-300" style="height: 6px;">
+                            <div class="progress-bar bg-gray-900" role="progressbar"
+                                style="width: %;" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <div class="text-muted f12">
+                            <span class="float-right">%</span>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="max-w-full w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+                <div class="flex justify-between mb-5">
+                    <div>
+                        <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Statistik Kehadiran
+                        </h5>
+                    </div>
+                    <form action="{{ route('walikelas-dashboard') }}" method="GET">
+                        <div id="date-range-picker" class="flex flex-wrap items-center gap-4 pb-2">
+                            <div class="relative w-full sm:w-auto flex-1">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input id="datepicker-range-start" datepicker datepicker-format="yyyy-mm-dd"
+                                    name="start" type="text"
+                                    class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Select date start" value="{{ $startDate }}">
+                            </div>
 
-            <div class="col-lg-4 col-md-12">
-                <div class="row mb-15">
-                    <div class="col-9">Siswa Hadir</div>
-                    <div class="col-3 text-right">90%</div>
-                    <div class="col-12">
-                        <div class="progress progress-sm mt-5">
-                            <div class="progress-bar bg-green" role="progressbar" style="width: 90%"
-                                aria-valuenow="48" aria-valuemin="0" aria-valuemax="100"></div>
+                            <span class="text-gray-500 dark:text-gray-400">to</span>
+
+                            <div class="relative w-full sm:w-auto flex-1">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input id="datepicker-range-end" datepicker datepicker-format="yyyy-mm-dd" name="end"
+                                    type="text"
+                                    class="bg-gray-50 border h-8 border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Select date end" value="{{ $endDate }}">
+                            </div>
+
+                            <button type="submit"
+                                class="bg-blue-500 text-white h-8 p-2 rounded-lg w-full sm:w-auto hover:bg-blue-800">
+                                Filter
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <div class="row mb-15">
-                    <div class="col-9">Siswa Izin</div>
-                    <div class="col-3 text-right">1%</div>
-                    <div class="col-12">
-                        <div class="progress progress-sm mt-5">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 3%"
-                                aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-15">
-                    <div class="col-9">Siswa Alfa</div>
-                    <div class="col-3 text-right">1%</div>
-                    <div class="col-12">
-                        <div class="progress progress-sm mt-5">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 3%"
-                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-9">Siswa Terlambat</div>
-                    <div class="col-3 text-right">1%</div>
-                    <div class="col-12">
-                        <div class="progress progress-sm mt-5">
-                            <div class="progress-bar bg-aqua" role="progressbar" style="width: 3%"
-                                aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
+                <div id="legend-chart" class="!my-4"></div>
             </div>
         </div>
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script>
+        var chartStatusCount = @json($chartStatusCount);
+    </script>
 @endsection

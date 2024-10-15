@@ -25,10 +25,7 @@ class KesiswaanController extends Controller
         // $kelasList = Kelas::with('siswa.absensi')->get();
 
         // Get total attendance data for all classes in the current month
-        $totalAbsensi = Absensi::whereDay('date', $currentDay)
-            ->whereMonth('date', $currentMonth)
-            ->whereYear('date', $currentYear)
-            ->get();
+        $totalAbsensi = Absensi::where('date', date('(Y-m-d)'))->get();
 
         // Calculate total counts and percentages for all classes
         $totalRecords = $totalAbsensi->count();
@@ -60,8 +57,16 @@ class KesiswaanController extends Controller
         $filteredData = $query->orderBy('date', 'asc')->get();
 
         // Group by date and then by status, counting each combination
-        $dailyStatusCounts = $filteredData->groupBy('date')->map(function ($dayData) {
-            return $dayData->groupBy('status')->map->count();
+        $dailyStatusCounts = $filteredData->groupBy('date')->map(function ($dayData) { 
+            $totalCount = $dayData->count(); 
+            $statusCounts = $dayData->groupBy('status')->map->count(); 
+        
+            // Calculate percentage for each status
+            $percentages = $statusCounts->map(function ($count) use ($totalCount) {
+                return ($totalCount > 0) ? number_format(($count / $totalCount) * 100, 2 ) : 0;
+            });
+        
+            return $percentages; // Return the status percentages
         });
 
         return view('kesiswaan.kesiswaan', [

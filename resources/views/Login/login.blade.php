@@ -44,7 +44,7 @@
                             <form action="{{ route('postlogin') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <input id="email" type="text" placeholder="Email" class="form-control @error('identifier') is-invalid @enderror" name="identifier" value="{{ old('identifier') }}" required autofocus>
+                                    <input id="email" type="text" placeholder="NIK/NUPTK/NIS" class="form-control @error('identifier') is-invalid @enderror" name="identifier" value="{{ old('identifier') }}" required autofocus>
                                     <i class="ik ik-user"></i>
                                     @error('identifier')
                                     <span class="invalid-feedback" role="alert">
