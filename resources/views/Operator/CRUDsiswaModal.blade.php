@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputUsername1">Nama</label>
-                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
+                        <input type="text" class="form-control" id="nama" name="name" placeholder="Nama"
                         value="{{ $s->user->nama }}" required>
                     </div>
                     <div class="form-group">

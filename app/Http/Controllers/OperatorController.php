@@ -102,7 +102,7 @@ class OperatorController extends Controller
     {
         if (strlen($request->password) > 0) {
             $user = User::create([
-                'name' => $request->name,
+                'nama' => $request->name,
                 'email' => $request->email,
                 'password' => password_hash($request->password, PASSWORD_DEFAULT),
                 'role' => 'wali'
@@ -116,7 +116,7 @@ class OperatorController extends Controller
             ]);
         } else {
             $user = User::create([
-                'name' => $request->name,
+                'nama' => $request->name,
                 'email' => $request->email,
                 'role' => 'wali'
             ]);
@@ -144,7 +144,7 @@ class OperatorController extends Controller
 
         //DB user
         DB::table('users')->where('id', $r->id)->update([
-            'name' => $r->name,
+            'nama' => $r->name,
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
         ]);
@@ -341,7 +341,7 @@ class OperatorController extends Controller
 
         //DB user
         DB::table('users')->where('id', $r->id)->update([
-            'name' => $r->name,
+            'nama' => $r->name,
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
         ]);
@@ -369,7 +369,7 @@ class OperatorController extends Controller
     public function tambahKesiswaan(Request $request)
     {
         User::insert([
-            'name' => $request->name,
+            'nama' => $request->name,
             'email' => $request->email,
             'password' => password_hash($request->password, PASSWORD_DEFAULT),
             'role' => 'kesiswaan',
@@ -381,7 +381,7 @@ class OperatorController extends Controller
     public function editKesiswaan(Request $r)
     {
         DB::table('users')->where('id', $r->id)->update([
-            'name' => $r->name,
+            'nama' => $r->name,
             'email' => $r->email,
             'password' => password_hash($r->password, PASSWORD_DEFAULT),
         ]);

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KesiswaanController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\WalikelasController;
 use App\Http\Controllers\WalisiswaController;
 use App\Http\Middleware\Operator;
 use App\Http\Middleware\Walisiswa;
@@ -72,7 +73,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'Walikelas:walikelas'])->group(function () {
-    Route::get('walikelas', [App\Http\Controllers\WalikelasController::class, 'index'])->name('walikelas-dashboard');
+    Route::get('walikelas', [WalikelasController::class, 'index'])->name('walikelas-dashboard');
+    Route::get('walikelas/siswa', [WalikelasController::class,'laporanSiswa'])->name('list-siswa');
+    Route::get('walikelas/laporan-detail-siswa/{id}', [WalikelasController::class, 'detailSiswa'])->name("detail-siswa");
+
 });
 
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
@@ -93,13 +97,13 @@ Route::middleware(['auth', 'Walisiswa:walisiswa'])->group(function () {
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {
-    Route::get('operator', [App\Http\Controllers\operatorController::class, 'lokasisekolah'])->name('Dashboard');
+    Route::get('operator', [operatorController::class, 'lokasisekolah'])->name('Dashboard');
 
     Route::get('/operator/data-walikelas', [OperatorController::class, 'dataWali'])->name('data-wali');
-    Route::post('/store-wali-kelas', [OperatorController::class, 'store'])->name('store-wali-kelas');
-    Route::post('/editwalikelas/{id}', [OperatorController::class, 'editwali'])->name('edit-wali-kelas');
+    Route::post('operator/store-wali-kelas', [OperatorController::class, 'store'])->name('store-wali-kelas');
+    Route::post('operator/editwalikelas/{id}', [OperatorController::class, 'editwali'])->name('edit-wali-kelas');
     Route::delete('hapuswalikelas/{id}', [OperatorController::class, 'hapuswali'])->name('hapuswali');
-    Route::post('/walikelas/import', [OperatorController::class, 'importWali'])->name('import-wali');
+    Route::post('operator/walikelas/import', [OperatorController::class, 'importWali'])->name('import-wali');
 
     Route::get('/operator/data-jurusan', [OperatorController::class, 'jurusan'])->name('data-jurusan');
     Route::post('/add-jurusan', [OperatorController::class, 'tambahJurusan'])->name('add-jurusan');
@@ -112,7 +116,7 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::delete('/hapus-kelas/{id}', [OperatorController::class, 'hapusKelas'])->name('hapus-kelas');
     Route::post('/kelas/import', [OperatorController::class, 'importKelas'])->name('import-kelas');
 
-    Route::get('/kelas/{id}/data-siswa/', [OperatorController::class, 'siswa'])->name('data-siswa');
+    Route::get('operator/kelas/{id}/data-siswa/', [OperatorController::class, 'siswa'])->name('data-siswa');
     Route::post('/kelas/{id}/add-siswa', [OperatorController::class, 'tambahSiswa'])->name('add-siswa');
     Route::post('/kelas/{id}/edit-siswa', [OperatorController::class, 'editSiswa'])->name('edit-siswa');
     Route::delete('/kelas/{id}/hapus-siswa', [OperatorController::class, 'hapusSiswa'])->name('hapus-siswa');
@@ -128,7 +132,7 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
 
 Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
     Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name("kesiswaan.index");
-    Route::get('/laporan-kelas', [KesiswaanController::class, 'laporanKelas'])->name("kesiswaan.kelas");
-    Route::get('/laporan-siswa/{kelas_id}', [KesiswaanController::class, 'laporanSiswa'])->name("kesiswaan.siswa");
-    Route::get('/laporan-detail-siswa/{id}', [KesiswaanController::class, 'detailSiswa'])->name("kesiswaan.detail.siswa");
+    Route::get('kesiswaan/laporan-kelas', [KesiswaanController::class, 'laporanKelas'])->name("kesiswaan.kelas");
+    Route::get('kesiswaan/laporan-siswa/{kelas_id}', [KesiswaanController::class, 'laporanSiswa'])->name("kesiswaan.siswa");
+    Route::get('kesiswaan/laporan-detail-siswa/{id}', [KesiswaanController::class, 'detailSiswa'])->name("kesiswaan.detail.siswa");
 });

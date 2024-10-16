@@ -24,12 +24,15 @@
                             <a href="{{ route('Dashboard') }}"><i class="ik ik-calendar"></i><span>Setting
                                     Koordinat dan Waktu</span></a>
                         </div>
-                        <div class="nav-item active">
-                            <a href=""><i class="ik ik-users"></i><span>Tambah/Edit Walikelas</span></a>
-                        </div>
-                        <div class="nav-item">
-                            <a href="{{ route('data-kesiswaan') }}"><i class="ik ik-users"></i><span>Tambah/Edit
+                        <div class="nav-item has-sub active open">
+                            <a href="javascript:void(0)"><i class="ik ik-layers"></i><span>Data Pengguna</span></a>
+                            <div class="submenu-content">
+                                <a href="{{ route('data-wali') }}" class="menu-item active"><i class="ik ik-users"></i><span>Tambah/Edit WaliKelas</span></a>
+                                <a href="{{ route('data-kesiswaan') }}" class="menu-item"><i class="ik ik-users"></i><span>Tambah/Edit
                                     Kesiswaan</span></a>
+                                <a href="{{ route('data-wali') }}" class="menu-item"><i class="ik ik-users"></i><span>Tambah/Edit WaliSiswa</span></a>
+                                <a href="{{ route('data-wali') }}" class="menu-item"><i class="ik ik-users"></i><span>Tambah/Edit Siswa</span></a>
+                            </div>
                         </div>
                         <div class="nav-item">
                             <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit
@@ -132,7 +135,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Nama</label>
                                                         <input type="text" class="form-control" id="nama"
-                                                            name="nama" placeholder="Nama" required>
+                                                            name="name" placeholder="Nama" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleInputPassword1">Jenis Kelamin</label>

@@ -66,11 +66,11 @@
                 <nav id="main-menu-navigation" class="navigation-main">
                     <div class="nav-lavel">Home</div>
                     <div class="nav-item">
-                        <a href="{{ route('kesiswaan.index') }}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                        <a href="{{ route('walikelas-dashboard') }}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
                     </div>
                     <div class="nav-lavel">Laporan</div>
                     <div class="nav-item active">
-                        <a href="{{ route('kesiswaan.kelas') }}"><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
+                        <a href="{{ route('list-siswa') }}"><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
                     </div>
                 </nav>
             </div>
@@ -83,7 +83,7 @@
             </h5>
             <div class="grid grid-cols-2">
                 <div></div>
-                <form action="{{ route('kesiswaan.detail.siswa', ['id' => $students->nis]) }}" method="GET">
+                <form action="{{ route('detail-siswa', ['id' => $students->nis]) }}" method="GET">
                     <div id="date-range-picker" class="flex justify-end items-center gap-4 pb-2">
                         <div class="relative w-full sm:w-auto flex-1">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -290,27 +290,27 @@
                                         <th>{{ $absensi->date }}</th>
                                         <td class="flex justify-center">
                                             @if ($absensi->status == "Hadir")
-                                            <div class="bg-green-500 h-fit w-14 p-1 rounded-md">
+                                            <div class="bg-green-500 h-fit w-14 p-1 rounded-md text-white">
                                                 {{ $absensi->status }}
                                             </div>
                                             @elseif ($absensi->status == "Sakit")
-                                            <div class="bg-cyan-500 h-fit w-14 p-1 rounded-md">
+                                            <div class="bg-cyan-500 h-fit w-14 p-1 rounded-md text-white">
                                                 {{ $absensi->status }}
                                             </div>
                                             @elseif ($absensi->status == "Izin")
-                                            <div class="bg-orange-400 h-fit w-14 p-1 rounded-md">
+                                            <div class="bg-orange-400 h-fit w-14 p-1 rounded-md text-white">
                                                 {{ $absensi->status }}
                                             </div>
                                             @elseif ($absensi->status == "Alfa")
-                                            <div class="bg-red-700 h-fit w-14 p-1 rounded-md">
+                                            <div class="bg-red-700 h-fit w-14 p-1 rounded-md text-white">
                                                 {{ $absensi->status }}
                                             </div>
                                             @elseif ($absensi->status == "Terlambat")
-                                            <div class="bg-gray-400 h-fit w-14 p-1 rounded-md">
+                                            <div class="bg-gray-400 h-fit w-14 p-1 rounded-md text-white">
                                                 {{ $absensi->status }}
                                             </div>
                                             @elseif ($absensi->status == "TAP")
-                                            <div class="bg-gray-900 h-fit w-14 p-1 rounded-md">
+                                            <div class="bg-gray-900 h-fit w-14 p-1 rounded-md text-white">
                                                 {{ $absensi->status }}
                                             </div>
                                             @endif

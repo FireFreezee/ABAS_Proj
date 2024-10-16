@@ -66,11 +66,11 @@
                 <nav id="main-menu-navigation" class="navigation-main">
                     <div class="nav-lavel">Home</div>
                     <div class="nav-item">
-                        <a href="{{ route('kesiswaan.index') }}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                        <a href="{{ route('walikelas-dashboard') }}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
                     </div>
                     <div class="nav-lavel">Laporan</div>
                     <div class="nav-item active">
-                        <a href="{{ route('kesiswaan.kelas') }}"><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
+                        <a href="{{ route('list-siswa') }}"><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
                     </div>
                 </nav>
             </div>
@@ -81,9 +81,9 @@
             <h5 class="font-bold text-[20px] mb-4">
                 Laporan Absensi
             </h5>
-            <div class="grid grid-cols-2">
+            <div class="grid grid-cols-2 bg-white ">
                 <div></div>
-                <form action="{{ route('kesiswaan.detail.siswa', ['id' => $students->nis]) }}" method="GET">
+                <form action="{{ route('list-siswa', ['kelas_id' => $kelas->id_kelas] ) }}" method="GET">
                     <div id="date-range-picker" class="flex justify-end items-center gap-4 pb-2">
                         <div class="relative w-full sm:w-auto flex-1">
                             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -130,7 +130,7 @@
                     <div class="card-body border-l-8 border-green-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-green-500 text-lg">{{ $attendanceCounts['Hadir'] }}x</h3>
+                                <h3 class="text-green-500 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Hadir</p>
                             </div>
                             <div class="icon">
@@ -143,13 +143,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-green-200" style="height: 6px;">
-                            <div class="progress-bar bg-green-500 " role="progressbar"
-                                style="width: {{ $attendancePercentage['percentageHadir'] }}%;" aria-valuenow="25"
+                            <div class="progress-bar bg-green-500 " role="progressbar" style="width: {{ $averageAttendancePercentages['Hadir'] }}%;" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($attendancePercentage['percentageHadir']) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Hadir']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -158,7 +157,7 @@
                     <div class="card-body border-l-8 border-cyan-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-aqua text-lg">{{ $attendanceCounts['Sakit/Izin'] }}x</h3>
+                                <h3 class="text-aqua text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Sakit/Izin</p>
                             </div>
                             <div class="icon">
@@ -171,14 +170,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-cyan-200" style="height: 6px;">
-                            <div class="progress-bar bg-aqua" role="progressbar"
-                                style="width: {{ $attendancePercentage['percentageSakitIzin'] }}%;" aria-valuenow="25"
+                            <div class="progress-bar bg-aqua" role="progressbar" style="width: {{ $averageAttendancePercentages['Sakit/Izin'] }}%;" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span
-                                class="float-right">{{ number_format($attendancePercentage['percentageSakitIzin']) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Sakit/Izin']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -187,7 +184,7 @@
                     <div class="card-body border-l-8 border-red-700">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-red-700 text-lg">{{ $attendanceCounts['Alfa'] }}x</h3>
+                                <h3 class="text-red-700 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Alfa</p>
                             </div>
                             <div class="icon">
@@ -200,13 +197,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-red-200" style="height: 6px;">
-                            <div class="progress-bar bg-red-700" role="progressbar"
-                                style="width: {{ $attendancePercentage['percentageAlfa'] }}%;" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-red-700" role="progressbar" style="width: {{ $averageAttendancePercentages['Alfa'] }}%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($attendancePercentage['percentageAlfa']) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Alfa']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -215,7 +211,7 @@
                     <div class="card-body border-l-8 border-gray-400">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-400 text-lg">{{ $attendanceCounts['Terlambat'] }}x</h3>
+                                <h3 class="text-gray-400 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Terlambat</p>
                             </div>
                             <div class="icon">
@@ -228,14 +224,12 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-gray-200" style="height: 6px;">
-                            <div class="progress-bar bg-gray-400" role="progressbar"
-                                style="width: {{ $attendancePercentage['percentageTerlambat'] }}%;" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-gray-400" role="progressbar" style="width: {{ $averageAttendancePercentages['Terlambat'] }}%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span
-                                class="float-right">{{ number_format($attendancePercentage['percentageTerlambat']) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['Terlambat']) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -243,7 +237,7 @@
                     <div class="card-body border-l-8 border-gray-900">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-900 text-lg">{{ $attendanceCounts['TAP'] }}x</h3>
+                                <h3 class="text-gray-900 text-lg"></h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">TAP</p>
                             </div>
                             <div class="icon">
@@ -256,136 +250,81 @@
                             </div>
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-gray-300" style="height: 6px;">
-                            <div class="progress-bar bg-gray-900" role="progressbar"
-                                style="width: {{ $attendancePercentage['percentageTAP'] }}%;" aria-valuenow="25"
-                                aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-gray-900" role="progressbar" style="width: {{ $averageAttendancePercentages['TAP'] }}%;"
+                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">{{ number_format($attendancePercentage['percentageTAP']) }}%</span>
+                            <span class="float-right">{{ number_format($averageAttendancePercentages['TAP']) }}%</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header flex justify-between">
-                    <div>
-                        <h3>{{ $students->user->nama }}</h3>
-                        <span>{{ $students->nis }}</span>
+            <div class="mt-8 bg-gradient-to-t from-[#F6F7FB] from-10% to-white p-3 to-90% rounded-3xl">
+                <div class="flex justify-between items-center">
+                    <h5 class="font-bold text-[20px]">
+                        {{ $kelas->tingkat }} {{ $kelas->id_jurusan }} {{ $kelas->nomor_kelas }}
+                    </h5>
+                    <div class="grid grid-cols-2 place-items-end items-center">
+                        <button class="bg-blue-700 hover:bg-blue-800 text-white px-4 w-fit h-10 rounded-lg">
+                            Export
+                        </button>
+                        <form class="max-w-md mx-2">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                    </svg>
+                                </div>
+                                <input type="search" id="default-search"
+                                    class="block w-[300px] ml-5 h-[5px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Search Mockups, Logos..." required />
+                                <button type="submit"
+                                    class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="card-body p-0 table-border-style">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr class="text-center">
-                                    <th>Tanggal</th>
-                                    <th>Keterangan</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($present as $absensi)
-                                    <tr class="text-center">
-                                        <th>{{ $absensi->date }}</th>
-                                        <td class="flex justify-center">
-                                            @if ($absensi->status == "Hadir")
-                                            <div class="bg-green-500 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Sakit")
-                                            <div class="bg-cyan-500 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Izin")
-                                            <div class="bg-orange-400 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Alfa")
-                                            <div class="bg-red-700 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Terlambat")
-                                            <div class="bg-gray-400 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "TAP")
-                                            <div class="bg-gray-900 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <button data-modal-target="default-modal-{{ $absensi->id_absensi }}"
-                                                data-modal-toggle="default-modal-{{ $absensi->id_absensi }}"
-                                                class="bg-slate-700 text-white p-2 rounded-md">
-                                                Detail
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <div id="default-modal-{{ $absensi->id_absensi }}" tabindex="-1" aria-hidden="true"
-                                        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                        <div class="relative p-4 w-full max-w-md max-h-full">
-                                            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 px-7 pb-7">
-                                                <div
-                                                    class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                                        Detail Absen</h3>
-                                                    <button type="button"
-                                                        data-modal-hide="default-modal-{{ $absensi->id_absensi }}"
-                                                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                        data-modal-hide="default-modal">
-                                                        <svg class="w-3 h-3" aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 14 14">
-                                                            <path stroke="currentColor" stroke-linecap="round"
-                                                                stroke-linejoin="round" stroke-width="2"
-                                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                                                        </svg>
-                                                        <span class="sr-only">Close modal</span>
-                                                    </button>
-                                                </div>
-                                                <div class="pt-3">
-                                                    <p><strong>Keterangan:</strong> {{ $absensi->status }}
-                                                    </p>
-                                                    <p><strong>Tanggal Absen:</strong> {{ $absensi->date }}</p>
-                                                    <p><strong>Jam Masuk:</strong>
-                                                        {{ $absensi->jam_masuk }}</p>
-                                                    <p><strong>Jam Pulang:</strong>
-                                                        {{ $absensi->jam_pulang }}</p>
-                                                    @if ($absensi->menit_keterlambatan > 0)
-                                                        <p><strong>Keterlambatan:</strong>
-                                                            {{ $absensi->menit_keterlambatan }} Menit</p>
-                                                    @endif
-                                                    @if ($absensi->status == 'Hadir' || $absensi->status == 'Terlambat' || $absensi->status == 'TAP')
-                                                        <div class="grid grid-cols-2 gap-2">
-                                                            <p><strong>Foto Masuk:</strong><img
-                                                                    src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
-                                                                    alt="">
-                                                            </p>
-                                                            <p><strong>Foto Pulang:</strong><img
-                                                                    src="{{ asset('storage/uploads/absensi/' . $absensi->photo_out) }}"
-                                                                    alt="">
-                                                            </p>
-                                                        </div>
-                                                    @endif
-                                                    @if ($absensi->status == 'Sakit' || $absensi->status == 'Izin')
-                                                        <p><strong>Foto Keterangan:</strong><img
-                                                                src="{{ asset('storage/uploads/absensi/' . $absensi->photo_out) }}"
-                                                                alt="">
-                                                        </p>
-                                                    @endif
-                                                </div>
-                                            </div>
+                @foreach ($studentsData as $student)
+                    <div class="bg-white w-full h-auto rounded-lg my-3 shadow-md border-spacing-1 border">
+                        <div class="p-2">
+                            <div class="flex justify-between">
+                                <div class="w-full m-2">
+                                    <div class="flex justify-between">
+                                        <h5 class="font-bold text-[17px]">
+                                            {{ $student['name'] }}
+                                        </h5>
+                                        <h5 class="font-bold text-[17px]">
+                                           NIS : {{ $student['nis'] }}
+                                        </h5>
+                                    </div>
+                                    <div class="progress mt-3 mb-1 !h-4 bg-gray-300" style="height: 6px;">
+                                        <div class="progress-bar bg-green-500" role="progressbar" style="width: {{ $student['attendancePercentages']['Hadir'] }}%;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="text-xs">Hadir {{ number_format($student['attendancePercentages']['Hadir']) }}%</div>
                                         </div>
                                     </div>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="pagination flex justify-end p-3 text-sm sm:text-lg ">
-                            {{ $present->links('vendor.pagination.bootstrap-5') }}
+                                </div>
+                                <a href="{{ route('detail-siswa', ['id' => $student['nis']]) }}" class="flex justify-center">
+                                    <button
+                                        class="bg-slate-50 w-28 h-auto m-2 rounded-lg text-lg font-bold flex items-center p-3 hover:bg-slate-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="size-6">
+                                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                            <path fill-rule="evenodd"
+                                                d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Detail</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
+                @endforeach
+                <div class="pagination flex justify-end p-3 text-sm sm:text-lg ">
+                    {{ $studentsData->links('vendor.pagination.bootstrap-5') }}
                 </div>
             </div>
         </div>

@@ -17,15 +17,13 @@ class KesiswaanController extends Controller
      */
     public function index(Request $request)
     {
-        $currentDay = now()->day;
-        $currentMonth = now()->month;
-        $currentYear = now()->year;
+        $currentDay = Carbon::now()->format("Y-m-d");
 
         // Fetch all classes
         // $kelasList = Kelas::with('siswa.absensi')->get();
 
         // Get total attendance data for all classes in the current month
-        $totalAbsensi = Absensi::where('date', date('(Y-m-d)'))->get();
+        $totalAbsensi = Absensi::where('date', $currentDay)->get();
 
         // Calculate total counts and percentages for all classes
         $totalRecords = $totalAbsensi->count();
@@ -65,6 +63,9 @@ class KesiswaanController extends Controller
             $percentages = $statusCounts->map(function ($count) use ($totalCount) {
                 return ($totalCount > 0) ? number_format(($count / $totalCount) * 100, 2 ) : 0;
             });
+
+            $tidakHadirCount = $statusCounts->get('Alfa', 0) + $statusCounts->get('Sakit', 0) + $statusCounts->get('Izin', 0);
+            $percentages['TidakHadir'] = ($tidakHadirCount > 0) ? number_format(($tidakHadirCount / $totalCount) * 100, 2 ) : 0;
         
             return $percentages; // Return the status percentages
         });

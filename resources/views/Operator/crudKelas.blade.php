@@ -140,7 +140,7 @@
                                                     <select class="form-control" id="nuptk" name="nuptk">
                                                         <option value="" hidden>Pilih</option>
                                                         @foreach ($walikelas as $w)
-                                                            <option value="{{ $w->nuptk }}">{{ $w->user->name }}
+                                                            <option value="{{ $w->nuptk }}">{{ $w->user->nama }}
                                                             </option>
                                                         @endforeach
 
@@ -210,7 +210,7 @@
                                         <tr style="text-align: center;">
                                             <td>{{ $k->tingkat }} {{ $k->jurusan->id_jurusan }} {{ $k->nomor_kelas }}
                                             </td>
-                                            <td>{{ $k->walikelas->user->name ?? 'No Wali Kelas' }}</td>
+                                            <td>{{ $k->walikelas->user->nama ?? 'No Wali Kelas' }}</td>
                                             <td>{{ $k->siswa_count }}</td> <!-- Display total number of siswa -->
                                             <td>
                                                 <div class="table-actions">

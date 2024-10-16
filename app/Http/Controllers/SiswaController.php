@@ -175,7 +175,7 @@ class SiswaController extends Controller
         // Get face confidence
         $faceConfidence = $request->faceConfidence;
 
-        $batasMasuk = DB::table('waktu__absens')->value('batas_absen_masuk');
+        // $batasMasuk = DB::table('waktu__absens')->value('batas_absen_masuk');
 
         $validasiAbsen = Waktu_Absen::first();
 

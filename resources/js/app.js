@@ -3,24 +3,24 @@ document.addEventListener("DOMContentLoaded", function () {
     function formatDataForChart(data) {
         const dates = Object.keys(data);
         const statusTerlambat = [];
-        const statusAlfa = [];
+        const statusTidakHadir = [];
         const statusHadir = [];
 
         dates.forEach(date => {
             const percentage = data[date];
             statusTerlambat.push(percentage.Terlambat || 0);
-            statusAlfa.push(percentage.Alfa || 0);
+            statusTidakHadir.push(percentage.TidakHadir || 0);
             statusHadir.push(percentage.Hadir || 0);
         });
 
-        return { dates, statusTerlambat, statusAlfa, statusHadir };
+        return { dates, statusTerlambat, statusTidakHadir, statusHadir };
     }
 
     const chartData = formatDataForChart(dailyStatusCounts);
     initChart(chartData);
 
     // Initialize the chart
-    function initChart({ dates, statusTerlambat, statusAlfa, statusHadir }) {
+    function initChart({ dates, statusTerlambat, statusTidakHadir, statusHadir }) {
         const options = {
             series: [
                 {
@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     color: "#9ca3af",
                 },
                 {
-                    name: "Alfa",
-                    data: statusAlfa,
+                    name: "Tidak Hadir",
+                    data: statusTidakHadir,
                     color: "#c81e1e",
                 },
                 {
@@ -118,24 +118,24 @@ document.addEventListener("DOMContentLoaded", function () {
     function formatDataForChart(data) {
         const date = Object.keys(data);
         const statusTerlambat = [];
-        const statusAlfa = [];
+        const statusTidakHadir = [];
         const statusHadir = [];
 
         date.forEach(date => {
             const percentages = data[date];
             statusTerlambat.push(percentages.Terlambat || 0);
-            statusAlfa.push(percentages.Alfa || 0);
+            statusTidakHadir.push(percentages.TidakHadir || 0);
             statusHadir.push(percentages.Hadir || 0);
         });
 
-        return { date, statusTerlambat, statusAlfa, statusHadir };
+        return { date, statusTerlambat, statusTidakHadir, statusHadir };
     }
 
     const chartData = formatDataForChart(chartStatusCount);
     initChart(chartData);
 
     // Initialize the chart
-    function initChart({ date, statusTerlambat, statusAlfa, statusHadir }) {
+    function initChart({ date, statusTerlambat, statusTidakHadir, statusHadir }) {
         const options = {
             series: [
                 {
@@ -144,8 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     color: "#9ca3af",
                 },
                 {
-                    name: "Alfa",
-                    data: statusAlfa,
+                    name: "Tidak Hadir",
+                    data: statusTidakHadir,
                     color: "#c81e1e",
                 },
                 {

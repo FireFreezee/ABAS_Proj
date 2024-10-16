@@ -66,11 +66,11 @@
                 <nav id="main-menu-navigation" class="navigation-main">
                     <div class="nav-lavel">Home</div>
                     <div class="nav-item active">
-                        <a href=""><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                        <a href="{{ route('walikelas-dashboard') }}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
                     </div>
                     <div class="nav-lavel">Laporan</div>
                     <div class="nav-item">
-                        <a href=""><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
+                        <a href="{{ route('list-siswa') }}"><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
                     </div>
                 </nav>
             </div>
@@ -86,7 +86,7 @@
                     <div class="card-body border-l-8 border-green-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-green-500 text-lg">{{ $countHadir }}</h3>
+                                <h3 class="text-green-500 text-lg">{{ $countHadir }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Hadir</p>
                             </div>
                             <div class="icon">
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">%</span>
+                            <span class="float-right">{{ number_format($percentageHadir) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                     <div class="card-body border-l-8 border-cyan-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-aqua text-lg"></h3>
+                                <h3 class="text-aqua text-lg">{{ $countSakitIzin }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Sakit/Izin</p>
                             </div>
                             <div class="icon">
@@ -128,12 +128,12 @@
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-cyan-200" style="height: 6px;">
                             <div class="progress-bar bg-aqua" role="progressbar"
-                                style="width: %;" aria-valuenow="25"
+                                style="width: {{ $percentageSakitIzin }}%;" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">%</span>
+                            <span class="float-right">{{ number_format($percentageSakitIzin) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                     <div class="card-body border-l-8 border-red-700">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-red-700 text-lg"></h3>
+                                <h3 class="text-red-700 text-lg">{{ $countAlfa }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Alfa</p>
                             </div>
                             <div class="icon">
@@ -156,12 +156,12 @@
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-red-200" style="height: 6px;">
                             <div class="progress-bar bg-red-700" role="progressbar"
-                                style="width: %;" aria-valuenow="25"
+                                style="width: {{ $percentageAlfa }}%;" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">%</span>
+                            <span class="float-right">{{ number_format($percentageAlfa) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                     <div class="card-body border-l-8 border-gray-400">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-400 text-lg"></h3>
+                                <h3 class="text-gray-400 text-lg">{{ $countTerlambat }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Terlambat</p>
                             </div>
                             <div class="icon">
@@ -184,12 +184,12 @@
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-gray-200" style="height: 6px;">
                             <div class="progress-bar bg-gray-400" role="progressbar"
-                                style="width: %;" aria-valuenow="25"
+                                style="width: {{ $percentageTerlambat }}%;" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">%</span>
+                            <span class="float-right">{{ number_format($percentageTerlambat) }}%</span>
                         </div>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                     <div class="card-body border-l-8 border-gray-900">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-900 text-lg"></h3>
+                                <h3 class="text-gray-900 text-lg">{{ $countTAP }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">TAP</p>
                             </div>
                             <div class="icon">
@@ -211,12 +211,12 @@
                         </div>
                         <div class="progress mt-3 mb-1 !h-2 bg-gray-300" style="height: 6px;">
                             <div class="progress-bar bg-gray-900" role="progressbar"
-                                style="width: %;" aria-valuenow="25"
+                                style="width: {{ $percentageTAP }}%;" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
                         <div class="text-muted f12">
-                            <span class="float-right">%</span>
+                            <span class="float-right">{{ number_format($percentageTAP) }}%</span>
                         </div>
                     </div>
                 </div>
