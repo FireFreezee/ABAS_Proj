@@ -359,20 +359,35 @@
                                                     @endif
                                                     @if ($absensi->status == 'Hadir' || $absensi->status == 'Terlambat' || $absensi->status == 'TAP')
                                                         <div class="grid grid-cols-2 gap-2">
-                                                            <p><strong>Foto Masuk:</strong><img
+                                                            <p><strong>Foto Masuk:</strong>
+                                                                @if ($absensi->photo_in > 0)
+                                                                <img
                                                                     src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
                                                                     alt="">
+                                                                @else
+                                                                Data Tidak Tersedia
+                                                                @endif
                                                             </p>
-                                                            <p><strong>Foto Pulang:</strong><img
+                                                            <p><strong>Foto Pulang:</strong>
+                                                                @if ($absensi->photo_out > 0)
+                                                                <img
                                                                     src="{{ asset('storage/uploads/absensi/' . $absensi->photo_out) }}"
                                                                     alt="">
+                                                                @else
+                                                                Data Tidak Tersedia
+                                                                @endif
                                                             </p>
                                                         </div>
                                                     @endif
                                                     @if ($absensi->status == 'Sakit' || $absensi->status == 'Izin')
-                                                        <p><strong>Foto Keterangan:</strong><img
-                                                                src="{{ asset('storage/uploads/absensi/' . $absensi->photo_out) }}"
-                                                                alt="">
+                                                        <p><strong>Foto Keterangan:</strong>
+                                                            @if ($absensi->photo_in > 0)
+                                                                <img
+                                                                    src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
+                                                                    alt="">
+                                                                @else
+                                                                Data Tidak Tersedia
+                                                                @endif
                                                         </p>
                                                     @endif
                                                 </div>
