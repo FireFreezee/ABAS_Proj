@@ -166,7 +166,7 @@ class SiswaController extends Controller
         $radius = round($jarak["meters"]);
 
         $image = $request->image;
-        $folderPath = "uploads/absensi/";
+        $folderPath = "public/uploads/absensi/";
         $formatMasuk = $nis . "-" . $date . "-" . "masuk";
         $formatPulang = $nis . "-" . $date . "-" . "pulang";
         $image_parts = explode(";base64", $image);
@@ -313,7 +313,7 @@ class SiswaController extends Controller
             $date = date("Y-m-d");
             $file = $request->file('photo_in');
             $fileName = $nis . "-" . $date . "." . uniqid(true) . '-' . $file->getClientOriginalName();
-            $folderPath = "uploads/absensi/";
+            $folderPath = "public/uploads/absensi/";
             $file->storeAs($folderPath, $fileName);
 
             return $fileName;
@@ -424,7 +424,7 @@ class SiswaController extends Controller
 
             $file = $request->file('profile');
             $fileName = uniqid(true) . '-' . $file->getClientOriginalName();
-            $folderPath = "uploads/profile/";
+            $folderPath = "public/uploads/profile/";
             $file->storeAs($folderPath, $fileName);
 
             return $fileName;
