@@ -41,6 +41,26 @@ class SiswaController extends Controller
             $statusAbsen = 'Belum Absen';
         }
 
+        function getBusinessDays($year, $month)
+        {
+            $startOfMonth = Carbon::create($year, $month, 1);
+            $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+            $businessDays = 0;
+
+            // Loop through the days of the month
+            for ($day = $startOfMonth; $day <= $endOfMonth; $day->addDay()) {
+                if ($day->isWeekday()) { // Only count weekdays
+                    $businessDays++;
+                }
+            }
+
+            return $businessDays;
+        }
+
+        $businessDaysCurrentMonth = getBusinessDays(date('Y'), date('m'));
+        $businessDaysPreviousMonth = getBusinessDays(date('Y'), date('m', strtotime('first day of previous month')));
+
         $dataBulanIni = Absensi::whereYear('date', date('Y'))
             ->where('nis', $nis)
             ->whereMonth('date', date('m'))
@@ -76,24 +96,21 @@ class SiswaController extends Controller
             }
         }
 
-        $totalAbsenBulanIni = array_sum($dataBulanIni);
-        $persentaseHadirBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Hadir'] / $totalAbsenBulanIni) * 100) : 0;
-        $persentaseSakitIzinBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Sakit/Izin'] / $totalAbsenBulanIni) * 100) : 0;
-        $persentaseAlfaBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Alfa'] / $totalAbsenBulanIni) * 100) : 0;
-        $persentaseTerlambatBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Terlambat'] / $totalAbsenBulanIni) * 100) : 0;
-        $persentaseTAPBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['TAP'] / $totalAbsenBulanIni) * 100) : 0;
+        $persentaseHadirBulanIni = $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Hadir'] / $businessDaysCurrentMonth) * 100) : 0;
+        $persentaseSakitIzinBulanIni = $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Sakit/Izin'] / $businessDaysCurrentMonth) * 100) : 0;
+        $persentaseAlfaBulanIni = $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Alfa'] / $businessDaysCurrentMonth) * 100) : 0;
+        $persentaseTerlambatBulanIni = $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Terlambat'] / $businessDaysCurrentMonth) * 100) : 0;
+        $persentaseTAPBulanIni = $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['TAP'] / $businessDaysCurrentMonth) * 100) : 0;
 
 
-        // Menghitung persentase hadir bulan sebelumnya
-        $totalAbsenBulanSebelumnya = array_sum($dataBulanSebelumnya);
-        $persentaseHadirBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Hadir'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-        $persentaseSakitIzinBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Sakit/Izin'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-        $persentaseAlfaBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Alfa'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-        $persentaseTerlambatBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Terlambat'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-        $persentaseTAPBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['TAP'] / $totalAbsenBulanSebelumnya) * 100) : 0;
+        $persentaseHadirBulanSebelumnya = $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Hadir'] / $businessDaysPreviousMonth) * 100) : 0;
+        $persentaseSakitIzinBulanSebelumnya = $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Sakit/Izin'] / $businessDaysPreviousMonth) * 100) : 0;
+        $persentaseAlfaBulanSebelumnya = $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Alfa'] / $businessDaysPreviousMonth) * 100) : 0;
+        $persentaseTerlambatBulanSebelumnya = $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Terlambat'] / $businessDaysPreviousMonth) * 100) : 0;
+        $persentaseTAPBulanSebelumnya = $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['TAP'] / $businessDaysPreviousMonth) * 100) : 0;
 
         $startOfWeek = date('Y-m-d', strtotime('monday this week'));
-        $endOfWeek = date('Y-m-d', strtotime('sunday this week'));
+        $endOfWeek = date('Y-m-d', strtotime('friday this week'));
 
         $riwayatmingguini = Absensi::whereBetween('date', [$startOfWeek, $endOfWeek])
             ->where('nis', $nis) // Sesuaikan dengan kolom NIS siswa
@@ -105,7 +122,7 @@ class SiswaController extends Controller
         $jam = date("H:i:s");
         $waktu = DB::table('waktu__absens')->where('id_waktu_absen', 1)->first();
         $lok_sekolah = DB::table('koordinat__sekolahs')->where('id_koordinat_sekolah', 1)->first();
-        $presensi_hari_ini = DB::table('absensis')->where('nis', $nis)->where('jam_masuk');
+        $presensi_hari_ini = DB::table('absensis')->where('nis', $nis)->get();
         $siswa = Siswa::with('user')->get();
         return view('Siswa.siswa', [
             'waktu' => $waktu,
@@ -130,7 +147,8 @@ class SiswaController extends Controller
             'persentaseSakitIzinBulanSebelumnya' => $persentaseSakitIzinBulanSebelumnya,
             'persentaseAlfaBulanSebelumnya' => $persentaseAlfaBulanSebelumnya,
             'persentaseTerlambatBulanSebelumnya' => $persentaseTerlambatBulanSebelumnya,
-            'persentaseTAPBulanSebelumnya' => $persentaseTAPBulanSebelumnya
+            'persentaseTAPBulanSebelumnya' => $persentaseTAPBulanSebelumnya,
+            'presensiHariIni' => $presensi_hari_ini
         ]);
     }
 
@@ -264,39 +282,36 @@ class SiswaController extends Controller
             'status' => 'required|string',
         ]);
 
-            $user = Auth::user();
-            $nis = $user->siswa->nis;
-            $status = $request->status;
-            $date = date("Y-m-d");
-            $jam = date("H:i:s");
+        $user = Auth::user();
+        $nis = $user->siswa->nis;
+        $status = $request->status;
+        $date = date("Y-m-d");
+        $jam = date("H:i:s");
 
-            $lokasiSiswa = $request->lokasi;
+        $lokasiSiswa = $request->lokasi;
 
-            // $file = $request->file('photo_in');
-            // $extension = $file->getClientOriginalExtension();
-            // $folderPath = "public/uploads/absensi/";
-            // $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
+        // $file = $request->file('photo_in');
+        // $extension = $file->getClientOriginalExtension();
+        // $folderPath = "public/uploads/absensi/";
+        // $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
 
-            // Insert data into the database
-            $data = [
-                'nis' => $nis,
-                'status' => $status,
-                'photo_in' => $request->photo_in,
-                'keterangan' => $request->keterangan,
-                'date' => $date,
-                'jam_masuk' => $jam,
-                'titik_koordinat_masuk' => $lokasiSiswa,
-            ];
+        // Insert data into the database
+        $data = [
+            'nis' => $nis,
+            'status' => $status,
+            'photo_in' => $request->photo_in,
+            'keterangan' => $request->keterangan,
+            'date' => $date,
+            'jam_masuk' => $jam,
+            'titik_koordinat_masuk' => $lokasiSiswa,
+        ];
 
-            if ($data) {
-                DB::table('absensis')->insert($data);
-                return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
-            }
-            else {
-                return redirect()->back()->with('failed', 'Absensi gagal disimpan!');
-            }
-
-
+        if ($data) {
+            DB::table('absensis')->insert($data);
+            return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
+        } else {
+            return redirect()->back()->with('failed', 'Absensi gagal disimpan!');
+        }
     }
 
     public function fileUpload(Request $request)
@@ -360,9 +375,11 @@ class SiswaController extends Controller
         $statusCounts = $filteredData->groupBy('status')->map->count();
         $totalCount = $filteredData->count();
 
+        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
+
         // Calculate percentage for each status
-        $statusPercentages = $statusCounts->map(function ($count) use ($totalCount) {
-            return $totalCount > 0 ? ($count / $totalCount) * 100 : 0;
+        $statusPercentages = $statusCounts->map(function ($count) use ($businessDaysCount) {
+            return $businessDaysCount > 0 ? ($count / $businessDaysCount) * 100 : 0;
         });
 
         // Paginate the results with a limit of 10 items per page
@@ -371,6 +388,26 @@ class SiswaController extends Controller
         // Pass the attendance data, status counts, and filter dates to the view
         return view('siswa.laporan', compact('absensiPaginated', 'statusCounts', 'statusPercentages', 'startDate', 'endDate'));
     }
+
+    private function getBusinessDaysCount($startDate, $endDate)
+    {
+        // Create a collection of dates between start and end dates
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+        $businessDaysCount = 0;
+
+        // Iterate through each date and check if it's a business day
+        while ($start->lte($end)) {
+            // Check if the day is a weekday (Monday to Friday)
+            if ($start->isWeekday()) {
+                $businessDaysCount++;
+            }
+            $start->addDay();
+        }
+
+        return $businessDaysCount;
+    }
+
 
     public function profile()
     {

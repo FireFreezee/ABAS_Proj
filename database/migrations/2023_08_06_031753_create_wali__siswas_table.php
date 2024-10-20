@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
 
-            $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
+            $table->enum('jenis_kelamin', ['laki laki', 'perempuan'])->default('laki laki');
         });
     }
 

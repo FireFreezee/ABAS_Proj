@@ -19,7 +19,7 @@ class Wali_Siswa extends Model
 
     public function siswa()
     {
-        return $this->hasMany(Siswa::class, 'nik', 'nik');
+        return $this->hasMany(Siswa::class, 'nik_wali', 'nik');
     }
 
     public function user()

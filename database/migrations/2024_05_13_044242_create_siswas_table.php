@@ -12,16 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('siswas', function (Blueprint $table) {
-            $table->string('nis')->primary();
+             $table->string('nis')->primary();
 
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
 
-            $table->unsignedInteger('id_kelas');
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('cascade');
+            $table->string('nik_ayah')->nullable();
+            $table->foreign('nik_ayah')->references('nik')->on('wali__siswas');
 
-            $table->string('nik')->nullable();
-            $table->foreign('nik')->references('nik')->on('wali__siswas');
+            $table->string('nik_ibu')->nullable();
+            $table->foreign('nik_ibu')->references('nik')->on('wali__siswas');
+
+            $table->string('nik_wali')->nullable();
+            $table->foreign('nik_wali')->references('nik')->on('wali__siswas');
+
+
+            $table->unsignedInteger('id_kelas')->nullable();
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('set null');
 
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nisn')->unique();

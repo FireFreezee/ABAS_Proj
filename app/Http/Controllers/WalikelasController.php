@@ -18,62 +18,78 @@ class WalikelasController extends Controller
     public function index(Request $request)
     {
         $currentDay = Carbon::now()->format("Y-m-d");
-        // $currentMonth = now()->month;
-        // $currentYear = now()->year;
 
+        // Get the authenticated user
         $user = Auth::user();
         $nuptk = $user->wali->nuptk;
 
+        // Find the class associated with the user
         $class = Kelas::where("nuptk", $nuptk)->first();
 
-        $student = Siswa::where("id_kelas", $class->id_kelas)->get();
-        $nis = $student->pluck('nis');
+        // Get the students in that class
+        $students = Siswa::where("id_kelas", $class->id_kelas)->get();
+        $nis = $students->pluck('nis');
 
+        // Total number of students in the class
+        $totalStudents = $students->count();
+
+        // Get attendance data for the current day
         $totalAttendance = Absensi::whereIn('nis', $nis)
-        ->where('date', $currentDay) 
-        ->get();
+            ->where('date', $currentDay)
+            ->get();
 
         $totalRecords = $totalAttendance->count();
 
+        // Count attendance statuses
         $countHadir = $totalAttendance->where('status', 'Hadir')->count();
-        $countSakitIzin = ($totalAttendance->where('status', 'Sakit')->count()) + ($totalAttendance->where('status', 'Izin')->count());
+        $countSakitIzin = $totalAttendance->where('status', 'Sakit')->count() + $totalAttendance->where('status', 'Izin')->count();
         $countAlfa = $totalAttendance->where('status', 'Alfa')->count();
         $countTerlambat = $totalAttendance->where('status', 'Terlambat')->count();
         $countTAP = $totalAttendance->where('status', 'TAP')->count();
-        
-        $percentageHadir = ($totalRecords > 0) ? ($countHadir / $totalRecords) * 100 : 0;
-        $percentageSakitIzin = ($totalRecords > 0) ? ($countSakitIzin / $totalRecords) * 100 : 0;
-        $percentageAlfa = ($totalRecords > 0) ? ($countAlfa / $totalRecords) * 100 : 0;
-        $percentageTerlambat = ($totalRecords > 0) ? ($countTerlambat / $totalRecords) * 100 : 0;
-        $percentageTAP = ($totalRecords > 0) ? ($countTAP / $totalRecords) * 100 : 0;
 
+        // Calculate percentages based on total number of students
+        $percentageHadir = ($totalStudents > 0) ? ($countHadir / $totalStudents) * 100 : 0;
+        $percentageSakitIzin = ($totalStudents > 0) ? ($countSakitIzin / $totalStudents) * 100 : 0;
+        $percentageAlfa = ($totalStudents > 0) ? ($countAlfa / $totalStudents) * 100 : 0;
+        $percentageTerlambat = ($totalStudents > 0) ? ($countTerlambat / $totalStudents) * 100 : 0;
+        $percentageTAP = ($totalStudents > 0) ? ($countTAP / $totalStudents) * 100 : 0;
+
+        // Handle date range for the report
         $startDate = $request->input('start');
         $endDate = $request->input('end');
 
-        // Set default to current month if no dates are provided
+        // Set default to the current month if no dates are provided
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
+        // Query attendance data within the date range
         $query = Absensi::whereIn('nis', $nis)
-        ->whereBetween('date', [$startDate, $endDate])
-        ->orderBy('date','asc')
-        ->get();
+            ->whereBetween('date', [$startDate, $endDate])
+            ->orderBy('date', 'asc')
+            ->get();
 
-        $chartStatusCount = $query->groupBy('date')->map(function($dayDatas) {
-            $totalCount = $dayDatas->count(); 
-            $statusCounts = $dayDatas->groupBy('status')->map->count(); 
-        
-            // Calculate percentage for each status
-            $percentages = $statusCounts->map(function ($count) use ($totalCount) {
-                return ($totalCount > 0) ? number_format(($count / $totalCount) * 100, 2 ) : 0;
+        // Group data by date and calculate status counts
+        $chartStatusCount = $query->groupBy('date')->map(function ($dayDatas) use ($totalStudents) {
+            $totalCount = $dayDatas->count();
+            $statusCounts = $dayDatas->groupBy('status')->map->count();
+
+            // Calculate percentage for each status based on total students
+            $percentages = $statusCounts->map(function ($count) use ($totalStudents) {
+                return ($totalStudents > 0) ? number_format(($count / $totalStudents) * 100, 2) : 0;
             });
 
+            // Calculate the total 'Tidak Hadir' (absent) count
             $tidakHadirCount = $statusCounts->get('Alfa', 0) + $statusCounts->get('Sakit', 0) + $statusCounts->get('Izin', 0);
-            $percentages['TidakHadir'] = ($tidakHadirCount > 0) ? number_format(($tidakHadirCount / $totalCount) * 100, 2 ) : 0;
-        
-            return $percentages; // Return the status percentages
+
+            $statusCounts['TidakHadir'] = $tidakHadirCount;
+            $percentages['TidakHadir'] = ($tidakHadirCount > 0) ? number_format(($tidakHadirCount / $totalStudents) * 100, 2) : 0;
+
+            return [
+                'counts' => $statusCounts, // Actual counts
+                'percentages' => $percentages // Percentages
+            ]; // Return the status percentages
         });
 
         return view('walikelas.walikelas', compact(
@@ -186,22 +202,22 @@ class WalikelasController extends Controller
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
         $paginateData = new LengthAwarePaginator(
-        $siswaDataCollection->forPage($currentPage, $perPage),
-        $siswaDataCollection->count(),
-        $perPage, 
-        $currentPage, 
-        ['path'=> LengthAwarePaginator::resolveCurrentPath()]
+            $siswaDataCollection->forPage($currentPage, $perPage),
+            $siswaDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        $paginatedData = $paginateData->appends($request->only(['start','end']));
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
 
         // Pass the data to the view
         return view('walikelas.siswa', [
             'studentsData' => $paginatedData,
-            'attendanceCounts' => $attendanceCounts, 
-            'averageAttendancePercentages' => $averageAttendancePercentages, 
-            'kelas' => $class, 
-            'startDate' => $startDate, 
+            'attendanceCounts' => $attendanceCounts,
+            'averageAttendancePercentages' => $averageAttendancePercentages,
+            'kelas' => $class,
+            'startDate' => $startDate,
             'endDate' => $endDate
         ]);
     }
@@ -251,17 +267,17 @@ class WalikelasController extends Controller
             $presentDataCollection->count(),
             $perPage,
             $currentPage,
-            ['path'=> LengthAwarePaginator::resolveCurrentPath()]
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        $paginatedData = $paginateData->appends($request->only(['start','end']));
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
 
         return view('walikelas.detailsiswa', [
-            'present' => $paginatedData ,
+            'present' => $paginatedData,
             'students' => $students,
             'attendanceCounts' => $attendanceCounts,
-            'attendancePercentage' =>$attendancePercentage, 
-            'startDate' => $startDate, 
+            'attendancePercentage' => $attendancePercentage,
+            'startDate' => $startDate,
             'endDate' => $endDate
         ]);
     }

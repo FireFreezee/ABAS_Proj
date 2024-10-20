@@ -17,7 +17,7 @@ class SiswaSeeder extends Seeder
             'nis' => '0061748352',
             'id_user' => 5,
             'id_kelas' => 1,
-            'nik' => '2108410',
+            'nik_ibu' => '2345678901234567',
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678901',
         ]);
@@ -26,7 +26,7 @@ class SiswaSeeder extends Seeder
             'nis' => '0062894371',
             'id_user' => 3,
             'id_kelas' => 2,
-            'nik' => '2108411',
+            'nik_ayah' => '3456789012345678',
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678902',
         ]);
@@ -35,7 +35,7 @@ class SiswaSeeder extends Seeder
             'nis' => '0069584720',
             'id_user' => 4,
             'id_kelas' => 3,
-            'nik' => '2108412',
+            'nik_wali' => '1234567890123456',
             'jenis_kelamin' => 'perempuan',
             'nisn' => '0045678903',
         ]);

@@ -114,28 +114,35 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Format the data directly from Laravel
     function formatDataForChart(data) {
         const date = Object.keys(data);
         const statusTerlambat = [];
         const statusTidakHadir = [];
         const statusHadir = [];
-
+        const countTerlambat = [];
+        const countTidakHadir = [];
+        const countHadir = [];
+    
         date.forEach(date => {
-            const percentages = data[date];
+            const { counts, percentages } = data[date];
             statusTerlambat.push(percentages.Terlambat || 0);
             statusTidakHadir.push(percentages.TidakHadir || 0);
             statusHadir.push(percentages.Hadir || 0);
+    
+            // Push the actual counts
+            countTerlambat.push(counts.Terlambat || 0);
+            countTidakHadir.push(counts.TidakHadir || 0);
+            countHadir.push(counts.Hadir || 0);
         });
-
-        return { date, statusTerlambat, statusTidakHadir, statusHadir };
+    
+        return { date, statusTerlambat, statusTidakHadir, statusHadir, countTerlambat, countTidakHadir, countHadir };
     }
-
+    
     const chartData = formatDataForChart(chartStatusCount);
     initChart(chartData);
-
+    
     // Initialize the chart
-    function initChart({ date, statusTerlambat, statusTidakHadir, statusHadir }) {
+    function initChart({ date, statusTerlambat, statusTidakHadir, statusHadir, countTerlambat, countTidakHadir, countHadir }) {
         const options = {
             series: [
                 {
@@ -171,6 +178,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 x: {
                     show: true,
                 },
+                y: {
+                    formatter: function(value, { seriesIndex, dataPointIndex }) {
+                        // Show counts in the tooltip
+                        const count = [countTerlambat[dataPointIndex], countTidakHadir[dataPointIndex], countHadir[dataPointIndex]][seriesIndex];
+                        return ` ${count} (${value}%)`; // Show percentage and count
+                    }
+                },
             },
             legend: {
                 show: true
@@ -200,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             },
             xaxis: {
-                categories: date, // Use dates from data
+                categories: date,
                 labels: {
                     show: false,
                 },
@@ -212,20 +226,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             },
             yaxis: {
-                show: false,
+                max: 100,
+                show: true,
                 labels: {
                     formatter: function (value) {
                         return value + '%';
                     }
-                }
+                },
             },
         };
-
+    
         if (document.getElementById("legend-chart") && typeof ApexCharts !== 'undefined') {
             const chart = new ApexCharts(document.getElementById("legend-chart"), options);
             chart.render();
         }
-    }
+    }    
 });
 
 

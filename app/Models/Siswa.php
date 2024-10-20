@@ -15,7 +15,9 @@ class Siswa extends Model
         'nis',
         'id_user',
         'id_kelas',
-        'nik',
+        'nik_ayah',
+        'nik_ibu',
+        'nik_wali',
         'jenis_kelamin',
         'nisn',
     ];
@@ -35,9 +37,22 @@ class Siswa extends Model
         return $this->hasMany(Absensi::class, 'nis', 'nis');
     }
 
-    public function ortu()
+    // Relationship for Ayah
+    public function ayah()
     {
-        return $this->hasOne(Wali_Siswa::class, 'nik', 'nik');
+        return $this->belongsTo(Wali_Siswa::class, 'nik_ayah', 'nik');
+    }
+
+    // Relationship for Ibu
+    public function ibu()
+    {
+        return $this->belongsTo(Wali_Siswa::class, 'nik_ibu', 'nik');
+    }
+
+    // Relationship for Wali
+    public function wali()
+    {
+        return $this->belongsTo(Wali_Siswa::class, 'nik_wali', 'nik');
     }
 
     public $timestamps = false;

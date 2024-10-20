@@ -13,22 +13,20 @@ class WaliSiswaSeeder extends Seeder
      */
     public function run(): void
     {
-        wali_siswa::create([
-            'nik' => '2108410',
-            'id_user' => 9,
-            'jenis_kelamin' => 'laki laki',
+        wali_siswa::insert([
+            'nik' => '1234567890123456',
+            'id_user' => 9
         ]);
 
-        wali_siswa::create([
-            'nik' => '2108411',
+        wali_siswa::insert([
+            'nik' => '2345678901234567',
             'id_user' => 10,
-            'jenis_kelamin' => 'laki laki',
+            'jenis_kelamin' => 'perempuan'
         ]);
 
-        wali_siswa::create([
-            'nik' => '2108412',
-            'id_user' => 11,
-            'jenis_kelamin' => 'laki laki',
+        wali_siswa::insert([
+            'nik' => '3456789012345678',
+            'id_user' => 11
         ]);
     }
 }

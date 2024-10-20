@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Siswa;
 use App\Models\Wali_Siswa;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,20 +17,44 @@ class WalisiswaController extends Controller
      */
     public function index()
     {
-        // Get the logged-in user's Wali_Siswa
         $waliSiswa = Wali_Siswa::where('id_user', Auth::id())->first();
 
-        // Fetch the students (siswa) related to the logged-in wali siswa
-        $siswas = $waliSiswa->siswa()->with('kelas')->get(); // Load 'kelas' relationship
+        $siswas = Siswa::with('user', 'kelas', 'ayah', 'ibu', 'wali')
+            ->where(function ($query) use ($waliSiswa) {
+                if ($waliSiswa->jenis_kelamin == "laki laki") {
+                    $query->where('nik_ayah', $waliSiswa->nik)
+                        ->orWhere('nik_wali', $waliSiswa->nik);
+                } elseif ($waliSiswa->jenis_kelamin == "perempuan") {
+                    $query->where('nik_ibu', $waliSiswa->nik)
+                        ->orWhere('nik_wali', $waliSiswa->nik);
+                }
+            })->get();
+
+        function getBusinessDays($year, $month)
+        {
+            $startOfMonth = Carbon::create($year, $month, 1);
+            $endOfMonth = $startOfMonth->copy()->endOfMonth();
+
+            $businessDays = 0;
+
+            // Loop through the days of the month
+            for ($day = $startOfMonth; $day <= $endOfMonth; $day->addDay()) {
+                if ($day->isWeekday()) { // Only count weekdays
+                    $businessDays++;
+                }
+            }
+
+            return $businessDays;
+        }
 
         foreach ($siswas as $siswa) {
-            $nis = $siswa->nis; // Use the student's NIS to filter attendance
+            $nis = $siswa->nis;
 
-            // Initialize arrays to hold the attendance data
-            $dataBulanIni = [];
-            $dataBulanSebelumnya = [];
+            // Get the number of business days for the current and previous months
+            $businessDaysCurrentMonth = getBusinessDays(date('Y'), date('m'));
+            $businessDaysPreviousMonth = getBusinessDays(date('Y'), date('m', strtotime('first day of previous month')));
 
-            // Get attendance data for the current month
+            // Fetch attendance data for current month
             $dataBulanIni = Absensi::whereYear('date', date('Y'))
                 ->where('nis', $nis)
                 ->whereMonth('date', date('m'))
@@ -37,7 +63,7 @@ class WalisiswaController extends Controller
                 ->pluck('total', 'status')
                 ->toArray();
 
-            // Get attendance data for the previous month
+            // Fetch attendance data for the previous month
             $dataBulanSebelumnya = Absensi::whereYear('date', date('Y'))
                 ->where('nis', $nis)
                 ->whereMonth('date', date('m', strtotime('first day of previous month')))
@@ -46,43 +72,39 @@ class WalisiswaController extends Controller
                 ->pluck('total', 'status')
                 ->toArray();
 
-            // Combine 'Sakit' and 'Izin' into one category for both months
+            // Combine 'Sakit' and 'Izin' into 'Sakit/Izin' for both months
             $dataBulanIni['Sakit/Izin'] = ($dataBulanIni['Sakit'] ?? 0) + ($dataBulanIni['Izin'] ?? 0);
             unset($dataBulanIni['Sakit'], $dataBulanIni['Izin']);
 
             $dataBulanSebelumnya['Sakit/Izin'] = ($dataBulanSebelumnya['Sakit'] ?? 0) + ($dataBulanSebelumnya['Izin'] ?? 0);
             unset($dataBulanSebelumnya['Sakit'], $dataBulanSebelumnya['Izin']);
 
-            // Status that should be displayed
+            // Statuses to calculate
             $statuses = ['Hadir', 'Sakit/Izin', 'Alfa', 'Terlambat', 'TAP'];
+
+            // Initialize missing statuses to 0
             foreach ($statuses as $status) {
-                if (!array_key_exists($status, $dataBulanIni)) {
-                    $dataBulanIni[$status] = 0;
-                }
-                if (!array_key_exists($status, $dataBulanSebelumnya)) {
-                    $dataBulanSebelumnya[$status] = 0;
-                }
+                $dataBulanIni[$status] = $dataBulanIni[$status] ?? 0;
+                $dataBulanSebelumnya[$status] = $dataBulanSebelumnya[$status] ?? 0;
             }
 
-            // Calculate totals and percentages for the current month
-            $totalAbsenBulanIni = array_sum($dataBulanIni);
-            $siswa->persentaseHadirBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Hadir'] / $totalAbsenBulanIni) * 100) : 0;
-            $siswa->persentaseSakitIzinBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Sakit/Izin'] / $totalAbsenBulanIni) * 100) : 0;
-            $siswa->persentaseAlfaBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Alfa'] / $totalAbsenBulanIni) * 100) : 0;
-            $siswa->persentaseTerlambatBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['Terlambat'] / $totalAbsenBulanIni) * 100) : 0;
-            $siswa->persentaseTAPBulanIni = $totalAbsenBulanIni > 0 ? round(($dataBulanIni['TAP'] / $totalAbsenBulanIni) * 100) : 0;
+            // Set attributes for current month based on business days
+            $siswa->setAttribute('persentaseHadirBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Hadir'] / $businessDaysCurrentMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseSakitIzinBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Sakit/Izin'] / $businessDaysCurrentMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseAlfaBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Alfa'] / $businessDaysCurrentMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseTerlambatBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Terlambat'] / $businessDaysCurrentMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseTAPBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['TAP'] / $businessDaysCurrentMonth) * 100) : 0);
 
-            // Calculate totals and percentages for the previous month
-            $totalAbsenBulanSebelumnya = array_sum($dataBulanSebelumnya);
-            $siswa->persentaseHadirBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Hadir'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-            $siswa->persentaseSakitIzinBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Sakit/Izin'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-            $siswa->persentaseAlfaBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Alfa'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-            $siswa->persentaseTerlambatBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['Terlambat'] / $totalAbsenBulanSebelumnya) * 100) : 0;
-            $siswa->persentaseTAPBulanSebelumnya = $totalAbsenBulanSebelumnya > 0 ? round(($dataBulanSebelumnya['TAP'] / $totalAbsenBulanSebelumnya) * 100) : 0;
+            // Set attributes for previous month based on business days
+            $siswa->setAttribute('persentaseHadirBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Hadir'] / $businessDaysPreviousMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseSakitIzinBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Sakit/Izin'] / $businessDaysPreviousMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseAlfaBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Alfa'] / $businessDaysPreviousMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseTerlambatBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Terlambat'] / $businessDaysPreviousMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseTAPBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['TAP'] / $businessDaysPreviousMonth) * 100) : 0);
 
-            // Attach the data to the student object
-            $siswa->dataBulanIni = $dataBulanIni;
-            $siswa->dataBulanSebelumnya = $dataBulanSebelumnya;
+            // Set attendance data
+            $siswa->setAttribute('dataBulanIni', $dataBulanIni);
+            $siswa->setAttribute('dataBulanSebelumnya', $dataBulanSebelumnya);
         }
 
         return view('walisiswa.walisiswa', compact('siswas'));
