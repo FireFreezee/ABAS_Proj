@@ -121,18 +121,19 @@ class WalikelasController extends Controller
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
+        // Calculate the number of business days in the date range
+        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
+
         // Fetch students in the class
         $user = Auth::user();
         $nuptk = $user->wali->nuptk;
-
         $class = Kelas::where("nuptk", $nuptk)->first();
-
         $students = Siswa::where('id_kelas', $class->id_kelas)->with('user')->get();
         $siswaIds = $students->pluck('nis');
 
         // Fetch attendance records for the students within the specified date range
         $siswaAbsensi = Absensi::whereIn('nis', $siswaIds)
-            ->whereBetween('date', [$startDate, $endDate]) // Filter by date range
+            ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
         $totalStudents = count($students);
@@ -144,47 +145,36 @@ class WalikelasController extends Controller
             'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
             'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
         ];
-        // Calculate the percentage of attendance for each student
 
-        $studentsData = []; // Initialize the array to hold student data
-
+        // Calculate the percentage of attendance for each student based on business days
+        $studentsData = [];
         foreach ($students as $student) {
             // Get attendance records for the current student within the specified date range
             $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
-
-            $totalAttendance = $studentAttendance->count();
             $studentData = [
                 'nis' => $student->nis,
                 'name' => $student->user->nama,
                 'attendancePercentages' => [],
             ];
 
-            if ($totalAttendance > 0) {
-                foreach ($attendanceCounts as $status => $count) {
-                    $studentStatusCount = $studentAttendance->where('status', $status)->count();
-                    $percentage = ($studentStatusCount / $totalAttendance) * 100;
-                    $studentData['attendancePercentages'][$status] = $percentage;
-                }
-            } else {
-                // If no attendance records, set all percentages to 0
-                $studentData['attendancePercentages'] = array_fill_keys(array_keys($attendanceCounts), 0);
+            // Calculate percentage for each status based on business days
+            foreach ($attendanceCounts as $status => $count) {
+                $studentStatusCount = $studentAttendance->where('status', $status)->count();
+                $percentage = $businessDaysCount > 0 ? ($studentStatusCount / $businessDaysCount) * 100 : 0;
+                $studentData['attendancePercentages'][$status] = $percentage;
             }
 
-            $studentsData[] = $studentData; // Add student data to the array
+            $studentsData[] = $studentData;
         }
 
-        // Calculate average attendance percentages for all statuses
+        // Calculate average attendance percentages for all statuses based on business days
         $averageAttendancePercentages = [];
-
-        // Combine 'Sakit' and 'Izin' for average calculations
         $attendanceCounts['Sakit/Izin'] = $attendanceCounts['Sakit'] + $attendanceCounts['Izin'];
 
         foreach ($attendanceCounts as $status => $count) {
             $totalPercentage = 0;
 
-            // Sum the individual percentages for this status
             foreach ($studentsData as $studentData) {
-                // Check if the status is 'Sakit/Izin' and combine values
                 if ($status === 'Sakit/Izin') {
                     $totalPercentage += $studentData['attendancePercentages']['Sakit'] ?? 0;
                     $totalPercentage += $studentData['attendancePercentages']['Izin'] ?? 0;
@@ -193,12 +183,12 @@ class WalikelasController extends Controller
                 }
             }
 
-            // Calculate the average percentage
+            // Calculate the average percentage based on the total number of students and business days
             $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
         }
 
+        // Paginate the data
         $siswaDataCollection = collect($studentsData);
-
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
         $paginateData = new LengthAwarePaginator(
@@ -218,10 +208,13 @@ class WalikelasController extends Controller
             'averageAttendancePercentages' => $averageAttendancePercentages,
             'kelas' => $class,
             'startDate' => $startDate,
-            'endDate' => $endDate
+            'endDate' => $endDate,
+            'businessDaysCount' => $businessDaysCount,
         ]);
     }
 
+    
+    
     public function detailSiswa(Request $request, $id)
     {
         // Retrieve the date range from the request
@@ -235,7 +228,7 @@ class WalikelasController extends Controller
         }
 
         $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'asc')->get();
-
+        
         $students = Siswa::where('nis', $id)->with('user')->first();
 
 
@@ -250,16 +243,18 @@ class WalikelasController extends Controller
             'TAP' => $present->where('status', 'TAP')->count(),
         ];
 
+        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
+
         $attendancePercentage = [
-            'percentageHadir' => ($totalRecords > 0) ? ($attendanceCounts['Hadir'] / $totalRecords) * 100 : 0,
-            'percentageSakitIzin' => ($totalRecords > 0) ? ($attendanceCounts['Sakit/Izin'] / $totalRecords) * 100 : 0,
-            'percentageAlfa' => ($totalRecords > 0) ? ($attendanceCounts['Alfa'] / $totalRecords) * 100 : 0,
-            'percentageTerlambat' => ($totalRecords > 0) ? ($attendanceCounts['Terlambat'] / $totalRecords) * 100 : 0,
-            'percentageTAP' => ($totalRecords > 0) ? ($attendanceCounts['TAP'] / $totalRecords) * 100 : 0,
+            'percentageHadir' => ($businessDaysCount > 0) ? ($attendanceCounts['Hadir'] / $businessDaysCount) * 100 : 0,
+            'percentageSakitIzin' => ($businessDaysCount > 0) ? ($attendanceCounts['Sakit/Izin'] / $businessDaysCount) * 100 : 0,
+            'percentageAlfa' => ($businessDaysCount > 0) ? ($attendanceCounts['Alfa'] / $businessDaysCount) * 100 : 0,
+            'percentageTerlambat' => ($businessDaysCount > 0) ? ($attendanceCounts['Terlambat'] / $businessDaysCount) * 100 : 0,
+            'percentageTAP' => ($businessDaysCount > 0) ? ($attendanceCounts['TAP'] / $businessDaysCount) * 100 : 0,
         ];
 
         $presentDataCollection = collect($present);
-
+        
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
         $paginateData = new LengthAwarePaginator(
@@ -280,6 +275,25 @@ class WalikelasController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate
         ]);
+    }
+
+    private function getBusinessDaysCount($startDate, $endDate)
+    {
+        // Create a collection of dates between start and end dates
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+        $businessDaysCount = 0;
+
+        // Iterate through each date and check if it's a business day
+        while ($start->lte($end)) {
+            // Check if the day is a weekday (Monday to Friday)
+            if ($start->isWeekday()) {
+                $businessDaysCount++;
+            }
+            $start->addDay();
+        }
+
+        return $businessDaysCount;
     }
 
     /**

@@ -307,7 +307,7 @@
                                                     {{ $absensi->status }}
                                                 </div>
                                             @elseif ($absensi->status == 'Terlambat')
-                                                <div class="bg-gray-400 h-fit w-14 p-1 rounded-md text-white">
+                                                <div class="bg-gray-400 h-fit w-25 p-1 rounded-md text-white">
                                                     {{ $absensi->status }}
                                                 </div>
                                             @elseif ($absensi->status == 'TAP')

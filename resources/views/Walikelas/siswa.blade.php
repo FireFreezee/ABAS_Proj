@@ -81,7 +81,7 @@
             <h5 class="font-bold text-[20px] mb-4">
                 Laporan Absensi
             </h5>
-            <div class="grid grid-cols-2 bg-white ">
+            <div class="grid grid-cols-2 bg-white pt-2 pr-2 rounded-lg mb-2">
                 <div></div>
                 <form action="{{ route('list-siswa', ['kelas_id' => $kelas->id_kelas] ) }}" method="GET">
                     <div id="date-range-picker" class="flex justify-end items-center gap-4 pb-2">

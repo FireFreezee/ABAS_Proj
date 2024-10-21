@@ -376,7 +376,7 @@ class SiswaController extends Controller
         $totalCount = $filteredData->count();
 
         $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
-
+        // dd($businessDaysCount);
         // Calculate percentage for each status
         $statusPercentages = $statusCounts->map(function ($count) use ($businessDaysCount) {
             return $businessDaysCount > 0 ? ($count / $businessDaysCount) * 100 : 0;
