@@ -9,6 +9,7 @@ use App\Models\Siswa;
 use App\Models\User;
 use App\Models\Wali_Kelas;
 use App\Imports\WaliImport;
+use App\Models\Wali_Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -226,7 +227,7 @@ class OperatorController extends Controller
         Kelas::insert([
             'id_jurusan' => $request->id_jurusan,
             'nomor_kelas' => $request->nomor_kelas,
-            'nuptk' => $request->nuptk,
+            'nip' => $request->nip,
             'tingkat' => $request->tingkat,
         ]);
 
@@ -238,7 +239,7 @@ class OperatorController extends Controller
         DB::table('kelas')->where('id_kelas', $r->id_kelas)->update([
             'id_jurusan' => $r->id_jurusan,
             'nomor_kelas' => $r->nomor_kelas,
-            'nuptk' => $r->nuptk,
+            'nip' => $r->nip,
             'tingkat' => $r->tingkat,
         ]);
 
@@ -291,8 +292,9 @@ class OperatorController extends Controller
     {
         $kelas = Kelas::find($id_kelas);
         $siswa = $kelas->siswa()->with('user')->get();
+        $waliSiswa = Wali_Siswa::all();
 
-        return view('Operator.crudSiswa', compact('siswa', 'kelas', 'id_kelas'));
+        return view('Operator.crudSiswa', compact('siswa', 'kelas', 'id_kelas', 'waliSiswa'));
     }
 
     public function tambahSiswa(Request $request)
@@ -311,6 +313,9 @@ class OperatorController extends Controller
                 'id_kelas' => $request->id_kelas,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nisn' => $request->nisn,
+                'nik_ayah' => $request->nik_ayah,
+                'nik_ibu' => $request->nik_ibu,
+                'nik_wali' => $request->nik_wali,
             ]);
         } else {
             $user = User::create([
@@ -325,6 +330,9 @@ class OperatorController extends Controller
                 'id_kelas' => $request->id_kelas,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nisn' => $request->nisn,
+                'nik_ayah' => $request->nik_ayah,
+                'nik_ibu' => $request->nik_ibu,
+                'nik_wali' => $request->nik_wali,
             ]);
         }
         return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
@@ -336,6 +344,9 @@ class OperatorController extends Controller
             'nis' => $r->nis,
             'jenis_kelamin' => $r->jenis_kelamin,
             'nisn' => $r->nisn,
+            'nik_ayah' => $r->nik_ayah,
+            'nik_ibu' => $r->nik_ibu,
+            'nik_wali' => $r->nik_wali,
         ]);
 
 
@@ -360,6 +371,80 @@ class OperatorController extends Controller
         return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
     }
 
+    public function tambahSiswaT(Request $request)
+    {
+        if (strlen($request->password) > 0) {
+            $user = User::create([
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'password' => password_hash($request->password, PASSWORD_DEFAULT),
+                'role' => 'siswa'
+            ]);
+
+            Siswa::insert([
+                'nis' => $request->nis,
+                'id_user' => $user->id,
+                'id_kelas' => $request->id_kelas,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nisn' => $request->nisn,
+                'nik_ayah' => $request->nik_ayah,
+                'nik_ibu' => $request->nik_ibu,
+                'nik_wali' => $request->nik_wali,
+            ]);
+        } else {
+            $user = User::create([
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'role' => 'wali'
+            ]);
+
+            Siswa::insert([
+                'nis' => $request->nis,
+                'id_user' => $user->id,
+                'id_kelas' => $request->id_kelas,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nisn' => $request->nisn,
+                'nik_ayah' => $request->nik_ayah,
+                'nik_ibu' => $request->nik_ibu,
+                'nik_wali' => $request->nik_wali,
+            ]);
+        }
+        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan!');
+    }
+
+    public function editSiswaT(Request $r)
+    {
+        DB::table('siswas')->where('id_user', $r->id)->update([
+            'nis' => $r->nis,
+            'jenis_kelamin' => $r->jenis_kelamin,
+            'nisn' => $r->nisn,
+            'nik_ayah' => $r->nik_ayah,
+            'nik_ibu' => $r->nik_ibu,
+            'nik_wali' => $r->nik_wali,
+        ]);
+
+
+        //DB user
+        DB::table('users')->where('id', $r->id)->update([
+            'nama' => $r->name,
+            'email' => $r->email,
+            'password' => password_hash($r->password, PASSWORD_DEFAULT),
+        ]);
+
+        return redirect()->back()->with('success', 'Data Berhasil Diupdate!');
+    }
+
+    public function hapusSiswaT(Request $request, $id)
+    {
+        $s = Siswa::where('id_user', $request->id);;
+        $s->delete();
+
+        $s = User::find($id);
+        $s->delete();
+
+        return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
     public function kesiswaan()
     {
         $kesiswaan = User::where('role', 'kesiswaan')->get();
@@ -368,12 +453,32 @@ class OperatorController extends Controller
 
     public function tambahKesiswaan(Request $request)
     {
-        User::insert([
-            'nama' => $request->name,
-            'email' => $request->email,
-            'password' => password_hash($request->password, PASSWORD_DEFAULT),
-            'role' => 'kesiswaan',
-        ]);
+        if (strlen($request->password) > 0) {
+            $user = User::create([
+                'nama' => $request->name,
+                'email' => $request->email,
+                'password' => password_hash($request->password, PASSWORD_DEFAULT),
+                'role' => 'kesiswaan',
+            ]);
+            Wali_Kelas::insert([
+                'nuptk' => $request->nuptk,
+                'id_user' => $user->id,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nip' => $request->nip,
+            ]);
+        } else {
+            $user = User::create([
+                'nama' => $request->name,
+                'email' => $request->email,
+                'role' => 'kesiswaan',
+            ]);
+            Wali_Kelas::insert([
+                'nuptk' => $request->nuptk,
+                'id_user' => $user->id,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nip' => $request->nip,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Keiswaan berhasil ditambahkan!');
     }

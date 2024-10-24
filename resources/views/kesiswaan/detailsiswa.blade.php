@@ -289,30 +289,30 @@
                                     <tr class="text-center">
                                         <th>{{ $absensi->date }}</th>
                                         <td class="flex justify-center">
-                                            @if ($absensi->status == "Hadir")
-                                            <div class="bg-green-500 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Sakit")
-                                            <div class="bg-cyan-500 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Izin")
-                                            <div class="bg-orange-400 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Alfa")
-                                            <div class="bg-red-700 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "Terlambat")
-                                            <div class="bg-gray-400 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
-                                            @elseif ($absensi->status == "TAP")
-                                            <div class="bg-gray-900 h-fit w-14 p-1 rounded-md">
-                                                {{ $absensi->status }}
-                                            </div>
+                                            @if ($absensi->status == 'Hadir')
+                                                <div class="bg-green-500 h-fit w-14 p-1 rounded-md text-white">
+                                                    {{ $absensi->status }}
+                                                </div>
+                                            @elseif ($absensi->status == 'Sakit')
+                                                <div class="bg-cyan-500 h-fit w-14 p-1 rounded-md text-white">
+                                                    {{ $absensi->status }}
+                                                </div>
+                                            @elseif ($absensi->status == 'Izin')
+                                                <div class="bg-orange-400 h-fit w-14 p-1 rounded-md text-white">
+                                                    {{ $absensi->status }}
+                                                </div>
+                                            @elseif ($absensi->status == 'Alfa')
+                                                <div class="bg-red-700 h-fit w-14 p-1 rounded-md text-white">
+                                                    {{ $absensi->status }}
+                                                </div>
+                                            @elseif ($absensi->status == 'Terlambat')
+                                                <div class="bg-gray-400 h-fit w-25 p-1 rounded-md text-white">
+                                                    {{ $absensi->status }}
+                                                </div>
+                                            @elseif ($absensi->status == 'TAP')
+                                                <div class="bg-gray-900 h-fit w-14 p-1 rounded-md text-white">
+                                                    {{ $absensi->status }}
+                                                </div>
                                             @endif
                                         </td>
                                         <td>
@@ -361,20 +361,18 @@
                                                         <div class="grid grid-cols-2 gap-2">
                                                             <p><strong>Foto Masuk:</strong>
                                                                 @if ($absensi->photo_in > 0)
-                                                                <img
-                                                                    src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
-                                                                    alt="">
+                                                                    <img src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
+                                                                        alt="">
                                                                 @else
-                                                                Data Tidak Tersedia
+                                                                    Data Tidak Tersedia
                                                                 @endif
                                                             </p>
                                                             <p><strong>Foto Pulang:</strong>
                                                                 @if ($absensi->photo_out > 0)
-                                                                <img
-                                                                    src="{{ asset('storage/uploads/absensi/' . $absensi->photo_out) }}"
-                                                                    alt="">
+                                                                    <img src="{{ asset('storage/uploads/absensi/' . $absensi->photo_out) }}"
+                                                                        alt="">
                                                                 @else
-                                                                Data Tidak Tersedia
+                                                                    Data Tidak Tersedia
                                                                 @endif
                                                             </p>
                                                         </div>
@@ -382,12 +380,11 @@
                                                     @if ($absensi->status == 'Sakit' || $absensi->status == 'Izin')
                                                         <p><strong>Foto Keterangan:</strong>
                                                             @if ($absensi->photo_in > 0)
-                                                                <img
-                                                                    src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
+                                                                <img src="{{ asset('storage/uploads/absensi/' . $absensi->photo_in) }}"
                                                                     alt="">
-                                                                @else
+                                                            @else
                                                                 Data Tidak Tersedia
-                                                                @endif
+                                                            @endif
                                                         </p>
                                                     @endif
                                                 </div>

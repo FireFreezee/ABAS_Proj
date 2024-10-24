@@ -114,6 +114,7 @@ class WalikelasController extends Controller
         // Retrieve the date range from the request
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $search = $request->input('search');
 
         // Set default to the current month if no dates are provided
         if (!$startDate || !$endDate) {
@@ -128,7 +129,19 @@ class WalikelasController extends Controller
         $user = Auth::user();
         $nuptk = $user->wali->nuptk;
         $class = Kelas::where("nuptk", $nuptk)->first();
-        $students = Siswa::where('id_kelas', $class->id_kelas)->with('user')->get();
+        $studentsQuery = Siswa::where('id_kelas', $class->id_kelas)->with('user');
+
+        if ($search) {
+            $studentsQuery->where(function ($query) use ($search) {
+                $query->where('nis', 'like', '%' . $search . '%')
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('nama', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        // Get the students and their IDs
+        $students = $studentsQuery->get();
         $siswaIds = $students->pluck('nis');
 
         // Fetch attendance records for the students within the specified date range
@@ -210,11 +223,12 @@ class WalikelasController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate,
             'businessDaysCount' => $businessDaysCount,
+            'search' => $search
         ]);
     }
 
-    
-    
+
+
     public function detailSiswa(Request $request, $id)
     {
         // Retrieve the date range from the request
@@ -228,7 +242,7 @@ class WalikelasController extends Controller
         }
 
         $present = Absensi::where('nis', $id)->whereBetween('date', [$startDate, $endDate])->orderBy('date', 'asc')->get();
-        
+
         $students = Siswa::where('nis', $id)->with('user')->first();
 
 
@@ -254,7 +268,7 @@ class WalikelasController extends Controller
         ];
 
         $presentDataCollection = collect($present);
-        
+
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
         $paginateData = new LengthAwarePaginator(

@@ -55,18 +55,18 @@ class KesiswaanController extends Controller
         $filteredData = $query->orderBy('date', 'asc')->get();
 
         // Group by date and then by status, counting each combination
-        $dailyStatusCounts = $filteredData->groupBy('date')->map(function ($dayData) { 
-            $totalCount = $dayData->count(); 
-            $statusCounts = $dayData->groupBy('status')->map->count(); 
-        
+        $dailyStatusCounts = $filteredData->groupBy('date')->map(function ($dayData) {
+            $totalCount = $dayData->count();
+            $statusCounts = $dayData->groupBy('status')->map->count();
+
             // Calculate percentage for each status
             $percentages = $statusCounts->map(function ($count) use ($totalCount) {
-                return ($totalCount > 0) ? number_format(($count / $totalCount) * 100, 2 ) : 0;
+                return ($totalCount > 0) ? number_format(($count / $totalCount) * 100, 2) : 0;
             });
 
             $tidakHadirCount = $statusCounts->get('Alfa', 0) + $statusCounts->get('Sakit', 0) + $statusCounts->get('Izin', 0);
-            $percentages['TidakHadir'] = ($tidakHadirCount > 0) ? number_format(($tidakHadirCount / $totalCount) * 100, 2 ) : 0;
-        
+            $percentages['TidakHadir'] = ($tidakHadirCount > 0) ? number_format(($tidakHadirCount / $totalCount) * 100, 2) : 0;
+
             return $percentages; // Return the status percentages
         });
 
@@ -100,6 +100,9 @@ class KesiswaanController extends Controller
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
+        // Get total business days (weekdays) in the date range
+        $totalBusinessDays = $this->getBusinessDaysCount($startDate, $endDate);
+
         // Fetch all classes
         $kelasList = Kelas::with('siswa.absensi')->get();
 
@@ -123,13 +126,13 @@ class KesiswaanController extends Controller
             $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
             $kelasTAP = $kelasAbsensi->where('status', 'TAP')->count();
 
-            // Calculate percentages for the class
-            $kelasPercentageHadir = ($totalKelasRecords > 0) ? ($kelasHadir / $totalKelasRecords) * 100 : 0;
+            // Calculate percentages for the class based on total business days
+            $kelasPercentageHadir = ($totalBusinessDays > 0) ? ($kelasHadir / $totalBusinessDays) * 100 : 0;
             $totalPercentageHadir += $kelasPercentageHadir;
-            $kelasPercentageSakitIzin = ($totalKelasRecords > 0) ? ($kelasSakitIzin / $totalKelasRecords) * 100 : 0;
-            $kelasPercentageAlfa = ($totalKelasRecords > 0) ? ($kelasAlfa / $totalKelasRecords) * 100 : 0;
-            $kelasPercentageTerlambat = ($totalKelasRecords > 0) ? ($kelasTerlambat / $totalKelasRecords) * 100 : 0;
-            $kelasPercentageTAP = ($totalKelasRecords > 0) ? ($kelasTAP / $totalKelasRecords) * 100 : 0;
+            $kelasPercentageSakitIzin = ($totalBusinessDays > 0) ? ($kelasSakitIzin / $totalBusinessDays) * 100 : 0;
+            $kelasPercentageAlfa = ($totalBusinessDays > 0) ? ($kelasAlfa / $totalBusinessDays) * 100 : 0;
+            $kelasPercentageTerlambat = ($totalBusinessDays > 0) ? ($kelasTerlambat / $totalBusinessDays) * 100 : 0;
+            $kelasPercentageTAP = ($totalBusinessDays > 0) ? ($kelasTAP / $totalBusinessDays) * 100 : 0;
 
             $kelasData[] = [
                 'kelas_id' => $kelas->id_kelas,
@@ -147,6 +150,7 @@ class KesiswaanController extends Controller
                 'percentageTAP' => $kelasPercentageTAP,
             ];
         }
+
         $averagePercentageHadir = ($totalClasses > 0) ? ($totalPercentageHadir / $totalClasses) : 0;
 
         $kelasDataCollection = collect($kelasData);
@@ -163,7 +167,7 @@ class KesiswaanController extends Controller
         );
 
         $paginatedData = $paginateData->appends($request->only(['start', 'end']));
-        
+
         return view('kesiswaan.kelas', [
             'title' => 'Dashboard',
             'kelasData' => $paginatedData,
@@ -171,6 +175,25 @@ class KesiswaanController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate,
         ]);
+    }
+
+    private function getBusinessDaysCount($startDate, $endDate)
+    {
+        // Create a collection of dates between start and end dates
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+        $businessDaysCount = 0;
+
+        // Iterate through each date and check if it's a business day
+        while ($start->lte($end)) {
+            // Check if the day is a weekday (Monday to Friday)
+            if ($start->isWeekday()) {
+                $businessDaysCount++;
+            }
+            $start->addDay();
+        }
+
+        return $businessDaysCount;
     }
 
     public function laporanSiswa(Request $request, $kelas_id)
@@ -185,14 +208,28 @@ class KesiswaanController extends Controller
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        // Fetch students in the class
+        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
+
+        // Fetch the search keyword for name or NIS
+        $search = $request->input('search');
+
+        // Fetch students in the class and apply search filter
         $kelas = Kelas::where('id_kelas', $kelas_id)->first();
-        $students = Siswa::where('id_kelas', $kelas_id)->with('user')->get();
+        $studentsQuery = Siswa::where('id_kelas', $kelas_id)->with('user');
+
+        if ($search) {
+            // Filter by name or NIS
+            $studentsQuery->whereHas('user', function ($query) use ($search) {
+                $query->where('nama', 'like', '%' . $search . '%');
+            })->orWhere('nis', 'like', '%' . $search . '%');
+        }
+
+        $students = $studentsQuery->get();
         $siswaIds = $students->pluck('nis');
 
         // Fetch attendance records for the students within the specified date range
         $siswaAbsensi = Absensi::whereIn('nis', $siswaIds)
-            ->whereBetween('date', [$startDate, $endDate]) // Filter by date range
+            ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
         $totalStudents = count($students);
@@ -222,7 +259,7 @@ class KesiswaanController extends Controller
             if ($totalAttendance > 0) {
                 foreach ($attendanceCounts as $status => $count) {
                     $studentStatusCount = $studentAttendance->where('status', $status)->count();
-                    $percentage = ($studentStatusCount / $totalAttendance) * 100;
+                    $percentage = $businessDaysCount > 0 ? ($studentStatusCount / $businessDaysCount) * 100 : 0;
                     $studentData['attendancePercentages'][$status] = $percentage;
                 }
             } else {
@@ -262,23 +299,24 @@ class KesiswaanController extends Controller
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
         $paginateData = new LengthAwarePaginator(
-        $siswaDataCollection->forPage($currentPage, $perPage),
-        $siswaDataCollection->count(),
-        $perPage, 
-        $currentPage, 
-        ['path'=> LengthAwarePaginator::resolveCurrentPath()]
+            $siswaDataCollection->forPage($currentPage, $perPage),
+            $siswaDataCollection->count(),
+            $perPage,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        $paginatedData = $paginateData->appends($request->only(['start','end']));
+        $paginatedData = $paginateData->appends($request->only(['start', 'end', 'search']));
 
         // Pass the data to the view
         return view('kesiswaan.siswa', [
             'studentsData' => $paginatedData,
-            'attendanceCounts' => $attendanceCounts, 
-            'averageAttendancePercentages' => $averageAttendancePercentages, 
-            'kelas' => $kelas, 
-            'startDate' => $startDate, 
-            'endDate' => $endDate
+            'attendanceCounts' => $attendanceCounts,
+            'averageAttendancePercentages' => $averageAttendancePercentages,
+            'kelas' => $kelas,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'search' => $search
         ]);
     }
 
@@ -310,12 +348,14 @@ class KesiswaanController extends Controller
             'TAP' => $present->where('status', 'TAP')->count(),
         ];
 
+        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
+
         $attendancePercentage = [
-            'percentageHadir' => ($totalRecords > 0) ? ($attendanceCounts['Hadir'] / $totalRecords) * 100 : 0,
-            'percentageSakitIzin' => ($totalRecords > 0) ? ($attendanceCounts['Sakit/Izin'] / $totalRecords) * 100 : 0,
-            'percentageAlfa' => ($totalRecords > 0) ? ($attendanceCounts['Alfa'] / $totalRecords) * 100 : 0,
-            'percentageTerlambat' => ($totalRecords > 0) ? ($attendanceCounts['Terlambat'] / $totalRecords) * 100 : 0,
-            'percentageTAP' => ($totalRecords > 0) ? ($attendanceCounts['TAP'] / $totalRecords) * 100 : 0,
+            'percentageHadir' => ($businessDaysCount > 0) ? ($attendanceCounts['Hadir'] / $businessDaysCount) * 100 : 0,
+            'percentageSakitIzin' => ($businessDaysCount > 0) ? ($attendanceCounts['Sakit/Izin'] / $businessDaysCount) * 100 : 0,
+            'percentageAlfa' => ($businessDaysCount > 0) ? ($attendanceCounts['Alfa'] / $businessDaysCount) * 100 : 0,
+            'percentageTerlambat' => ($businessDaysCount > 0) ? ($attendanceCounts['Terlambat'] / $businessDaysCount) * 100 : 0,
+            'percentageTAP' => ($businessDaysCount > 0) ? ($attendanceCounts['TAP'] / $businessDaysCount) * 100 : 0,
         ];
 
         $presentDataCollection = collect($present);
@@ -327,17 +367,17 @@ class KesiswaanController extends Controller
             $presentDataCollection->count(),
             $perPage,
             $currentPage,
-            ['path'=> LengthAwarePaginator::resolveCurrentPath()]
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        $paginatedData = $paginateData->appends($request->only(['start','end']));
+        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
 
         return view('kesiswaan.detailsiswa', [
-            'present' => $paginatedData ,
+            'present' => $paginatedData,
             'students' => $students,
             'attendanceCounts' => $attendanceCounts,
-            'attendancePercentage' =>$attendancePercentage, 
-            'startDate' => $startDate, 
+            'attendancePercentage' => $attendancePercentage,
+            'startDate' => $startDate,
             'endDate' => $endDate
         ]);
     }

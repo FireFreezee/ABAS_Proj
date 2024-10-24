@@ -51,8 +51,8 @@ class AuthController extends Controller
             }
         }
         // Mencari pengguna di tabel User berdasarkan NUPTK
-        elseif ($waliKelas = Wali_Kelas::where('nip', $request->identifier)->first()) {
-            $user = User::find($waliKelas->id_user); // Pastikan ada relasi antara walikelas dan User
+        elseif ($guru = Wali_Kelas::where('nip', $request->identifier)->first()) {
+            $user = User::find($guru->id_user); // Pastikan ada relasi antara walikelas dan User
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
                 return redirect()->route('check');

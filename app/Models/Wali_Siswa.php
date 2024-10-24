@@ -17,7 +17,17 @@ class Wali_Siswa extends Model
         'jenis_kelamin',
     ];
 
-    public function siswa()
+    public function nik_ayah()
+    {
+        return $this->hasMany(Siswa::class, 'nik_ayah', 'nik');
+    }
+
+    public function nik_ibu()
+    {
+        return $this->hasMany(Siswa::class, 'nik_ibu', 'nik');
+    }
+
+    public function nik_wali()
     {
         return $this->hasMany(Siswa::class, 'nik_wali', 'nik');
     }

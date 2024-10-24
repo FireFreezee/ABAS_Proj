@@ -148,6 +148,31 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="exampleInputPassword1">Nik Ayah</label>
+                                                    <select class="form-control" id="nik_ayah" name="nik_ayah">
+                                                        <option value="" hidden>Pilih</option>
+                                                        @foreach ($waliSiswa as $wali)
+                                                            @if ($wali->jenis_kelamin == 'laki laki')
+                                                                <option value="{{ $wali->nik_ayah }}">
+                                                                    {{ $wali->user->nama }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Nik Ibu</label>
+                                                    <select class="form-control" id="nik_ibu" name="nik_ibu">
+                                                        <option value="" hidden>Pilih</option>
+                                                        @foreach ($waliSiswa as $wali)
+                                                            @if ($wali->jenis_kelamin == 'perempuan')
+                                                                <option value="{{ $wali->nik_ibu }}">
+                                                                    {{ $wali->user->nama }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="exampleInputUsername1">Email</label>
                                                     <input type="email" class="form-control" id="email"
                                                         name="email" placeholder="Email" required>
