@@ -86,7 +86,7 @@
                     <div class="card-body border-l-8 border-green-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-green-500 text-lg">{{ $countHadir }}</h3>
+                                <h3 class="text-green-500 text-lg">{{ $countHadir }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Hadir</p>
                             </div>
                             <div class="icon">
@@ -114,7 +114,7 @@
                     <div class="card-body border-l-8 border-cyan-500">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-aqua text-lg">{{ $countSakitIzin }}</h3>
+                                <h3 class="text-aqua text-lg">{{ $countSakitIzin }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Sakit/Izin</p>
                             </div>
                             <div class="icon">
@@ -142,7 +142,7 @@
                     <div class="card-body border-l-8 border-red-700">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-red-700 text-lg">{{ $countAlfa }}</h3>
+                                <h3 class="text-red-700 text-lg">{{ $countAlfa }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Alfa</p>
                             </div>
                             <div class="icon">
@@ -170,7 +170,7 @@
                     <div class="card-body border-l-8 border-gray-400">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-400 text-lg">{{ $countTerlambat }}</h3>
+                                <h3 class="text-gray-400 text-lg">{{ $countTerlambat }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">Terlambat</p>
                             </div>
                             <div class="icon">
@@ -197,7 +197,7 @@
                     <div class="card-body border-l-8 border-gray-900">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="state">
-                                <h3 class="text-gray-900 text-lg">{{ $countTAP }}</h3>
+                                <h3 class="text-gray-900 text-lg">{{ $countTAP }} Siswa</h3>
                                 <p class="card-subtitle text-muted fw-500 text-xl">TAP</p>
                             </div>
                             <div class="icon">

@@ -249,7 +249,7 @@
                                         <div class="w-full">
                                             <div class="form-group">
                                                 <label for="exampleTextarea1">Keterangan</label>
-                                                <textarea class="form-control" id="keterangan" name="keterangan" rows="4"></textarea>
+                                                <textarea class="form-control" id="keterangan" name="keterangan" rows="4" required></textarea>
                                             </div>
                                             <div class="form-radio mb-30">
                                                 <form>

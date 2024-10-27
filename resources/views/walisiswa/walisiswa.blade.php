@@ -46,21 +46,42 @@
     <div class="wrapper">
         <header class="header-top" id="header" style="padding-top: 5px; padding-bottom: 5px; padding-left: 12px;">
             <div class="relative -mx-4 flex items-center p-[15px]">
-                <div class="grid grid-cols-2 justify-between w-full px-2">
+                <div class="grid grid-cols-3 justify-between w-full px-2">
                     <div class="flex items-center">
                         <img src="{{ asset('assets/img/logo-abas.png') }}"
                             class="h-[20px] w-auto md:h-[40px] md:w-auto object-left" alt="lavalite">
                         <img src="{{ asset('assets/img/logo-title.png') }}"
                             class="h-[20px] w-auto md:h-[40px] md:w-auto  sm:w-auto" alt="lavalite">
                     </div>
+                    <div class="flex justify-center items-center">
+                        <div class="hidden lg:!block" id="nav-menu">
+                            <div class="grid grid-cols-2 justify-center gap-2">
+                                <a href="{{ route('walsis-dashboard') }}"
+                                    class="decoration-transparent items-center group lg:text-sm bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Dashboard</div>
+                                </a>
+                                <a href="{{ route('detail-laporan') }}"
+                                    class="decoration-transparent group items-center bg-slate-100 hover:bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    <div
+                                        class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
+                                        Laporan</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="top-menu flex justify-end items-center pr-2">
                         <div class="dropdown">
-                            <a class="" href="#" id="userDropdown" role="" data-toggle="dropdown"
+                            <a class="!bg-white" href="#" id="userDropdown" role="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                <img class="avatar" src="{{ asset('assets/img/user.jpg') }}" alt="">
+                                <div class="avatar overflow-hidden !flex !justify-center">
+                                    <img class="!bg-white !h-full !max-w-fit"
+                                        src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
+                                        alt="">
+                                </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="profile.html"><i class="ik ik-user dropdown-icon"></i>
+                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
+                                        class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

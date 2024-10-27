@@ -246,36 +246,46 @@ class KesiswaanController extends Controller
         $totalStudents = count($students);
         $attendanceCounts = [
             'Hadir' => $siswaAbsensi->where('status', 'Hadir')->count(),
-            'Sakit' => $siswaAbsensi->where('status', 'Sakit')->count(),
-            'Izin' => $siswaAbsensi->where('status', 'Izin')->count(),
+            'Sakit/Izin' => $siswaAbsensi->whereIn('status', ['Sakit', 'Izin'])->count(), // Combined status
             'Alfa' => $siswaAbsensi->where('status', 'Alfa')->count(),
             'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
             'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
         ];
-        // Calculate the percentage of attendance for each student
 
+        // Calculate the percentage of attendance for each student
         $studentsData = []; // Initialize the array to hold student data
 
         foreach ($students as $student) {
             // Get attendance records for the current student within the specified date range
             $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
 
-            $totalAttendance = $studentAttendance->count();
+            // Initialize the student data
             $studentData = [
                 'nis' => $student->nis,
                 'name' => $student->user->nama,
+                'attendanceCounts' => [],
                 'attendancePercentages' => [],
             ];
 
-            if ($totalAttendance > 0) {
-                foreach ($attendanceCounts as $status => $count) {
+            // Count the status for this student
+            foreach ($attendanceCounts as $status => $count) {
+                if ($status === 'Sakit/Izin') {
+                    // Calculate the count for combined status
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Sakit', 'Izin'])->count();
+                } else {
+                    // Calculate count for individual statuses
                     $studentStatusCount = $studentAttendance->where('status', $status)->count();
-                    $percentage = $businessDaysCount > 0 ? ($studentStatusCount / $businessDaysCount) * 100 : 0;
-                    $studentData['attendancePercentages'][$status] = $percentage;
                 }
-            } else {
-                // If no attendance records, set all percentages to 0
-                $studentData['attendancePercentages'] = array_fill_keys(array_keys($attendanceCounts), 0);
+
+                $studentData['attendanceCounts'][$status] = $studentStatusCount; // Count for this status
+
+                // Calculate the percentage for this status
+                if ($businessDaysCount > 0) {
+                    $percentage = ($studentStatusCount / $businessDaysCount) * 100;
+                    $studentData['attendancePercentages'][$status] = $percentage;
+                } else {
+                    $studentData['attendancePercentages'][$status] = 0; // Set to 0 if no business days
+                }
             }
 
             $studentsData[] = $studentData; // Add student data to the array
@@ -283,30 +293,20 @@ class KesiswaanController extends Controller
 
         // Calculate average attendance percentages for all statuses
         $averageAttendancePercentages = [];
-
-        // Combine 'Sakit' and 'Izin' for average calculations
-        $attendanceCounts['Sakit/Izin'] = $attendanceCounts['Sakit'] + $attendanceCounts['Izin'];
-
         foreach ($attendanceCounts as $status => $count) {
             $totalPercentage = 0;
 
             // Sum the individual percentages for this status
             foreach ($studentsData as $studentData) {
-                // Check if the status is 'Sakit/Izin' and combine values
-                if ($status === 'Sakit/Izin') {
-                    $totalPercentage += $studentData['attendancePercentages']['Sakit'] ?? 0;
-                    $totalPercentage += $studentData['attendancePercentages']['Izin'] ?? 0;
-                } else {
-                    $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
-                }
+                $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
             }
 
             // Calculate the average percentage
             $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
         }
 
+        // Create a pagination instance
         $siswaDataCollection = collect($studentsData);
-
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
         $paginateData = new LengthAwarePaginator(
@@ -330,6 +330,8 @@ class KesiswaanController extends Controller
             'search' => $search
         ]);
     }
+
+
 
     public function detailSiswa(Request $request, $id)
     {

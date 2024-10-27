@@ -152,55 +152,66 @@ class WalikelasController extends Controller
         $totalStudents = count($students);
         $attendanceCounts = [
             'Hadir' => $siswaAbsensi->where('status', 'Hadir')->count(),
-            'Sakit' => $siswaAbsensi->where('status', 'Sakit')->count(),
-            'Izin' => $siswaAbsensi->where('status', 'Izin')->count(),
+            'Sakit/Izin' => $siswaAbsensi->whereIn('status', ['Sakit', 'Izin'])->count(), // Combined status
             'Alfa' => $siswaAbsensi->where('status', 'Alfa')->count(),
             'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
             'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
         ];
 
-        // Calculate the percentage of attendance for each student based on business days
-        $studentsData = [];
+        // Calculate the percentage of attendance for each student
+        $studentsData = []; // Initialize the array to hold student data
+
         foreach ($students as $student) {
             // Get attendance records for the current student within the specified date range
             $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
+
+            // Initialize the student data
             $studentData = [
                 'nis' => $student->nis,
                 'name' => $student->user->nama,
+                'attendanceCounts' => [],
                 'attendancePercentages' => [],
             ];
 
-            // Calculate percentage for each status based on business days
+            // Count the status for this student
             foreach ($attendanceCounts as $status => $count) {
-                $studentStatusCount = $studentAttendance->where('status', $status)->count();
-                $percentage = $businessDaysCount > 0 ? ($studentStatusCount / $businessDaysCount) * 100 : 0;
-                $studentData['attendancePercentages'][$status] = $percentage;
-            }
-
-            $studentsData[] = $studentData;
-        }
-
-        // Calculate average attendance percentages for all statuses based on business days
-        $averageAttendancePercentages = [];
-        $attendanceCounts['Sakit/Izin'] = $attendanceCounts['Sakit'] + $attendanceCounts['Izin'];
-
-        foreach ($attendanceCounts as $status => $count) {
-            $totalPercentage = 0;
-
-            foreach ($studentsData as $studentData) {
                 if ($status === 'Sakit/Izin') {
-                    $totalPercentage += $studentData['attendancePercentages']['Sakit'] ?? 0;
-                    $totalPercentage += $studentData['attendancePercentages']['Izin'] ?? 0;
+                    // Calculate the count for combined status
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Sakit', 'Izin'])->count();
                 } else {
-                    $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
+                    // Calculate count for individual statuses
+                    $studentStatusCount = $studentAttendance->where('status', $status)->count();
+                }
+
+                $studentData['attendanceCounts'][$status] = $studentStatusCount; // Count for this status
+
+                // Calculate the percentage for this status
+                if ($businessDaysCount > 0) {
+                    $percentage = ($studentStatusCount / $businessDaysCount) * 100;
+                    $studentData['attendancePercentages'][$status] = $percentage;
+                } else {
+                    $studentData['attendancePercentages'][$status] = 0; // Set to 0 if no business days
                 }
             }
 
-            // Calculate the average percentage based on the total number of students and business days
+            $studentsData[] = $studentData; // Add student data to the array
+        }
+
+        // Calculate average attendance percentages for all statuses
+        $averageAttendancePercentages = [];
+        foreach ($attendanceCounts as $status => $count) {
+            $totalPercentage = 0;
+
+            // Sum the individual percentages for this status
+            foreach ($studentsData as $studentData) {
+                $totalPercentage += $studentData['attendancePercentages'][$status] ?? 0;
+            }
+
+            // Calculate the average percentage
             $averageAttendancePercentages[$status] = $totalStudents > 0 ? $totalPercentage / $totalStudents : 0;
         }
 
-        // Paginate the data
+        // Create a pagination instance
         $siswaDataCollection = collect($studentsData);
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;

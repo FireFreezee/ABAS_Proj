@@ -94,6 +94,7 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
 
 Route::middleware(['auth', 'Walisiswa:walisiswa'])->group(function () {
     Route::get('walisiswa', [WalisiswaController::class, 'index'])->name('walsis-dashboard');
+    Route::get('/walisiswa/detailLaporan', [WalisiswaController::class, 'detailLaporan'])->name('detail-laporan');
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {

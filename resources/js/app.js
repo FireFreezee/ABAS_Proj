@@ -1,3 +1,5 @@
+import 'flowbite';
+
 document.addEventListener("DOMContentLoaded", function () {
     // Format the data directly from Laravel
     function formatDataForChart(data) {
