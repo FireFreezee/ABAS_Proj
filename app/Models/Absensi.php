@@ -12,11 +12,15 @@ class Absensi extends Model
     protected $fillable = [
         'nis',
         'status',
-        'bukti',
+        'photo_in',
+        'photo_out',
+        'keterangan',
         'date',
         'jam_masuk',
         'jam_pulang',
-        'titik_koordinat',
+        'titik_koordinat_masuk',
+        'titik_koordinat_pulang',
+        'menit_keterlambatan',
     ];
 
     public function siswa()

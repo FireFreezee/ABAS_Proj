@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Wali_Kelas;
@@ -93,6 +94,8 @@ class KesiswaanController extends Controller
         // Retrieve the date range from the request
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $tingkat = $request->input('tingkat');
+        $jurusan = $request->input('jurusan');
 
         // Set default to current month if no dates are provided
         if (!$startDate || !$endDate) {
@@ -100,44 +103,51 @@ class KesiswaanController extends Controller
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        // Get total business days (weekdays) in the date range
         $totalBusinessDays = $this->getBusinessDaysCount($startDate, $endDate);
 
-        // Fetch all classes
-        $kelasList = Kelas::with('siswa.absensi')->get();
+        $kelasQuery = Kelas::with('siswa.absensi');
+        $jurusans = Jurusan::all();
 
+        if ($tingkat) {
+            $kelasQuery->where('tingkat', $tingkat);
+        }
+
+        if ($jurusan) {
+            $kelasQuery->where('id_jurusan', $jurusan);
+        }
+
+        $kelasList = $kelasQuery->get();
         $kelasData = [];
         $totalPercentageHadir = 0;
         $totalClasses = count($kelasList);
 
         foreach ($kelasList as $kelas) {
             $siswaIds = $kelas->siswa->pluck('nis');
+            $totalExpectedRecords = $totalBusinessDays * count($siswaIds);
 
-            // Modify the query to filter by date range
             $kelasAbsensi = Absensi::whereBetween('date', [$startDate, $endDate])
                 ->whereIn('nis', $siswaIds)
                 ->get();
 
-            $totalKelasRecords = $kelasAbsensi->count();
-
             $kelasHadir = $kelasAbsensi->where('status', 'Hadir')->count();
-            $kelasSakitIzin = ($kelasAbsensi->where('status', 'Sakit')->count()) + ($kelasAbsensi->where('status', 'Izin')->count());
+            $kelasSakitIzin = $kelasAbsensi->whereIn('status', ['Sakit', 'Izin'])->count();
             $kelasAlfa = $kelasAbsensi->where('status', 'Alfa')->count();
             $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
             $kelasTAP = $kelasAbsensi->where('status', 'TAP')->count();
 
-            // Calculate percentages for the class based on total business days
-            $kelasPercentageHadir = ($totalBusinessDays > 0) ? ($kelasHadir / $totalBusinessDays) * 100 : 0;
+            // Calculate percentages for the class based on total expected records
+            $kelasPercentageHadir = ($totalExpectedRecords > 0) ? ($kelasHadir / $totalExpectedRecords) * 100 : 0;
             $totalPercentageHadir += $kelasPercentageHadir;
-            $kelasPercentageSakitIzin = ($totalBusinessDays > 0) ? ($kelasSakitIzin / $totalBusinessDays) * 100 : 0;
-            $kelasPercentageAlfa = ($totalBusinessDays > 0) ? ($kelasAlfa / $totalBusinessDays) * 100 : 0;
-            $kelasPercentageTerlambat = ($totalBusinessDays > 0) ? ($kelasTerlambat / $totalBusinessDays) * 100 : 0;
-            $kelasPercentageTAP = ($totalBusinessDays > 0) ? ($kelasTAP / $totalBusinessDays) * 100 : 0;
+            $kelasPercentageSakitIzin = ($totalExpectedRecords > 0) ? ($kelasSakitIzin / $totalExpectedRecords) * 100 : 0;
+            $kelasPercentageAlfa = ($totalExpectedRecords > 0) ? ($kelasAlfa / $totalExpectedRecords) * 100 : 0;
+            $kelasPercentageTerlambat = ($totalExpectedRecords > 0) ? ($kelasTerlambat / $totalExpectedRecords) * 100 : 0;
+            $kelasPercentageTAP = ($totalExpectedRecords > 0) ? ($kelasTAP / $totalExpectedRecords) * 100 : 0;
 
             $kelasData[] = [
                 'kelas_id' => $kelas->id_kelas,
-                'kelas' => $kelas->tingkat . ' ' . $kelas->id_jurusan . '' . $kelas->nomor_kelas,
-                'total' => $totalKelasRecords,
+                'kelas' => $kelas->tingkat . ' ' . $kelas->id_jurusan . ' ' . $kelas->nomor_kelas,
+                'total' => $totalExpectedRecords,
+                'jurusan' => $kelas->id_jurusan,
                 'countHadir' => $kelasHadir,
                 'percentageHadir' => $kelasPercentageHadir,
                 'countSakitIzin' => $kelasSakitIzin,
@@ -174,6 +184,7 @@ class KesiswaanController extends Controller
             'averagePercentageHadir' => $averagePercentageHadir,
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'jurusans' => $jurusans
         ]);
     }
 

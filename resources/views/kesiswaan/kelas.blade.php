@@ -138,21 +138,27 @@
                     <h5 class="font-bold text-[20px]">
                         Kelas
                     </h5>
-                    <form class="max-w-md mx-2">
-                        <div class="relative">
-                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                </svg>
-                            </div>
-                            <input type="search" id="default-search"
-                                class="block w-[300px] ml-5 h-[5px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Search Mockups, Logos..." required />
-                            <button type="submit"
-                                class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-                        </div>
+                    <form class="max-w-lg flex gap-3" method="GET" action="{{ route('kesiswaan.kelas') }}">
+                        <select name="tingkat" id="tingkat"
+                            class="block w-32 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            onchange="this.form.submit();">
+                            <option value="">Pilih Tingkat</option>
+                            <option value="10" {{ request('tingkat') == '10' ? 'selected' : '' }}>10</option>
+                            <option value="11" {{ request('tingkat') == '11' ? 'selected' : '' }}>11</option>
+                            <option value="12" {{ request('tingkat') == '12' ? 'selected' : '' }}>12</option>
+                        </select>
+
+                        <select name="jurusan" id="jurusan"
+                            class="block w-32 p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            onchange="this.form.submit();">
+                            <option value="">Pilih Jurusan</option>
+                            @foreach ($jurusans as $j)
+                                <option value="{{ $j->id_jurusan }}"
+                                    {{ request('jurusan') == $j->id_jurusan ? 'selected' : '' }}>
+                                    {{ $j->id_jurusan }}
+                                </option>
+                            @endforeach
+                        </select>
                     </form>
                 </div>
                 @foreach ($kelasData as $kelas)
@@ -172,7 +178,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="{{ route('kesiswaan.siswa', ['kelas_id' => $kelas['kelas_id']]) }}" class="flex justify-center">
+                                <a href="{{ route('kesiswaan.siswa', ['kelas_id' => $kelas['kelas_id']]) }}"
+                                    class="flex justify-center">
                                     <button
                                         class="bg-slate-50 w-28 h-auto m-2 rounded-lg text-lg font-bold flex items-center p-3 hover:bg-slate-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"

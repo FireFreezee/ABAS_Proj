@@ -18,6 +18,7 @@ class WalisiswaController extends Controller
     public function index()
     {
         $waliSiswa = Wali_Siswa::where('id_user', Auth::id())->first();
+        $hariini = date("Y-m-d");
 
         $siswas = Siswa::with('user', 'kelas', 'ayah', 'ibu', 'wali')
             ->where(function ($query) use ($waliSiswa) {
@@ -49,6 +50,31 @@ class WalisiswaController extends Controller
 
         foreach ($siswas as $siswa) {
             $nis = $siswa->nis;
+
+            // Fetch attendance for today for this specific student
+            $cek = DB::table('absensis')->where('date', $hariini)->where('nis', $nis)->first();
+    
+            // Calculate lateness for current and previous months
+            $late2 = Absensi::where('nis', $nis)
+                ->whereMonth('date', date('m', strtotime('first day of previous month')))
+                ->sum('menit_keterlambatan');
+            $late = Absensi::where('nis', $nis)
+                ->whereMonth('date', date('m'))
+                ->sum('menit_keterlambatan');
+    
+            // Determine attendance status for today
+            $statusAbsen = 'Belum Absen';
+            if ($cek) {
+                if ($cek->jam_masuk) {
+                    $statusAbsen = $cek->status;
+                    if ($cek->photo_out || $cek->titik_koordinat_pulang) {
+                        $statusAbsen = 'Sudah Pulang';
+                    }
+                }
+            }
+            $siswa->setAttribute('statusAbsen', $statusAbsen);
+            $siswa->setAttribute('late', $late);
+            $siswa->setAttribute('late2', $late2);
 
             // Get the number of business days for the current and previous months
             $businessDaysCurrentMonth = getBusinessDays(date('Y'), date('m'));

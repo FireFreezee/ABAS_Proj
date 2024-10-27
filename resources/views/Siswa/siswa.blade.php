@@ -102,6 +102,7 @@
         </header>
         @php
             $isAbsenMasukDisabled = $jam < $jam_absen || $jam >= $batas_absen_pulang;
+            $isAbsenPulangDisabled = $jam <= $waktu->jam_pulang;
             $isAbsenPulang = $statusAbsen === 'Sudah Pulang';
             $isIzin = $statusAbsen === 'Izin' || $statusAbsen === 'Sakit';
             // $isJarak = $userLatLng > $schoolLatLng;
@@ -110,26 +111,22 @@
             class="fixed bottom-[63px] left-0 z-50 w-full h-16 bg-white border-t border-gray-400 rounded-t-3xl dark:bg-gray-700 dark:border-gray-600 lg:hidden">
             <div class="grid h-full max-w-lg grid-cols-2 mx-auto py-2.5 !gap-3 place-items-center">
                 <a href="{{ route('siswa-absen') }}" style="text-decoration: none">
-                    @if ($cek > 0)
-                        <button class="btn-absen btn-danger bg-red-600 px-1 w-36 rounded-xl font-bold"
+                    @if ($statusAbsen == 'Hadir' || $statusAbsen == 'Terlambat')
+                        <button class="btn-absen btn-danger bg-red-600 px-1 w-36 rounded-xl font-bold h-[45px]"
+                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin || $isAbsenPulangDisabled) background-color: gray; color: white; border: none; @endif"
+                            @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin || $isAbsenPulangDisabled) disabled @endif><i class="ik ik-maximize"></i>&nbsp; Absen
+                            Pulang
+                        </button>
+                    @else
+                        <button class="btn-absen btn-primary bg-blue-500 px-1 w-36 rounded-xl font-bold h-[45px]"
                             style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
                             @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i class="ik ik-maximize"></i>&nbsp; Absen
                             Pulang
-                            <h4 class="text-[10px] font-normal">Jam Absen
-                                {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4>
-                        </button>
-                    @else
-                        <button class="btn-absen btn-primary bg-blue-500 px-1 w-36 rounded-xl font-bold"
-                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
-                            @if ($isAbsenMasukDisabled) disabled @endif><i class="ik ik-maximize"></i>&nbsp; Absen
-                            Pulang
-                            <h4 class="text-[10px] font-normal">Jam Absen
-                                {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4>
                         </button>
                     @endif
                 </a>
                 <a href="{{ route('siswa-izin') }}" style="text-decoration: none">
-                    @if ($cek > 0)
+                    @if ($statusAbsen == 'Hadir' || $statusAbsen == 'Terlambat')
                         <button class="btn-absen btn-info bg-cyan-400 px-1 w-36 rounded-xl font-bold"
                             style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;"
                             disabled><i class="ik ik-user-x"></i>&nbsp;
@@ -137,8 +134,8 @@
                         </button>
                     @else
                         <button class="btn-absen btn-info bg-cyan-400 px-1 w-36 rounded-xl font-bold"
-                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
-                            @if ($isAbsenMasukDisabled) disabled @endif><i class="ik ik-user-x"></i>&nbsp;
+                            style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isIzin) background-color: gray; color: white; border: none; @endif"
+                            @if ($isAbsenMasukDisabled || $isIzin) disabled @endif><i class="ik ik-user-x"></i>&nbsp;
                             Izin/Sakit <h4 class="text-[10px] font-normal">Form Izin dan Sakit</h4>
                         </button>
                     @endif
@@ -196,13 +193,16 @@
                         <div class="card-body text-center">
                             <div class="profile-pic mb-20">
                                 <div class="flex justify-center">
-                                    <div class="rounded-circle !overflow-hidden !h-[120px] !w-[120px] sm:!h-[150px] sm:!w-[150px] !flex !justify-center">
+                                    <div
+                                        class="rounded-circle !overflow-hidden !h-[120px] !w-[120px] sm:!h-[150px] sm:!w-[150px] !flex !justify-center">
                                         <img src="{{ asset('storage/uploads/profile/' . Auth::user()->foto) }}"
                                             alt="Foto Profil">
                                     </div>
                                 </div>
                                 <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
-                                <h4 href="#" style="text-decoration: none"><code>{{ Auth::user()->siswa->nis }}</code></h4>
+                                <h4 href="#" style="text-decoration: none">
+                                    <code>{{ Auth::user()->siswa->nis }}</code>
+                                </h4>
                             </div>
                         </div>
                     </div>
@@ -299,8 +299,7 @@
                                     </div>
                                 </div>
                             @elseif ($statusAbsen == 'Terlambat')
-                                <div class="widget card-keterangan"
-                                    style="background-color: rgb(14, 78, 1); color: white">
+                                <div class="widget card-keterangan !bg-gray-700" style="b color: white">
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
@@ -315,8 +314,7 @@
                                     </div>
                                 </div>
                             @elseif ($statusAbsen == 'Sakit')
-                                <div class="widget card-keterangan"
-                                    style="background-color: rgb(167, 179, 0); color: white">
+                                <div class="widget card-keterangan" style="background-color: #3ec5d6; color: white">
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
@@ -331,8 +329,7 @@
                                     </div>
                                 </div>
                             @elseif ($statusAbsen == 'Izin')
-                                <div class="widget card-keterangan"
-                                    style="background-color: rgb(6, 231, 220); color: white">
+                                <div class="widget card-keterangan !bg-orange-400" style=" color: white">
                                     <div class="widget-body ">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="state">
@@ -386,10 +383,21 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
                                             <h6 class="text-[14px] sm:text-base !font-bold mb-2">Absen Masuk</h6>
-                                            <h4 class="text-[13px] sm:text-base !mb-0">10:10</h4>
+                                            <h4 class="text-[13px] sm:text-base !mb-0">
+                                                {{ $cek->jam_masuk ?? '00:00' }}</h4>
                                         </div>
-                                        <div class="icon !text-[20px] sm:!text-[37px]">
-                                            <i class="ik ik-inbox"></i>
+                                        <div class="icon !text-[20px] sm:!text-[37px] h-[56px] w-[56px] content-center">
+                                            @if ($cek->photo_in > 0)
+                                                <img src="{{ asset('storage/uploads/absensi/' . $cek->photo_in) }}"
+                                                    alt="">
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                                </svg>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -401,10 +409,21 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="state">
                                             <h6 class="text-[14px] sm:text-base !font-bold mb-2">Absen Pulang</h6>
-                                            <h4 class="text-[13px] sm:text-base !mb-0">10:10</h4>
+                                            <h4 class="text-[13px] sm:text-base !mb-0">
+                                                {{ $cek->jam_pulang ?? '00:00' }}</h4>
                                         </div>
-                                        <div class="icon !text-[20px] sm:!text-[37px]">
-                                            <i class="ik ik-inbox"></i>
+                                        <div class="!text-[20px] sm:!text-[37px] h-[56px] w-[56px] content-center">
+                                            @if ($cek->photo_out > 0)
+                                                <img src="{{ asset('storage/uploads/absensi/' . $cek->photo_out) }}"
+                                                    alt="">
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                                </svg>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -412,30 +431,81 @@
                         </div>
                     </div>
                     <div class="row clearfix ">
+                        <div class="col-md-6 sm-3 col-sm-12 lg:!hidden">
+                            @if ($statusAbsen == 'Hadir' || $statusAbsen == 'Terlambat')
+                                <div class="widget bg-slate-300 card-keterangan shadow-sm">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6 class="text-[14px] text-gray-500 sm:text-base !font-bold mb-2">Jam
+                                                    Mulai Absen Pulang</h6>
+                                                <h4 class="text-[13px] text-gray-500 sm:text-base mb-2">
+                                                    {{ $waktu->jam_pulang }}</h4>
+                                                <h6 class="text-[14px] text-gray-500 sm:text-base !font-bold mb-2">Jam
+                                                    Akhir Absen Pulang</h6>
+                                                <h4 class="text-[13px] text-gray-500 sm:text-base !mb-0">
+                                                    {{ $waktu->batas_absen_pulang }}</h4>
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="size-6 text-gray-500">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="widget bg-slate-50 card-keterangan shadow-sm">
+                                    <div class="widget-body ">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="state">
+                                                <h6 class="text-[14px] text-gray-500 sm:text-base !font-bold mb-2">Jam
+                                                    Mulai Absen</h6>
+                                                <h4 class="text-[13px] text-gray-500 sm:text-base mb-2">
+                                                    {{ $waktu->jam_absen }}</h4>
+                                                <h6 class="text-[14px] text-gray-500 sm:text-base !font-bold mb-2">
+                                                    Batas Absen Hadir</h6>
+                                                <h4 class="text-[13px] text-gray-500 sm:text-base !mb-0">
+                                                    {{ $waktu->batas_absen_masuk }}</h4>
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                fill="currentColor" class="size-6 text-gray-500">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                         <div class="col-md-6 sm-3 col-sm-12 !hidden lg:!block">
                             <a href="{{ route('siswa-absen') }}" style="text-decoration: none">
-                                @if ($cek > 0)
+                                @if ($statusAbsen == 'Hadir' || $statusAbsen == 'Terlambat')
                                     <button type="button"
                                         class="btn-absen btn-danger bg-red-600 btn-block pb-30 pt-30"
-                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
-                                        @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin || $isAbsenPulangDisabled) background-color: gray; color: white; border: none; @endif"
+                                        @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin || $isAbsenPulangDisabled) disabled @endif><i
                                             class="ik ik-maximize"></i>&nbsp; Absen Pulang<h4
-                                            style="font-size: 1rem; font-weight: 500;">Jam Absen
-                                            {{ $waktu->jam_pulang }}-{{ $waktu->batas_absen_pulang }}</h4></button>
+                                            style="font-size: 1rem; font-weight: 500;">Jam Mulai Absen Pulang
+                                            {{ $waktu->jam_pulang }} Jam Akhir Absen Pulang
+                                            {{ $waktu->batas_absen_pulang }}</h4></button>
                                 @else
                                     <button type="button"
                                         class="btn-absen btn-primary bg-blue-500 btn-block pb-30 pt-30"
-                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
-                                        @if ($isAbsenMasukDisabled) disabled @endif>
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
+                                        @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif>
                                         <i class="ik ik-maximize"></i>&nbsp; Absen Masuk<h4
-                                            style="font-size: 1rem; font-weight: 500;">Jam Absen
-                                            {{ $jam_absen }}-{{ $waktu->batas_absen_masuk }} WIB</h4></button>
+                                            style="font-size: 1rem; font-weight: 500;">Jam Mulai Absen
+                                            {{ $jam_absen }} Batas Absen Hadir {{ $waktu->batas_absen_masuk }} WIB
+                                        </h4></button>
                                 @endif
                             </a>
                         </div>
                         <div class="col-md-6 sm-3 col-sm-12 !hidden lg:!block">
                             <a href="{{ route('siswa-izin') }}" style="text-decoration: none">
-                                @if ($cek > 0)
+                                @if ($statusAbsen == 'Hadir' || $statusAbsen == 'Terlambat')
                                     <button type="button" class="btn-absen btn-secondary btn-block pb-30 pt-30"
                                         style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; background-color: gray; color: white; border: none;"
                                         disabled><i class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4
@@ -445,8 +515,8 @@
                                 @else
                                     <button type="button"
                                         class="btn-absen btn-info bg-cyan-400 btn-block pb-30 pt-30"
-                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled) background-color: gray; color: white; border: none; @endif"
-                                        @if ($isAbsenMasukDisabled) disabled @endif><i
+                                        style="font-size: 1rem; font-weight: 500; margin-bottom: 20px; border-radius: 10px; @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) background-color: gray; color: white; border: none; @endif"
+                                        @if ($isAbsenMasukDisabled || $isAbsenPulang || $isIzin) disabled @endif><i
                                             class="ik ik-user-x"></i>&nbsp; Izin/Sakit <h4
                                             style="font-size: 1rem; font-weight: 500;">Form Izin dan Sakit</h4>
                                     </button>

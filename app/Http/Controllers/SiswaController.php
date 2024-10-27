@@ -21,13 +21,13 @@ class SiswaController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $nis = $user->siswa->nis;
+        $siswa = siswa::with('user')->where('id_user', auth::user()->id)->first();
         $hariini = date("Y-m-d");
-        $cek = DB::table('absensis')->where('date', $hariini)->where('nis', $nis)->first();
-        $late2 = Absensi::where('nis', $nis)->whereMonth('date', date('m', strtotime('first day of previous month')))->sum('menit_keterlambatan');
-        $late = Absensi::where('nis', $nis)->whereMonth('date', date('m'))->sum('menit_keterlambatan');
+        $cek = Absensi::where('date', $hariini)->where('nis', $siswa->nis)->first();
+        $late2 = Absensi::where('nis', $siswa->nis)->whereMonth('date', date('m', strtotime('first day of previous month')))->sum('menit_keterlambatan');
+        $late = Absensi::where('nis', $siswa->nis)->whereMonth('date', date('m'))->sum('menit_keterlambatan');
 
+        // dd($cek); 
 
         if ($cek) {
             $statusAbsen = $cek->jam_masuk ? 'Hadir' : 'Belum Absen';
@@ -62,7 +62,7 @@ class SiswaController extends Controller
         $businessDaysPreviousMonth = getBusinessDays(date('Y'), date('m', strtotime('first day of previous month')));
 
         $dataBulanIni = Absensi::whereYear('date', date('Y'))
-            ->where('nis', $nis)
+            ->where('nis', $siswa->nis)
             ->whereMonth('date', date('m'))
             ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
@@ -70,7 +70,7 @@ class SiswaController extends Controller
             ->toArray();
 
         $dataBulanSebelumnya = Absensi::whereYear('date', date('Y'))
-            ->where('nis', $nis)
+            ->where('nis', $siswa->nis)
             ->whereMonth('date', date('m', strtotime('first day of previous month')))
             ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
@@ -113,7 +113,7 @@ class SiswaController extends Controller
         $endOfWeek = date('Y-m-d', strtotime('friday this week'));
 
         $riwayatmingguini = Absensi::whereBetween('date', [$startOfWeek, $endOfWeek])
-            ->where('nis', $nis) // Sesuaikan dengan kolom NIS siswa
+            ->where('nis', $siswa->nis) // Sesuaikan dengan kolom NIS siswa
             ->orderBy('date', 'asc')
             ->get();
 
@@ -122,11 +122,10 @@ class SiswaController extends Controller
         $jam = date("H:i:s");
         $waktu = DB::table('waktu__absens')->where('id_waktu_absen', 1)->first();
         $lok_sekolah = DB::table('koordinat__sekolahs')->where('id_koordinat_sekolah', 1)->first();
-        $presensi_hari_ini = DB::table('absensis')->where('nis', $nis)->get();
         $siswa = Siswa::with('user')->get();
         return view('Siswa.siswa', [
             'waktu' => $waktu,
-            'cek' => $cek ? 1 : 0,
+            'cek' => $cek,
             'statusAbsen' => $statusAbsen,
             'lok_sekolah' => $lok_sekolah,
             'siswa' => $siswa,
@@ -148,7 +147,7 @@ class SiswaController extends Controller
             'persentaseAlfaBulanSebelumnya' => $persentaseAlfaBulanSebelumnya,
             'persentaseTerlambatBulanSebelumnya' => $persentaseTerlambatBulanSebelumnya,
             'persentaseTAPBulanSebelumnya' => $persentaseTAPBulanSebelumnya,
-            'presensiHariIni' => $presensi_hari_ini
+            'presensiHariIni' => $cek
         ]);
     }
 
@@ -157,7 +156,7 @@ class SiswaController extends Controller
         $user = Auth::user();
         $nis = $user->siswa->nis;
         $hariini = date("Y-m-d");
-        $cek = DB::table('absensis')->where('date', $hariini)->where('nis', $nis)->count();
+        $cek = DB::table('absensis')->where('date', $hariini)->where('nis', $nis)->first();
         $lok_sekolah = DB::table('koordinat__sekolahs')->where('id_koordinat_sekolah', 1)->first();
         $waktu = DB::table('waktu__absens')->where('id_waktu_absen', 1)->first();
         return view('Siswa.absen', compact('lok_sekolah', 'waktu', 'cek'));
@@ -166,7 +165,7 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        $nis = $user->siswa->nis;
+        $siswa = siswa::where('id_user', $user->id)->first();
         $status = 'Hadir';
         $date = date("Y-m-d");
         $jam = date("H:i:s");
@@ -185,8 +184,8 @@ class SiswaController extends Controller
 
         $image = $request->image;
         $folderPath = "public/uploads/absensi/";
-        $formatMasuk = $nis . "-" . $date . "-" . "masuk";
-        $formatPulang = $nis . "-" . $date . "-" . "pulang";
+        $formatMasuk = $siswa->nis . "-" . $date . "-" . "masuk";
+        $formatPulang = $siswa->nis . "-" . $date . "-" . "pulang";
         $image_parts = explode(";base64", $image);
         $image_base64 = base64_decode($image_parts[1]);
 
@@ -209,13 +208,13 @@ class SiswaController extends Controller
             $menit_terlambat = null;
         }
 
-        $cek = DB::table('absensis')->where('date', $date)->where('nis', $nis)->count();
-        if ($radius > $radiussekolah) {
-            echo "error|Anda Berada Diluar Radius, Jarak Anda " . $radius . " meter dari Sekolah|";
-        } elseif ($faceConfidence < 0.90) { // Confidence threshold
+        $cek = Absensi::where('date', $date)->where('nis', $siswa->nis)->first();
+        // if ($radius > $radiussekolah) {
+        //     echo "error|Anda Berada Diluar Radius, Jarak Anda " . $radius . " meter dari Sekolah|";
+        if ($faceConfidence < 0.90) { // Confidence threshold
             echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
         } else {
-            if ($cek > 0) {
+            if ($status != "Alfa") {
                 $fileName = $formatPulang . ".png";
                 $file = $folderPath . $fileName;
                 $data_pulang = [
@@ -223,7 +222,7 @@ class SiswaController extends Controller
                     'jam_pulang' => $jam,
                     'titik_koordinat_pulang' => $lokasiSiswa,
                 ];
-                $update = DB::table('absensis')->where('date', $date)->where('nis', $nis)->update($data_pulang);
+                $update = DB::table('absensis')->where('date', $date)->where('nis', $siswa->nis)->update($data_pulang);
                 if ($update) {
                     echo "success|Terimakasih, Hati-Hati Dijalan!|out";
                     Storage::put($file, $image_base64);
@@ -234,7 +233,7 @@ class SiswaController extends Controller
                 $fileName = $formatMasuk . ".png";
                 $file = $folderPath . $fileName;
                 $data = [
-                    'nis' => $nis,
+                    'nis' => $siswa->nis,
                     'status' => $status,
                     'photo_in' => $fileName,
                     'date' => $date,
@@ -243,7 +242,7 @@ class SiswaController extends Controller
                     'menit_keterlambatan' => $menit_terlambat,
                 ];
 
-                $simpan = DB::table('absensis')->update($data);
+                $simpan = DB::table('absensis')->where('date', $date)->where('nis', $siswa->nis)->update($data);
 
                 if ($simpan) {
                     echo "success|Terimakasih, Selamat Belajar!|in";
@@ -276,8 +275,8 @@ class SiswaController extends Controller
 
     public function izin_store(Request $request)
     {
+        // Validate the request data
         $request->validate([
-            'photo_in' => 'required|string',
             'keterangan' => 'required|string|max:255',
             'status' => 'required|string',
         ]);
@@ -287,35 +286,51 @@ class SiswaController extends Controller
         $status = $request->status;
         $date = date("Y-m-d");
         $jam = date("H:i:s");
-
         $lokasiSiswa = $request->lokasi;
 
-        // $file = $request->file('photo_in');
-        // $extension = $file->getClientOriginalExtension();
-        // $folderPath = "public/uploads/absensi/";
-        // $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
+        $photoPath = null; // Initialize photoPath variable
 
-        // Insert data into the database
+        // Check if photo_in is from webcam (base64)
+        if (strpos($request->photo_in, 'data:image/jpeg;base64,') === 0) {
+            // Process the base64 image
+            $fileData = explode(',', $request->photo_in);
+            $image = base64_decode($fileData[1]);
+            $fileName = $nis . "-" . $date . "-" . uniqid() . ".jpeg";
+
+            // Use Storage to save the image in the absensi directory
+            Storage::disk('public')->put('uploads/absensi/' . $fileName, $image);
+            $photoPath = $fileName; 
+        } else {
+            // If not from webcam, use the uploaded file directly
+            $photoPath = $request->photo_in;
+        }
+
+        // Prepare data for database insertion
         $data = [
             'nis' => $nis,
             'status' => $status,
-            'photo_in' => $request->photo_in,
+            'photo_in' => $photoPath,
             'keterangan' => $request->keterangan,
             'date' => $date,
             'jam_masuk' => $jam,
             'titik_koordinat_masuk' => $lokasiSiswa,
         ];
 
-        if ($data) {
-            DB::table('absensis')->insert($data);
+        // Save to database and handle success/failure
+        if (DB::table('absensis')->where('date', $date)->where('nis', $nis)->update($data)) {
             return redirect()->route('siswa-dashboard')->with('success', 'Absensi berhasil disimpan!');
         } else {
+            // If saving to the database fails, delete the uploaded file if it exists
+            if ($photoPath && Storage::disk('public')->exists($photoPath)) {
+                Storage::disk('public')->delete($photoPath);
+            }
             return redirect()->back()->with('failed', 'Absensi gagal disimpan!');
         }
     }
 
     public function fileUpload(Request $request)
     {
+        // Keep this method if you still want to handle regular file uploads
         $request->validate([
             'photo_in' => 'required|image|mimes:jpeg,png,jpg,pdf|max:2048',
         ]);
@@ -323,8 +338,6 @@ class SiswaController extends Controller
         if ($request->hasFile('photo_in')) {
             $user = Auth::user();
             $nis = $user->siswa->nis;
-            // $status = $request->status;
-
             $date = date("Y-m-d");
             $file = $request->file('photo_in');
             $fileName = $nis . "-" . $date . "." . uniqid(true) . '-' . $file->getClientOriginalName();
@@ -336,6 +349,7 @@ class SiswaController extends Controller
 
         return '';
     }
+
 
     public function laporan(Request $request)
     {

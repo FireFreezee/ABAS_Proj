@@ -153,8 +153,7 @@
                 <div class="col-md-12 mb-7">
                     <div class="container-fluid">
                         <div class="card">
-                            <a class="flex items-center p-3 text-sm sm:text-lg gap-1"
-                                href="/siswa">
+                            <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="/siswa">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -172,13 +171,80 @@
                                     @csrf
                                     <input type="hidden" id="lokasi" name="lokasi">
                                     <div class="flex flex-wrap">
-                                        <div class="w-full mb-3">
-                                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                for="file_input">Upload file</label>
-                                            <input class="text-sm sm:text-xl" id="photo_in" name="photo_in"
-                                                type="file" accept="image/png, image/jpeg, application/pdf">
-                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
-                                                id="file_input_help">PNG, JPG or PDF.</p>
+                                        <div>
+                                            <input type="hidden" id="photo_webcam" name="photo_in">
+                                            <a href="#" data-toggle="modal" data-target="#modalFile">
+                                                <button>
+                                                    File
+                                                </button>
+                                            </a>
+                                            <a href="#" data-toggle="modal" data-target="#camera">
+                                                <button id="startCamera">
+                                                    Kamera
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="modal fade" id="modalFile" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterLabel">
+                                                            Pilih File</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="w-full mb-3">
+                                                            <label
+                                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                for="file_input">Upload file</label>
+                                                            <input class="text-sm sm:text-xl" id="photo_in"
+                                                                name="photo_in" type="file"
+                                                                accept="image/png, image/jpeg, application/pdf">
+                                                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                                                                id="file_input_help">PNG, JPG or PDF.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="camera" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterLabel">
+                                                            Ambil Foto</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="col-12 col-md-9">
+                                                            <!-- Placeholder untuk Webcam -->
+                                                            <div id="my_camera"
+                                                                style="border: 2px solid #ddd; border-radius: 10px; width: 320px; height: 240px;">
+                                                            </div>
+                                                            <!-- Tempat untuk menampilkan hasil foto -->
+                                                            <img id="result"
+                                                                style="display:none; margin-top: 10px;" />
+                                                            <!-- Tombol untuk mengambil gambar -->
+                                                            <button type="button" class="btn btn-primary mt-2"
+                                                                onclick="ambilFoto()">Ambil Foto</button>
+                                                            <!-- Tombol untuk mengambil ulang gambar -->
+                                                            <button type="button" class="btn btn-warning mt-2"
+                                                                onclick="ambilUlang()">Ambil Ulang</button>
+                                                            <!-- Input tersembunyi untuk menyimpan base64 dari gambar -->
+                                                            <input type="hidden" id="photo_webcam"
+                                                                name="photo_webcam">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="w-full">
                                             <div class="form-group">
@@ -265,7 +331,63 @@
     {{-- <script src="{{ asset('assets/js/tables.js') }}"></script> --}}
     {{-- <script src="{{ asset('assets/js/widgets.js') }}"></script> --}}
     {{-- <script src="{{ asset('assets/js/charts.js') }}"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
+    <script>
+        // Inisialisasi Webcam
+        function startWebcam() {
+            Webcam.set({
+                width: 320,
+                height: 240,
+                image_format: 'jpeg',
+                jpeg_quality: 90,
+                flip_horiz: false // Nonaktifkan mirroring kamera
+            });
+            Webcam.attach('#my_camera'); // Menampilkan kamera di div dengan id 'my_camera'
+        }
+
+        // Ketika modal kamera ditampilkan, jalankan fungsi startWebcam
+        $('#camera').on('shown.bs.modal', function(e) {
+            startWebcam();
+        });
+
+        // Ketika modal ditutup, hentikan kamera
+        $('#camera').on('hidden.bs.modal', function(e) {
+            Webcam.reset(); // Menonaktifkan dan menghentikan kamera
+        });
+
+        // Fungsi untuk mengambil gambar
+        function ambilFoto() {
+            Webcam.snap(function(data_uri) {
+                // Tampilkan gambar di elemen <img> dengan id 'result'
+                document.getElementById('result').src = data_uri;
+                document.getElementById('result').style.display = 'block';
+
+                // Simpan data image dalam input tersembunyi untuk dikirim ke server
+                document.getElementById('photo_webcam').value = data_uri;
+
+                // Sembunyikan tampilan kamera
+                document.getElementById('my_camera').style.display = 'none';
+            });
+        }
+
+        // When form is submitted, set the value of photo_in based on the webcam capture
+        $('form').on('submit', function() {
+            var webcamImage = document.getElementById('photo_webcam').value;
+            if (webcamImage) {
+                // If the image is taken from the webcam, make sure to include it as photo_in
+                $('input[name="photo_in"]').val(webcamImage);
+            }
+        });
+
+        // Fungsi untuk mengulang mengambil foto
+        function ambilUlang() {
+            // Reset gambar dan tampilkan kembali kamera
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('my_camera').style.display = 'block';
+        }
+    </script>
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
         FilePond.registerPlugin(

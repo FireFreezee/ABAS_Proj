@@ -173,7 +173,7 @@
                                         <div class="grid grid-cols-2 pt-15">
                                             <div class=""></div>
                                             <div class="">
-                                                @if ($cek > 0)
+                                                @if ($cek->status == "Hadir" || $cek->status == "Terlambat")
                                                     <button type="button" class="btn-absen btn-danger btn-block text-xs sm:text-lg bg-red-600"
                                                         id="absen"
                                                         style="border-radius: 10px; padding:7px;">
