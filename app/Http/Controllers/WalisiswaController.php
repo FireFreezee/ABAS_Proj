@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensi;
 use App\Models\Siswa;
+use App\Models\User;
 use App\Models\Wali_Siswa;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class WalisiswaController extends Controller
 {
@@ -32,21 +34,28 @@ class WalisiswaController extends Controller
                 }
             })->get();
 
-        function getBusinessDays($year, $month)
+        function getEffectiveBusinessDays($year, $month, $nis)
         {
             $startOfMonth = Carbon::create($year, $month, 1);
             $endOfMonth = $startOfMonth->copy()->endOfMonth();
 
-            $businessDays = 0;
+            $effectiveDays = [];
 
             // Loop through the days of the month
             for ($day = $startOfMonth; $day <= $endOfMonth; $day->addDay()) {
                 if ($day->isWeekday()) { // Only count weekdays
-                    $businessDays++;
+                    // Check if there is attendance record for this day
+                    $exists = DB::table('absensis')
+                        ->where('nis', $nis)
+                        ->where('date', $day->toDateString())
+                        ->exists();
+                    if ($exists) {
+                        $effectiveDays[] = $day->toDateString();
+                    }
                 }
             }
 
-            return $businessDays;
+            return count($effectiveDays);
         }
 
         foreach ($siswas as $siswa) {
@@ -77,9 +86,9 @@ class WalisiswaController extends Controller
             $siswa->setAttribute('late', $late);
             $siswa->setAttribute('late2', $late2);
 
-            // Get the number of business days for the current and previous months
-            $businessDaysCurrentMonth = getBusinessDays(date('Y'), date('m'));
-            $businessDaysPreviousMonth = getBusinessDays(date('Y'), date('m', strtotime('first day of previous month')));
+            // Get the number of effective business days for the current and previous months
+            $effectiveDaysCurrentMonth = getEffectiveBusinessDays(date('Y'), date('m'), $nis);
+            $effectiveDaysPreviousMonth = getEffectiveBusinessDays(date('Y'), date('m', strtotime('first day of previous month')), $nis);
 
             // Fetch attendance data for current month
             $dataBulanIni = Absensi::whereYear('date', date('Y'))
@@ -106,8 +115,16 @@ class WalisiswaController extends Controller
             $dataBulanSebelumnya['Sakit/Izin'] = ($dataBulanSebelumnya['Sakit'] ?? 0) + ($dataBulanSebelumnya['Izin'] ?? 0);
             unset($dataBulanSebelumnya['Sakit'], $dataBulanSebelumnya['Izin']);
 
+            // Combine 'Hadir', 'Terlambat', and 'TAP' into 'Hadir/Terlambat/TAP' for current month
+            $dataBulanIni['Hadir/Terlambat/TAP'] = ($dataBulanIni['Hadir'] ?? 0) + ($dataBulanIni['Terlambat'] ?? 0) + ($dataBulanIni['TAP'] ?? 0);
+            unset($dataBulanIni['Hadir'], $dataBulanIni['Terlambat'], $dataBulanIni['TAP']);
+
+            // Combine for previous month
+            $dataBulanSebelumnya['Hadir/Terlambat/TAP'] = ($dataBulanSebelumnya['Hadir'] ?? 0) + ($dataBulanSebelumnya['Terlambat'] ?? 0) + ($dataBulanSebelumnya['TAP'] ?? 0);
+            unset($dataBulanSebelumnya['Hadir'], $dataBulanSebelumnya['Terlambat'], $dataBulanSebelumnya['TAP']);
+
             // Statuses to calculate
-            $statuses = ['Hadir', 'Sakit/Izin', 'Alfa', 'Terlambat', 'TAP'];
+            $statuses = ['Hadir/Terlambat/TAP', 'Sakit/Izin', 'Alfa'];
 
             // Initialize missing statuses to 0
             foreach ($statuses as $status) {
@@ -115,19 +132,15 @@ class WalisiswaController extends Controller
                 $dataBulanSebelumnya[$status] = $dataBulanSebelumnya[$status] ?? 0;
             }
 
-            // Set attributes for current month based on business days
-            $siswa->setAttribute('persentaseHadirBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Hadir'] / $businessDaysCurrentMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseSakitIzinBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Sakit/Izin'] / $businessDaysCurrentMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseAlfaBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Alfa'] / $businessDaysCurrentMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseTerlambatBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['Terlambat'] / $businessDaysCurrentMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseTAPBulanIni', $businessDaysCurrentMonth > 0 ? round(($dataBulanIni['TAP'] / $businessDaysCurrentMonth) * 100) : 0);
+            // Set attributes for current month based on effective business days
+            $siswa->setAttribute('persentaseHadirBulanIni', $effectiveDaysCurrentMonth > 0 ? round(($dataBulanIni['Hadir/Terlambat/TAP'] / $effectiveDaysCurrentMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseSakitIzinBulanIni', $effectiveDaysCurrentMonth > 0 ? round(($dataBulanIni['Sakit/Izin'] / $effectiveDaysCurrentMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseAlfaBulanIni', $effectiveDaysCurrentMonth > 0 ? round(($dataBulanIni['Alfa'] / $effectiveDaysCurrentMonth) * 100) : 0);
 
-            // Set attributes for previous month based on business days
-            $siswa->setAttribute('persentaseHadirBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Hadir'] / $businessDaysPreviousMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseSakitIzinBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Sakit/Izin'] / $businessDaysPreviousMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseAlfaBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Alfa'] / $businessDaysPreviousMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseTerlambatBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Terlambat'] / $businessDaysPreviousMonth) * 100) : 0);
-            $siswa->setAttribute('persentaseTAPBulanSebelumnya', $businessDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['TAP'] / $businessDaysPreviousMonth) * 100) : 0);
+            // Set attributes for previous month based on effective business days
+            $siswa->setAttribute('persentaseHadirBulanSebelumnya', $effectiveDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Hadir/Terlambat/TAP'] / $effectiveDaysPreviousMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseSakitIzinBulanSebelumnya', $effectiveDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Sakit/Izin'] / $effectiveDaysPreviousMonth) * 100) : 0);
+            $siswa->setAttribute('persentaseAlfaBulanSebelumnya', $effectiveDaysPreviousMonth > 0 ? round(($dataBulanSebelumnya['Alfa'] / $effectiveDaysPreviousMonth) * 100) : 0);
 
             // Set attendance data
             $siswa->setAttribute('dataBulanIni', $dataBulanIni);
@@ -170,10 +183,8 @@ class WalisiswaController extends Controller
             'Alfa' => 0,
             'Terlambat' => 0,
             'TAP' => 0,
+            'Hadir/Terlambat/TAP' => 0, // Initialize combined status
         ];
-
-        // Get business days count for the date range
-        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
 
         // Array to hold paginated attendance records for each student
         $studentAttendanceData = [];
@@ -214,11 +225,20 @@ class WalisiswaController extends Controller
                 ->toArray();
 
             // Combine 'Sakit' and 'Izin' into 'Sakit/Izin'
-            $absensiSummary['Sakit/Izin'] = ($absensiSummary['Sakit'] ?? 0) + ($absensiSummary['Izin'] ?? 0);
+            $sakitCount = ($absensiSummary['Sakit'] ?? 0) + ($absensiSummary['Izin'] ?? 0);
+            $absensiSummary['Sakit/Izin'] = $sakitCount;
             unset($absensiSummary['Sakit'], $absensiSummary['Izin']);
 
+            // Combine 'Hadir', 'Terlambat', and 'TAP' into 'Hadir/Terlambat/TAP'
+            $hadirCount = ($absensiSummary['Hadir'] ?? 0);
+            $terlambatCount = ($absensiSummary['Terlambat'] ?? 0);
+            $tapCount = ($absensiSummary['TAP'] ?? 0);
+
+            $absensiSummary['Hadir/Terlambat/TAP'] = $hadirCount + $terlambatCount + $tapCount;
+            unset($absensiSummary['Hadir'], $absensiSummary['Terlambat'], $absensiSummary['TAP']);
+
             // Statuses to calculate
-            $statuses = ['Hadir', 'Sakit/Izin', 'Alfa', 'Terlambat', 'TAP'];
+            $statuses = ['Hadir/Terlambat/TAP', 'Sakit/Izin', 'Alfa'];
 
             // Initialize missing statuses to 0 and store the counts for each student
             foreach ($statuses as $status) {
@@ -231,12 +251,19 @@ class WalisiswaController extends Controller
                 $siswa->setAttribute($status, $absensiSummary[$status]);
             }
 
-            // Set attributes for the date range based on business days
-            $siswa->setAttribute('persentaseHadir', $businessDaysCount > 0 ? round(($absensiSummary['Hadir'] / $businessDaysCount) * 100) : 0);
-            $siswa->setAttribute('persentaseSakitIzin', $businessDaysCount > 0 ? round(($absensiSummary['Sakit/Izin'] / $businessDaysCount) * 100) : 0);
-            $siswa->setAttribute('persentaseAlfa', $businessDaysCount > 0 ? round(($absensiSummary['Alfa'] / $businessDaysCount) * 100) : 0);
-            $siswa->setAttribute('persentaseTerlambat', $businessDaysCount > 0 ? round(($absensiSummary['Terlambat'] / $businessDaysCount) * 100) : 0);
-            $siswa->setAttribute('persentaseTAP', $businessDaysCount > 0 ? round(($absensiSummary['TAP'] / $businessDaysCount) * 100) : 0);
+            // Ensure combined status count is also updated
+            $statusCounts['Hadir/Terlambat/TAP'] += $absensiSummary['Hadir/Terlambat/TAP'];
+
+            // Count total attendance records in the specified date range
+            $totalAttendanceRecords = array_sum($absensiSummary);
+
+            // Set attributes for the date range based on actual attendance records
+            $siswa->setAttribute('persentaseHadir', $totalAttendanceRecords > 0 ?
+                round(($absensiSummary['Hadir/Terlambat/TAP'] / $totalAttendanceRecords) * 100) : 0);
+            $siswa->setAttribute('persentaseSakitIzin', $totalAttendanceRecords > 0 ?
+                round(($absensiSummary['Sakit/Izin'] / $totalAttendanceRecords) * 100) : 0);
+            $siswa->setAttribute('persentaseAlfa', $totalAttendanceRecords > 0 ?
+                round(($absensiSummary['Alfa'] / $totalAttendanceRecords) * 100) : 0);
         }
 
         // Pass all relevant data to the view
@@ -248,26 +275,77 @@ class WalisiswaController extends Controller
         ]);
     }
 
-    private function getBusinessDaysCount($startDate, $endDate)
+
+
+
+
+
+    public function profile()
     {
-        // Create a collection of dates between start and end dates
-        $start = Carbon::parse($startDate);
-        $end = Carbon::parse($endDate);
-        $businessDaysCount = 0;
-
-        // Iterate through each date and check if it's a business day
-        while ($start->lte($end)) {
-            // Check if the day is a weekday (Monday to Friday)
-            if ($start->isWeekday()) {
-                $businessDaysCount++;
-            }
-            $start->addDay();
-        }
-
-        return $businessDaysCount;
+        return view("walisiswa.profile");
     }
 
+    public function editprofil(Request $r)
+    {
+        $f = false;
+        $p = false;
+        $u = false;
 
+        // password
+        if (strlen($r->password) > 0) {
+            if ($r->password !== $r->kPassword) {
+                return redirect()->back()->with('failed', 'Password Berbeda');
+            }
+
+            $p = User::where('id', $r->id)->update([
+                'password' => password_hash($r->password, PASSWORD_DEFAULT),
+            ]);
+        }
+
+        // foto
+        $fileName = '';
+        if ($r->profile) {
+            $f = User::where('id', $r->id)->update([
+                'foto' => $r->profile,
+            ]);
+        }
+
+        // email
+        if ($r->email) {
+            $u = User::where('id', $r->id)->update([
+                'email' => $r->email,
+            ]);
+        }
+
+        // Redirecting
+        if ($u || $f || $p) {
+            return redirect()->route('walsis-dashboard')->with('success', "Data Berhasil di Update");
+        } else {
+            // If update fails, delete uploaded photo if it exists
+            if ($fileName && Storage::disk('public')->exists("uploads/profile/{$fileName}")) {
+                Storage::disk('public')->delete("uploads/profile/{$fileName}");
+            }
+            return redirect()->back()->with('failed', "Data Gagal di Update");
+        }
+    }
+
+    public function photo_profile(Request $request)
+    {
+        $request->validate([
+            'profile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('profile')) {
+            $file = $request->file('profile');
+            $fileName = uniqid(true) . '-' . $file->getClientOriginalName();
+            $folderPath = "public/uploads/profile/";
+            $file->storeAs($folderPath, $fileName);
+
+            return $fileName;
+        }
+
+        return '';
+    }
 
     /**
      * Show the form for creating a new resource.

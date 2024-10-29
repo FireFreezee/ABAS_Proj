@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class WalikelasController extends Controller
 {
@@ -21,10 +23,10 @@ class WalikelasController extends Controller
 
         // Get the authenticated user
         $user = Auth::user();
-        $nuptk = $user->wali->nuptk;
+        $nip = $user->wali->nip;
 
         // Find the class associated with the user
-        $class = Kelas::where("nuptk", $nuptk)->first();
+        $class = Kelas::where("nip", $nip)->first();
 
         // Get the students in that class
         $students = Siswa::where("id_kelas", $class->id_kelas)->get();
@@ -122,13 +124,10 @@ class WalikelasController extends Controller
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
 
-        // Calculate the number of business days in the date range
-        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
-
         // Fetch students in the class
         $user = Auth::user();
-        $nuptk = $user->wali->nuptk;
-        $class = Kelas::where("nuptk", $nuptk)->first();
+        $nip = $user->wali->nip;
+        $class = Kelas::where("nip", $nip)->first();
         $studentsQuery = Siswa::where('id_kelas', $class->id_kelas)->with('user');
 
         if ($search) {
@@ -149,21 +148,22 @@ class WalikelasController extends Controller
             ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
-        $totalStudents = count($students);
+        // Initialize the attendance count for each status across all students
         $attendanceCounts = [
-            'Hadir' => $siswaAbsensi->where('status', 'Hadir')->count(),
-            'Sakit/Izin' => $siswaAbsensi->whereIn('status', ['Sakit', 'Izin'])->count(), // Combined status
+            'Hadir' => $siswaAbsensi->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
+            'Sakit/Izin' => $siswaAbsensi->whereIn('status', ['Sakit', 'Izin'])->count(),
             'Alfa' => $siswaAbsensi->where('status', 'Alfa')->count(),
-            'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
-            'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
         ];
 
-        // Calculate the percentage of attendance for each student
-        $studentsData = []; // Initialize the array to hold student data
+        // Calculate attendance data for each student
+        $studentsData = [];
 
         foreach ($students as $student) {
             // Get attendance records for the current student within the specified date range
             $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
+
+            // Calculate the Effective Business Day Count based on unique attendance dates
+            $effectiveBusinessDaysCount = $studentAttendance->unique('date')->count();
 
             // Initialize the student data
             $studentData = [
@@ -175,22 +175,25 @@ class WalikelasController extends Controller
 
             // Count the status for this student
             foreach ($attendanceCounts as $status => $count) {
-                if ($status === 'Sakit/Izin') {
-                    // Calculate the count for combined status
+                if ($status === 'Hadir') {
+                    // Count the combined status for 'Hadir'
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count();
+                } elseif ($status === 'Sakit/Izin') {
+                    // Count the combined status for 'Sakit/Izin'
                     $studentStatusCount = $studentAttendance->whereIn('status', ['Sakit', 'Izin'])->count();
                 } else {
-                    // Calculate count for individual statuses
+                    // Count for individual statuses
                     $studentStatusCount = $studentAttendance->where('status', $status)->count();
                 }
 
                 $studentData['attendanceCounts'][$status] = $studentStatusCount; // Count for this status
 
-                // Calculate the percentage for this status
-                if ($businessDaysCount > 0) {
-                    $percentage = ($studentStatusCount / $businessDaysCount) * 100;
+                // Calculate the percentage based on Effective Business Days Count
+                if ($effectiveBusinessDaysCount > 0) {
+                    $percentage = ($studentStatusCount / $effectiveBusinessDaysCount) * 100;
                     $studentData['attendancePercentages'][$status] = $percentage;
                 } else {
-                    $studentData['attendancePercentages'][$status] = 0; // Set to 0 if no business days
+                    $studentData['attendancePercentages'][$status] = 0; // Set to 0 if no effective days
                 }
             }
 
@@ -199,6 +202,7 @@ class WalikelasController extends Controller
 
         // Calculate average attendance percentages for all statuses
         $averageAttendancePercentages = [];
+        $totalStudents = count($students);
         foreach ($attendanceCounts as $status => $count) {
             $totalPercentage = 0;
 
@@ -233,12 +237,10 @@ class WalikelasController extends Controller
             'kelas' => $class,
             'startDate' => $startDate,
             'endDate' => $endDate,
-            'businessDaysCount' => $businessDaysCount,
+            'businessDaysCount' => $effectiveBusinessDaysCount,
             'search' => $search
         ]);
     }
-
-
 
     public function detailSiswa(Request $request, $id)
     {
@@ -260,22 +262,22 @@ class WalikelasController extends Controller
         $totalRecords = $present->count();
 
         $attendanceCounts = [
-            'Hadir' => $present->where('status', 'Hadir')->count(),
+            'Hadir' => $present->where('status', 'Hadir')->count() + $present->where('status', 'Terlambat')->count() + $present->where('status', 'TAP')->count(),
             'Sakit/Izin' => $present->where('status', 'Sakit')->count() + $present->where('status', 'Izin')->count(),
             // 'Izin' => $present->where('status', 'Izin')->count(),
             'Alfa' => $present->where('status', 'Alfa')->count(),
-            'Terlambat' => $present->where('status', 'Terlambat')->count(),
-            'TAP' => $present->where('status', 'TAP')->count(),
+            // 'Terlambat' => $present->where('status', 'Terlambat')->count(),
+            // 'TAP' => $present->where('status', 'TAP')->count(),
         ];
 
-        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
+        $effectiveBusinessDaysCount = $present->unique('date')->count();
 
         $attendancePercentage = [
-            'percentageHadir' => ($businessDaysCount > 0) ? ($attendanceCounts['Hadir'] / $businessDaysCount) * 100 : 0,
-            'percentageSakitIzin' => ($businessDaysCount > 0) ? ($attendanceCounts['Sakit/Izin'] / $businessDaysCount) * 100 : 0,
-            'percentageAlfa' => ($businessDaysCount > 0) ? ($attendanceCounts['Alfa'] / $businessDaysCount) * 100 : 0,
-            'percentageTerlambat' => ($businessDaysCount > 0) ? ($attendanceCounts['Terlambat'] / $businessDaysCount) * 100 : 0,
-            'percentageTAP' => ($businessDaysCount > 0) ? ($attendanceCounts['TAP'] / $businessDaysCount) * 100 : 0,
+            'percentageHadir' => ($effectiveBusinessDaysCount > 0) ? ($attendanceCounts['Hadir'] / $effectiveBusinessDaysCount) * 100 : 0,
+            'percentageSakitIzin' => ($effectiveBusinessDaysCount > 0) ? ($attendanceCounts['Sakit/Izin'] / $effectiveBusinessDaysCount) * 100 : 0,
+            'percentageAlfa' => ($effectiveBusinessDaysCount > 0) ? ($attendanceCounts['Alfa'] / $effectiveBusinessDaysCount) * 100 : 0,
+            // 'percentageTerlambat' => ($businessDaysCount > 0) ? ($attendanceCounts['Terlambat'] / $businessDaysCount) * 100 : 0,
+            // 'percentageTAP' => ($businessDaysCount > 0) ? ($attendanceCounts['TAP'] / $businessDaysCount) * 100 : 0,
         ];
 
         $presentDataCollection = collect($present);
@@ -302,23 +304,71 @@ class WalikelasController extends Controller
         ]);
     }
 
-    private function getBusinessDaysCount($startDate, $endDate)
+    public function profile()
     {
-        // Create a collection of dates between start and end dates
-        $start = Carbon::parse($startDate);
-        $end = Carbon::parse($endDate);
-        $businessDaysCount = 0;
+        return view("Walikelas.profile");
+    }
 
-        // Iterate through each date and check if it's a business day
-        while ($start->lte($end)) {
-            // Check if the day is a weekday (Monday to Friday)
-            if ($start->isWeekday()) {
-                $businessDaysCount++;
+    public function editprofil(Request $r)
+    {
+        $f = false;
+        $p = false;
+        $u = false;
+
+        // password
+        if (strlen($r->password) > 0) {
+            if ($r->password !== $r->kPassword) {
+                return redirect()->back()->with('failed', 'Password Berbeda');
             }
-            $start->addDay();
+
+            $p = User::where('id', $r->id)->update([
+                'password' => password_hash($r->password, PASSWORD_DEFAULT),
+            ]);
         }
 
-        return $businessDaysCount;
+        // foto
+        $fileName = '';
+        if ($r->profile) {
+            $f = User::where('id', $r->id)->update([
+                'foto' => $r->profile,
+            ]);
+        }
+
+        // email
+        if ($r->email) {
+            $u = User::where('id', $r->id)->update([
+                'email' => $r->email,
+            ]);
+        }
+
+        // Redirecting
+        if ($u || $f || $p) {
+            return redirect()->route('walikelas-dashboard')->with('success', "Data Berhasil di Update");
+        } else {
+            // If update fails, delete uploaded photo if it exists
+            if ($fileName && Storage::disk('public')->exists("uploads/profile/{$fileName}")) {
+                Storage::disk('public')->delete("uploads/profile/{$fileName}");
+            }
+            return redirect()->back()->with('failed', "Data Gagal di Update");
+        }
+    }
+
+    public function photo_profile(Request $request)
+    {
+        $request->validate([
+            'profile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('profile')) {
+            $file = $request->file('profile');
+            $fileName = uniqid(true) . '-' . $file->getClientOriginalName();
+            $folderPath = "public/uploads/profile/";
+            $file->storeAs($folderPath, $fileName);
+
+            return $fileName;
+        }
+
+        return '';
     }
 
     /**

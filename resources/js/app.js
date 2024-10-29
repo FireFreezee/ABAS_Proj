@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const options = {
             series: [
                 {
+                    name: "Hadir",
+                    data: statusHadir,
+                    color: "#0e9f6e",
+                },
+                {
                     name: "Terlambat",
                     data: statusTerlambat,
                     color: "#9ca3af",
@@ -34,11 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     name: "Tidak Hadir",
                     data: statusTidakHadir,
                     color: "#c81e1e",
-                },
-                {
-                    name: "Hadir",
-                    data: statusHadir,
-                    color: "#0e9f6e",
                 },
             ],
             chart: {
@@ -148,6 +148,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const options = {
             series: [
                 {
+                    name: "Hadir",
+                    data: statusHadir,
+                    color: "#0e9f6e",
+                },
+                {
                     name: "Terlambat",
                     data: statusTerlambat,
                     color: "#9ca3af",
@@ -156,11 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     name: "Tidak Hadir",
                     data: statusTidakHadir,
                     color: "#c81e1e",
-                },
-                {
-                    name: "Hadir",
-                    data: statusHadir,
-                    color: "#0e9f6e",
                 },
             ],
             chart: {
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 y: {
                     formatter: function(value, { seriesIndex, dataPointIndex }) {
                         // Show counts in the tooltip
-                        const count = [countTerlambat[dataPointIndex], countTidakHadir[dataPointIndex], countHadir[dataPointIndex]][seriesIndex];
+                        const count = [countHadir[dataPointIndex], countTerlambat[dataPointIndex], countTidakHadir[dataPointIndex]][seriesIndex];
                         return ` ${count} (${value}%)`; // Show percentage and count
                     }
                 },

@@ -1,7 +1,7 @@
 {{-- modal edit --}}
 
-<div class="modal fade" id="edit{{ $k->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+<div class="modal fade" id="edit{{ $k->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,12 +17,37 @@
                     <div class="form-group">
                         <label for="exampleInputUsername1">Nama</label>
                         <input type="text" class="form-control" id="nama" name="name" placeholder="Nama"
-                           value="{{ $k->name }}" required>
+                            value="{{ $k->nama }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">NIP</label>
+                        <input type="email" class="form-control" id="nip"
+                            name="nip" placeholder="nip" value="{{ $k->wali->nip }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">nuptk</label>
+                        <input type="email" class="form-control" id="nuptk"
+                            name="nuptk" value="{{ $k->wali->nuptk }}" placeholder="nuptk" required>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputUsername1">Email</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                           value="{{ $k->email }}" required>
+                            value="{{ $k->email }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="jenis_kelamin">Jenis Kelamin</label>
+                        <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
+                            <option value="" hidden>Pilih</option>
+                            <option value="1" {{ $k->wali->jenis_kelamin == 'laki laki' ? 'selected' : '' }}>laki laki
+                            </option>
+                            <option value="2" {{ $k->wali->jenis_kelamin == 'perempuan' ? 'selected' : '' }}>perempuan
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Password</label>
+                        <input type="email" class="form-control" id="password" name="password" placeholder="Password"
+                            required>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
@@ -37,8 +62,8 @@
 
 {{-- modal hapus --}}
 
-<div class="modal fade" id="hapus{{ $k->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="hapus{{ $k->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

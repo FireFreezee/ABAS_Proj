@@ -96,13 +96,13 @@
                         <div class="hidden lg:!block" id="nav-menu">
                             <div class="grid grid-cols-2 justify-center gap-2">
                                 <a href="{{ route('walsis-dashboard') }}"
-                                    class="decoration-transparent items-center group lg:text-sm bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                    <div class="text-[10px] lg:text-[15px] text-white flex items-center">Dashboard</div>
+                                    class="decoration-transparent items-center group lg:text-sm bg-slate-100 hover:bg-blue-600 font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    <div class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">Dashboard</div>
                                 </a>
                                 <a href="{{ route('detail-laporan') }}"
-                                    class="decoration-transparent group items-center bg-slate-100 hover:bg-blue-600 font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
+                                    class="decoration-transparent group items-center bg-blue-600 hover:bg-blue-600 text-white font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
                                     <div
-                                        class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
+                                        class=" text-[10px] lg:text-[15px] text-white flex items-center">
                                         Laporan</div>
                                 </a>
                             </div>
@@ -119,7 +119,7 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
+                                <a class="dropdown-item" href="{{ route('walsis-profile') }}"><i
                                         class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
@@ -193,7 +193,12 @@
                                         id="tab-{{ $siswa->nis }}" data-tabs-target="#siswa-{{ $siswa->nis }}"
                                         type="button" role="tab" aria-controls="siswa-{{ $siswa->nis }}"
                                         aria-selected="{{ $index === 0 ? 'true' : 'false' }}">
-                                        {{ $siswa->user->nama }}
+                                        <h1>
+                                            {{ $siswa->user->nama }}
+                                        </h1>
+                                        <h1>
+                                            {{ $siswa->nis }}
+                                        </h1>
                                     </button>
                                 </li>
                             @endforeach
@@ -205,14 +210,14 @@
                             <div class="{{ $index === 0 ? '' : 'hidden' }} p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
                                 id="siswa-{{ $siswa->nis }}" role="tabpanel"
                                 aria-labelledby="tab-{{ $siswa->nis }}">
-                                <div class="grid grid-cols-5 gap-4">
+                                <div class="grid grid-cols-3 gap-4">
                                     <!-- Hadir Card -->
                                     <div class="card">
                                         <div class="card-body border-l-8 border-green-500">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="state">
                                                     <h3 class="text-green-500 text-lg">
-                                                        {{ $siswa->Hadir }}</h3>
+                                                        {{ $siswa->getAttribute('Hadir/Terlambat/TAP') }}</h3>
                                                     <p class="card-subtitle text-muted fw-500 text-xl">Hadir</p>
                                                 </div>
                                             </div>
@@ -271,52 +276,6 @@
                                             <div class="text-muted f12">
                                                 <span
                                                     class="float-right">{{ number_format($siswa->persentaseAlfa) }}%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Terlambat Card -->
-                                    <div class="card">
-                                        <div class="card-body border-l-8 border-gray-400">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="state">
-                                                    <h3 class="text-gray-400 text-lg">
-                                                        {{ $siswa->Terlambat }}</h3>
-                                                    <p class="card-subtitle text-muted fw-500 text-xl">Terlambat</p>
-                                                </div>
-                                            </div>
-                                            <div class="progress mt-3 mb-1 !h-2 bg-gray-200" style="height: 6px;">
-                                                <div class="progress-bar bg-gray-400" role="progressbar"
-                                                    style="width: {{ $siswa->persentaseTerlambat }}%;"
-                                                    aria-valuenow="{{ $siswa->persentaseTerlambat }}"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                            <div class="text-muted f12">
-                                                <span
-                                                    class="float-right">{{ number_format($siswa->persentaseTerlambat) }}%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- TAP Card -->
-                                    <div class="card">
-                                        <div class="card-body border-l-8 border-gray-900">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="state">
-                                                    <h3 class="text-gray-900 text-lg">
-                                                        {{ $siswa->TAP }}</h3>
-                                                    <p class="card-subtitle text-muted fw-500 text-xl">TAP</p>
-                                                </div>
-                                            </div>
-                                            <div class="progress mt-3 mb-1 !h-2 bg-gray-300" style="height: 6px;">
-                                                <div class="progress-bar bg-gray-900" role="progressbar"
-                                                    style="width: {{ $siswa->persentaseTAP }}%;"
-                                                    aria-valuenow="{{ $siswa->persentaseTAP }}" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                            <div class="text-muted f12">
-                                                <span
-                                                    class="float-right">{{ number_format($siswa->persentaseTAP, 2) }}%</span>
                                             </div>
                                         </div>
                                     </div>

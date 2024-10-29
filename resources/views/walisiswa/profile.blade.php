@@ -66,15 +66,17 @@
                     <div class="flex justify-center items-center" id="nav-menu">
                         <div class="hidden lg:!block" id="nav-menu">
                             <div class=" grid grid-cols-2 justify-center gap-2">
-                                <a href="{{ route('siswa-dashboard') }}"
+                                <a href="{{ route('walsis-dashboard') }}"
                                     class="decoration-transparent items-center group md:text-sm bg-slate-100 hover:bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
                                     <div
                                         class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
                                         Dashboard</div>
                                 </a>
-                                <a href="{{ route('siswa-laporan') }}"
+                                <a href="{{ route('detail-laporan') }}"
                                     class="decoration-transparent items-center group md:text-sm bg-slate-100 hover:bg-blue-600 p-[10px] font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                    <div class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">Laporan</div>
+                                    <div
+                                        class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
+                                        Laporan</div>
                                 </a>
                             </div>
                         </div>
@@ -90,7 +92,7 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
+                                <a class="dropdown-item" href="{{ route('walsis-profile') }}"><i
                                         class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
@@ -110,7 +112,7 @@
         <div
             class="fixed bottom-0 left-0 z-50 w-full h-16 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600 lg:hidden">
             <div class="grid h-full max-w-lg grid-cols-2 mx-auto font-medium">
-                <a type="button" href="{{ route('siswa-dashboard') }}"
+                <a type="button" href="{{ route('walsis-dashboard') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                     <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -120,7 +122,7 @@
                     <span
                         class="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">Dashboard</span>
                 </a>
-                <a type="button" href="{{ route('siswa-laporan') }}"
+                <a type="button" href="{{ route('detail-laporan') }}"
                     class="decoration-transparent inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                     <svg class="w-5 h-5 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -141,8 +143,7 @@
                     <div class="row ">
                         <div class="col-md-12 flex justify-center">
                             <div class="card w-[900px]">
-                                <a class="flex items-center p-3 text-sm sm:text-lg gap-1"
-                                    href="/siswa">
+                                <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="/siswa">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -156,7 +157,8 @@
                                         <h3 class="text-xs!">Profile</h3>
                                     </div>
                                 </div>
-                                <form action={{ route('edit-profil') }} method="POST" enctype="multipart/form-data">
+                                <form action={{ route('walsis-edit-profil') }} method="POST"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="id" value={{ Auth::user()->id }}>
                                     @if (Session::has('failed'))
@@ -178,8 +180,7 @@
                                                 <div
                                                     class="rounded-circle !overflow-hidden !h-[100px] !w-[100px] sm:!h-[150px] sm:!w-[150px] !flex !justify-center hover:brightness-50">
                                                     <div class="group-hover:block absolute top-14">
-                                                        <h4
-                                                            class="flex justify-center items-center text-white ">
+                                                        <h4 class="flex justify-center items-center text-white ">
                                                             Ganti Profile
                                                         </h4>
                                                     </div>
@@ -223,11 +224,7 @@
                                             <div class="text-center">
                                                 <h4 class="mt-20 mb-0">{{ Auth::user()->nama }}</h4>
                                                 <a href="#"
-                                                    style="text-decoration: none">{{ Auth::user()->email }}</a>
-                                                <h4 class="text-lg font-bold">
-                                                    {{ Auth::user()->siswa->kelas->tingkat }}
-                                                    {{ Auth::user()->siswa->kelas->id_jurusan }}
-                                                    {{ Auth::user()->siswa->kelas->nomor_kelas }}</h4>
+                                                    style="text-decoration: none">{{ Auth::user()->ortu->nik }}</a>
                                             </div>
                                         </div>
                                         <div class="">
@@ -240,10 +237,10 @@
                                             </div>
                                             <div>
                                                 <label for="NIS"
-                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">NIS</label>
-                                                <input type="text" id="last_name"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
+                                                <input type="text" id="nik"
                                                     class="bg-gray-50 border border-gray-300 text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    value="{{ Auth::user()->siswa->nis }}" disabled />
+                                                    value="{{ Auth::user()->ortu->nik }}" disabled />
                                             </div>
                                             <div>
                                                 <label for="Email"
@@ -334,28 +331,6 @@
     {{-- <script src="{{ asset('assets/js/charts.js') }}"></script> --}}
     <script src="{{ asset('assets/dist/js/theme.min.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxes = document.querySelectorAll('.status-checkbox');
-
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', filterTable);
-            });
-
-            function filterTable() {
-                const selectedStatuses = Array.from(checkboxes)
-                    .filter(checkbox => checkbox.checked)
-                    .map(checkbox => checkbox.value);
-
-                document.querySelectorAll('.status-row').forEach(row => {
-                    const status = row.classList[1];
-                    if (selectedStatuses.length === 0 || selectedStatuses.includes(status)) {
-                        row.style.display = ''; // Show row
-                    } else {
-                        row.style.display = 'none'; // Hide row
-                    }
-                });
-            }
-        });
 
         FilePond.registerPlugin(
             FilePondPluginFileValidateType,
@@ -372,7 +347,7 @@
         FilePond.create(document.querySelector('input[id="photo_in"]'), {
             server: {
                 process: {
-                    url: '{{ route('update-profile') }}', // Define the correct route here
+                    url: '{{ route('walsis-update-profile') }}', // Define the correct route here
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'

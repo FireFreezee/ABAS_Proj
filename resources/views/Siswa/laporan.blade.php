@@ -135,8 +135,9 @@
             <div class="main-content" style="padding-left: 0px; padding-right: 0px">
                 <div class="container-fluid" style="margin-left: 0px; margin-right: 0px; max-width: none;">
                     <a class="flex items-center p-3 text-sm sm:text-lg gap-1" href="/siswa">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]" fill="none"
-                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-[17px] w-[17px] sm:h-[25px] sm:w-[25px]"
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
                         </svg>
@@ -156,25 +157,26 @@
                                             <div class="flex justify-between">
                                                 <div class="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-green-500 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="size-6">
+                                                        class="stroke-green-500 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                        stroke="currentColor" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
                                                     </svg>
                                                     <div
                                                         class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
-                                                        Hadir : {{ $statusCounts['Hadir'] ?? 0 }}x
+                                                        Hadir : {{ $statusCounts['Hadir/Terlambat/TAP'] ?? 0 }}x
                                                     </div>
                                                 </div>
                                                 <div class="text-dark-3 font-semibold text-xs sm:text-base">
-                                                    {{ number_format($statusPercentages['Hadir'] ?? 0) }}%</div>
+                                                    {{ number_format($statusPercentages['Hadir/Terlambat/TAP'] ?? 0) }}%
+                                                </div>
                                             </div>
                                             <div class="w-full">
                                                 <div class="progress mt-2">
                                                     <div class="progress-bar bg-green-500" role="progressbar"
-                                                        style="width: {{ number_format($statusPercentages['Hadir'] ?? 0) }}%"
-                                                        aria-valuenow="{{ number_format($statusPercentages['Hadir'] ?? 0) }}"
+                                                        style="width: {{ number_format($statusPercentages['Hadir/Terlambat/TAP'] ?? 0) }}%"
+                                                        aria-valuenow="{{ number_format($statusPercentages['Hadir/Terlambat/TAP'] ?? 0) }}"
                                                         aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
@@ -189,7 +191,8 @@
                                         <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
                                             <div class="flex justify-between">
                                                 <div class="flex">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2"
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2"
                                                         width="24" height="24" viewBox="0 0 24 24"
                                                         style="fill: #06b6d4;transform: ;msFilter:;">
                                                         <path
@@ -228,9 +231,9 @@
                                                 <div class="flex">
                                                     <!-- SVG for Izin -->
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-orange-400 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="size-6">
+                                                        class="stroke-orange-400 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                        stroke="currentColor" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
                                                     </svg>
@@ -256,49 +259,15 @@
                                             class="status-checkbox w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     </div>
 
-                                    <!-- Terlambat -->
-                                    <div class="flex items-center">
-                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
-                                            <div class="flex justify-between">
-                                                <div class="flex">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-gray-400 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="size-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                    </svg>
-                                                    <div
-                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
-                                                        Terlambat : {{ $statusCounts['Terlambat'] ?? 0 }}x
-                                                    </div>
-                                                </div>
-                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
-                                                    {{ number_format($statusPercentages['Terlambat'] ?? 0) }}%</div>
-                                            </div>
-                                            <div class="w-full">
-                                                <div class="progress mt-2">
-                                                    <div class="progress-bar bg-gray-400" role="progressbar"
-                                                        style="width: {{ number_format($statusPercentages['Terlambat'] ?? 0) }}%"
-                                                        aria-valuenow="{{ number_format($statusPercentages['Terlambat'] ?? 0) }}"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input id="checked-checkbox-terlambat" type="checkbox" value="Terlambat"
-                                            data-status="Terlambat"
-                                            class="status-checkbox w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    </div>
-
                                     <!-- Alfa -->
                                     <div class="flex items-center">
                                         <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
                                             <div class="flex justify-between">
                                                 <div class="flex">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="stroke-red-700 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                        class="size-6">
+                                                        class="stroke-red-700 h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                        stroke="currentColor" class="size-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                     </svg>
@@ -323,44 +292,7 @@
                                             data-status="Alfa"
                                             class="status-checkbox w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     </div>
-
-                                    <!-- TAP -->
-                                    <div class="flex items-center">
-                                        <div class="bg-slate-100 rounded-xl h-auto w-full p-2">
-                                            <div class="flex justify-between">
-                                                <div class="flex">
-                                                    <!-- SVG for TAP -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-[20px] w-[20px] sm:h-[30px] sm:w-[30px] mr-2 stroke-gray-900" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                        <!-- Path for TAP icon -->
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="...">
-                                                        </path>
-                                                    </svg>
-                                                    <div
-                                                        class="text-dark-3 font-semibold text-xs sm:text-base place-content-center">
-                                                        TAP : {{ $statusCounts['TAP'] ?? 0 }}x
-                                                    </div>
-                                                </div>
-                                                <div class="text-dark-3 font-semibold text-xs sm:text-base">
-                                                    {{ number_format($statusPercentages['TAP'] ?? 0) }}%</div>
-                                            </div>
-                                            <div class="w-full">
-                                                <div class="progress mt-2">
-                                                    <div class="progress-bar bg-gray-900" role="progressbar"
-                                                        style="width: {{ number_format($statusPercentages['TAP'] ?? 0) }}%"
-                                                        aria-valuenow="{{ number_format($statusPercentages['TAP'] ?? 0) }}"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input id="checked-checkbox-tap" type="checkbox" value="TAP"
-                                            data-status="TAP"
-                                            class="status-checkbox w-6 h-6 mx-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    </div>
-
                                 </div>
-
                             </div>
                         </div>
                         <div class="col-md-8 mb-6">
@@ -384,8 +316,7 @@
                                                     <input id="datepicker-range-start" datepicker
                                                         datepicker-format="yyyy-mm-dd" name="start" type="text"
                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-[10px] sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                        placeholder="Select date start"
-                                                        value="{{ $startDate }}">
+                                                        placeholder="Select date start" value="{{ $startDate }}">
                                                 </div>
 
                                                 <span class="text-gray-500 dark:text-gray-400">to</span>
@@ -432,8 +363,10 @@
                                                 @foreach ($absensiPaginated as $absen)
                                                     <tr id="row-{{ $absen->id_absensi }}"
                                                         class="status-row {{ $absen->status }}">
-                                                        <td class="!text-[11px] sm:!text-base">{{ $absen->date }}</td>
-                                                        <td class="!text-[11px] sm:!text-base">{{ $absen->status }}</td>
+                                                        <td class="!text-[11px] sm:!text-base">{{ $absen->date }}
+                                                        </td>
+                                                        <td class="!text-[11px] sm:!text-base">{{ $absen->status }}
+                                                        </td>
                                                         <td class="!text-[11px] sm:!text-base">
                                                             <button
                                                                 data-modal-target="default-modal-{{ $absen->id_absensi }}"
@@ -456,24 +389,35 @@
                                                                     <h3
                                                                         class="text-lg font-semibold text-gray-900 dark:text-white">
                                                                         Detail Absen</h3>
-                                                                        <button type="button" data-modal-hide="default-modal-{{ $absen->id_absensi }}" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
-                                                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                                            </svg>
-                                                                            <span class="sr-only">Close modal</span>
-                                                                        </button>
+                                                                    <button type="button"
+                                                                        data-modal-hide="default-modal-{{ $absen->id_absensi }}"
+                                                                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                        data-modal-hide="default-modal">
+                                                                        <svg class="w-3 h-3" aria-hidden="true"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none" viewBox="0 0 14 14">
+                                                                            <path stroke="currentColor"
+                                                                                stroke-linecap="round"
+                                                                                stroke-linejoin="round"
+                                                                                stroke-width="2"
+                                                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                                        </svg>
+                                                                        <span class="sr-only">Close modal</span>
+                                                                    </button>
                                                                 </div>
                                                                 <div class="pt-3">
-                                                                    <p><strong>Keterangan:</strong> {{ $absen->status }}
+                                                                    <p><strong>Keterangan:</strong>
+                                                                        {{ $absen->status }}
                                                                     </p>
-                                                                    <p><strong>Tanggal:</strong> {{ $absen->date }}</p>
+                                                                    <p><strong>Tanggal:</strong> {{ $absen->date }}
+                                                                    </p>
                                                                     <p><strong>Jam Masuk:</strong>
                                                                         {{ $absen->jam_masuk }}</p>
                                                                     <p><strong>Jam Pulang:</strong>
                                                                         {{ $absen->jam_pulang }}</p>
                                                                     @if ($absen->menit_keterlambatan > 0)
-                                                                    <p><strong>Keterlambatan:</strong>
-                                                                        {{ $absen->menit_keterlambatan }} Menit</p>
+                                                                        <p><strong>Keterlambatan:</strong>
+                                                                            {{ $absen->menit_keterlambatan }} Menit</p>
                                                                     @endif
                                                                 </div>
                                                             </div>

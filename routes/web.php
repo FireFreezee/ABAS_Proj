@@ -26,19 +26,19 @@ use Illuminate\Support\Facades\Route;
 //     if (auth()->check()) {
 //         $role = auth()->user()->role;
 
-        // if ($role == 'kesiswaan') {
-        //     return redirect('kesiswaan');
-        // } elseif ($role == 'siswa') {
-        //     return redirect('siswa');
-        // } elseif ($role == 'wali') {
-        //     return redirect('walikelas');
-        // } elseif ($role == 'operator') {
-        //     return redirect('operator');
-        // } elseif ($role == 'walis') {
-        //     return redirect('walisiswa');
-        // } else {
-        //     return redirect('/home');
-        // }
+// if ($role == 'kesiswaan') {
+//     return redirect('kesiswaan');
+// } elseif ($role == 'siswa') {
+//     return redirect('siswa');
+// } elseif ($role == 'wali') {
+//     return redirect('walikelas');
+// } elseif ($role == 'operator') {
+//     return redirect('operator');
+// } elseif ($role == 'walis') {
+//     return redirect('walisiswa');
+// } else {
+//     return redirect('/home');
+// }
 //     }
 //     return view('Login.login');
 // })->name('log');
@@ -74,9 +74,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware(['auth', 'Walikelas:walikelas'])->group(function () {
     Route::get('walikelas', [WalikelasController::class, 'index'])->name('walikelas-dashboard');
-    Route::get('walikelas/siswa', [WalikelasController::class,'laporanSiswa'])->name('list-siswa');
+    Route::get('walikelas/siswa', [WalikelasController::class, 'laporanSiswa'])->name('list-siswa');
     Route::get('walikelas/laporan-detail-siswa/{id}', [WalikelasController::class, 'detailSiswa'])->name("detail-siswa");
-
+    Route::get('walikelas/profile', [WalikelasController::class, 'profile'])->name('walikelas-profile');
+    Route::post('walikelas/editprofil', [WalikelasController::class, 'editprofil'])->name('walikelas-edit-profil');
+    Route::post('walikelas/profile-update', [WalikelasController::class, 'photo_profile'])->name('walikelas-update-profile');
 });
 
 Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
@@ -94,7 +96,10 @@ Route::middleware(['auth', 'Siswa:siswa'])->group(function () {
 
 Route::middleware(['auth', 'Walisiswa:walisiswa'])->group(function () {
     Route::get('walisiswa', [WalisiswaController::class, 'index'])->name('walsis-dashboard');
-    Route::get('/walisiswa/detailLaporan', [WalisiswaController::class, 'detailLaporan'])->name('detail-laporan');
+    Route::get('walisiswa/detailLaporan', [WalisiswaController::class, 'detailLaporan'])->name('detail-laporan');
+    Route::get('walisiswa/profile', [WalisiswaController::class, 'profile'])->name('walsis-profile');
+    Route::post('walisiswa/editprofil', [WalisiswaController::class, 'editprofil'])->name('walsis-edit-profil');
+    Route::post('walisiswa/profile-update', [WalisiswaController::class, 'photo_profile'])->name('walsis-update-profile');
 });
 
 Route::middleware(['auth', 'Operator:operator'])->group(function () {
@@ -105,6 +110,11 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
     Route::post('operator/editwalikelas/{id}', [OperatorController::class, 'editwali'])->name('edit-wali-kelas');
     Route::delete('hapuswalikelas/{id}', [OperatorController::class, 'hapuswali'])->name('hapuswali');
     Route::post('operator/walikelas/import', [OperatorController::class, 'importWali'])->name('import-wali');
+
+    Route::get('/operator/data-walisiswa', [OperatorController::class, 'walisiswa'])->name('data-walsis');
+    Route::post('operator/store-walisiswa', [OperatorController::class, 'tambahWalisiswa'])->name('store-walsis');
+    Route::post('operator/editwalisiswa/{id}', [OperatorController::class, 'editWalisiswa'])->name('edit-walsis');
+    Route::delete('hapuswalisiswa/{id}', [OperatorController::class, 'hapusWalisiswa'])->name('hapuswalsis');
 
     Route::get('/operator/data-jurusan', [OperatorController::class, 'jurusan'])->name('data-jurusan');
     Route::post('/add-jurusan', [OperatorController::class, 'tambahJurusan'])->name('add-jurusan');
@@ -136,4 +146,7 @@ Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {
     Route::get('kesiswaan/laporan-kelas', [KesiswaanController::class, 'laporanKelas'])->name("kesiswaan.kelas");
     Route::get('kesiswaan/laporan-siswa/{kelas_id}', [KesiswaanController::class, 'laporanSiswa'])->name("kesiswaan.siswa");
     Route::get('kesiswaan/laporan-detail-siswa/{id}', [KesiswaanController::class, 'detailSiswa'])->name("kesiswaan.detail.siswa");
+    Route::get('kesiswaan/profile', [KesiswaanController::class, 'profile'])->name('kesiswaan-profile');
+    Route::post('kesiswaan/editprofil', [KesiswaanController::class, 'editprofil'])->name('kesiswaan-edit-profil');
+    Route::post('kesiswaan/profile-update', [KesiswaanController::class, 'photo_profile'])->name('kesiswaan-update-profile');
 });

@@ -601,7 +601,7 @@
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="row mb-15">
                                                     <div class="col-9 !text-xs sm:!text-base">Hadir :
-                                                        {{ $dataBulanIni['Hadir'] ?? 0 }}
+                                                        {{ $dataBulanIni['Hadir/Terlambat/TAP'] ?? 0 }}
                                                     </div>
                                                     <div class="col-3 text-right !text-xs sm:!text-base">
                                                         {{ $persentaseHadirBulanIni }}%
@@ -631,21 +631,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-15">
-                                                    <div class="col-9 !text-xs sm:!text-base">Terlambat :
-                                                        {{ $dataBulanIni['Terlambat'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right !text-xs sm:!text-base">
-                                                        {{ $persentaseTerlambatBulanIni }}%
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="progress mt-2">
-                                                            <div class="progress-bar !bg-gray-400" role="progressbar"
-                                                                style="width: {{ $persentaseTerlambatBulanIni }}%"
-                                                                aria-valuenow="{{ $persentaseTerlambatBulanIni }}"
-                                                                aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-15">
                                                     <div class="col-9 !text-xs sm:!text-base">Alfa :
                                                         {{ $dataBulanIni['Alfa'] ?? 0 }}</div>
                                                     <div class="col-3 text-right !text-xs sm:!text-base">
@@ -655,20 +640,6 @@
                                                             <div class="progress-bar bg-danger" role="progressbar"
                                                                 style="width: {{ $persentaseAlfaBulanIni }}%"
                                                                 aria-valuenow="{{ $persentaseAlfaBulanIni }}"
-                                                                aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-15">
-                                                    <div class="col-9 !text-xs sm:!text-base">TAP :
-                                                        {{ $dataBulanIni['TAP'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right !text-xs sm:!text-base">
-                                                        {{ $persentaseTAPBulanIni }}%</div>
-                                                    <div class="col-12">
-                                                        <div class="progress mt-2 bg-gray-200">
-                                                            <div class="progress-bar !bg-gray-900" role="progressbar"
-                                                                style="width: {{ $persentaseTAPBulanIni }}%"
-                                                                aria-valuenow="{{ $persentaseTAPBulanIni }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>
                                                         </div>
                                                     </div>
@@ -685,7 +656,7 @@
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="row mb-15">
                                                     <div class="col-9">Hadir:
-                                                        {{ $dataBulanSebelumnya['Hadir'] ?? 0 }}</div>
+                                                        {{ $dataBulanSebelumnya['Hadir/Terlambat/TAP'] ?? 0 }}</div>
                                                     <div class="col-3 text-right">
                                                         {{ $persentaseHadirBulanSebelumnya }}%</div>
                                                     <div class="col-12">
@@ -712,20 +683,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-15">
-                                                    <div class="col-9">Terlambat:
-                                                        {{ $dataBulanSebelumnya['Terlambat'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right">
-                                                        {{ $persentaseTerlambatBulanSebelumnya }}%</div>
-                                                    <div class="col-12">
-                                                        <div class="progress mt-2">
-                                                            <div class="progress-bar !bg-gray-400" role="progressbar"
-                                                                style="width: {{ $persentaseTerlambatBulanSebelumnya }}%"
-                                                                aria-valuenow="{{ $persentaseTerlambatBulanSebelumnya }}"
-                                                                aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-15">
                                                     <div class="col-9">Alfa:
                                                         {{ $dataBulanSebelumnya['Alfa'] ?? 0 }}</div>
                                                     <div class="col-3 text-right">
@@ -735,20 +692,6 @@
                                                             <div class="progress-bar bg-danger" role="progressbar"
                                                                 style="width: {{ $persentaseAlfaBulanSebelumnya }}%"
                                                                 aria-valuenow="{{ $persentaseAlfaBulanSebelumnya }}"
-                                                                aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-15">
-                                                    <div class="col-9">TAP:
-                                                        {{ $dataBulanSebelumnya['TAP'] ?? 0 }}</div>
-                                                    <div class="col-3 text-right">{{ $persentaseTAPBulanSebelumnya }}%
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="progress mt-2 !bg-gray-200">
-                                                            <div class="progress-bar !bg-gray-900" role="progressbar"
-                                                                style="width: {{ $persentaseTAPBulanSebelumnya }}%"
-                                                                aria-valuenow="{{ $persentaseTAPBulanSebelumnya }}"
                                                                 aria-valuemin="0" aria-valuemax="100"></div>
                                                         </div>
                                                     </div>

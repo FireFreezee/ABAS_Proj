@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\Wali_Kelas;
 use App\Models\Siswa;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
 
 class KesiswaanController extends Controller
 {
@@ -97,13 +99,11 @@ class KesiswaanController extends Controller
         $tingkat = $request->input('tingkat');
         $jurusan = $request->input('jurusan');
 
-        // Set default to current month if no dates are provided
+        // Set default to the current month if no dates are provided
         if (!$startDate || !$endDate) {
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
-
-        $totalBusinessDays = $this->getBusinessDaysCount($startDate, $endDate);
 
         $kelasQuery = Kelas::with('siswa.absensi');
         $jurusans = Jurusan::all();
@@ -118,35 +118,48 @@ class KesiswaanController extends Controller
 
         $kelasList = $kelasQuery->get();
         $kelasData = [];
-        $totalPercentageHadir = 0;
-        $totalClasses = count($kelasList);
+        $totalHadir = 0;
+        $totalSakitIzin = 0;
+        $totalAlfa = 0;
+
+        // Total unique students
+        $totalStudents = 0;
 
         foreach ($kelasList as $kelas) {
-            $siswaIds = $kelas->siswa->pluck('nis');
-            $totalExpectedRecords = $totalBusinessDays * count($siswaIds);
+            $siswaIds = $kelas->siswa->pluck('nis')->toArray();
+            $totalStudents += count($siswaIds);
 
+            // Retrieve attendance records for the class
             $kelasAbsensi = Absensi::whereBetween('date', [$startDate, $endDate])
                 ->whereIn('nis', $siswaIds)
                 ->get();
 
-            $kelasHadir = $kelasAbsensi->where('status', 'Hadir')->count();
+            // Combined counts for statuses
+            $kelasHadir = $kelasAbsensi->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count();
             $kelasSakitIzin = $kelasAbsensi->whereIn('status', ['Sakit', 'Izin'])->count();
             $kelasAlfa = $kelasAbsensi->where('status', 'Alfa')->count();
-            $kelasTerlambat = $kelasAbsensi->where('status', 'Terlambat')->count();
-            $kelasTAP = $kelasAbsensi->where('status', 'TAP')->count();
 
-            // Calculate percentages for the class based on total expected records
-            $kelasPercentageHadir = ($totalExpectedRecords > 0) ? ($kelasHadir / $totalExpectedRecords) * 100 : 0;
-            $totalPercentageHadir += $kelasPercentageHadir;
-            $kelasPercentageSakitIzin = ($totalExpectedRecords > 0) ? ($kelasSakitIzin / $totalExpectedRecords) * 100 : 0;
-            $kelasPercentageAlfa = ($totalExpectedRecords > 0) ? ($kelasAlfa / $totalExpectedRecords) * 100 : 0;
-            $kelasPercentageTerlambat = ($totalExpectedRecords > 0) ? ($kelasTerlambat / $totalExpectedRecords) * 100 : 0;
-            $kelasPercentageTAP = ($totalExpectedRecords > 0) ? ($kelasTAP / $totalExpectedRecords) * 100 : 0;
+            // Calculate unique attendance days
+            $uniqueAttendanceDays = $kelasAbsensi->pluck('date')->unique()->count();
 
+            // Calculate percentages based on unique attendance days
+            $totalExpectedAttendance = count($siswaIds) * $uniqueAttendanceDays;
+
+            // Calculate percentages
+            $kelasPercentageHadir = ($totalExpectedAttendance > 0) ? ($kelasHadir / $totalExpectedAttendance) * 100 : 0;
+            $kelasPercentageSakitIzin = ($totalExpectedAttendance > 0) ? ($kelasSakitIzin / $totalExpectedAttendance) * 100 : 0;
+            $kelasPercentageAlfa = ($totalExpectedAttendance > 0) ? ($kelasAlfa / $totalExpectedAttendance) * 100 : 0;
+
+            // Accumulate total attendance counts
+            $totalHadir += $kelasHadir;
+            $totalSakitIzin += $kelasSakitIzin;
+            $totalAlfa += $kelasAlfa;
+
+            // Add data for the current class
             $kelasData[] = [
                 'kelas_id' => $kelas->id_kelas,
                 'kelas' => $kelas->tingkat . ' ' . $kelas->id_jurusan . ' ' . $kelas->nomor_kelas,
-                'total' => $totalExpectedRecords,
+                'total' => $uniqueAttendanceDays,
                 'jurusan' => $kelas->id_jurusan,
                 'countHadir' => $kelasHadir,
                 'percentageHadir' => $kelasPercentageHadir,
@@ -154,18 +167,23 @@ class KesiswaanController extends Controller
                 'percentageSakitIzin' => $kelasPercentageSakitIzin,
                 'countAlfa' => $kelasAlfa,
                 'percentageAlfa' => $kelasPercentageAlfa,
-                'countTerlambat' => $kelasTerlambat,
-                'percentageTerlambat' => $kelasPercentageTerlambat,
-                'countTAP' => $kelasTAP,
-                'percentageTAP' => $kelasPercentageTAP,
             ];
         }
 
-        $averagePercentageHadir = ($totalClasses > 0) ? ($totalPercentageHadir / $totalClasses) : 0;
+        // Prepare the summary counts
+        $summaryCounts = [
+            'totalHadir' => $totalHadir,
+            'totalSakitIzin' => $totalSakitIzin,
+            'totalAlfa' => $totalAlfa,
+        ];
 
-        $kelasDataCollection = collect($kelasData);
+        // Calculate averages based on total expected attendance
+        $averagePercentageHadir = ($totalStudents > 0) ? ($totalHadir / ($totalStudents * $uniqueAttendanceDays)) * 100 : 0;
+        $averagePercentageSakitIzin = ($totalStudents > 0) ? ($totalSakitIzin / ($totalStudents * $uniqueAttendanceDays)) * 100 : 0;
+        $averagePercentageAlfa = ($totalStudents > 0) ? ($totalAlfa / ($totalStudents * $uniqueAttendanceDays)) * 100 : 0;
 
         // Paginate the collection
+        $kelasDataCollection = collect($kelasData);
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 10;
         $paginateData = new LengthAwarePaginator(
@@ -176,17 +194,23 @@ class KesiswaanController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        $paginatedData = $paginateData->appends($request->only(['start', 'end']));
+        $paginatedData = $paginateData->appends($request->only(['start', 'end', 'tingkat', 'jurusan']));
 
         return view('kesiswaan.kelas', [
             'title' => 'Dashboard',
             'kelasData' => $paginatedData,
             'averagePercentageHadir' => $averagePercentageHadir,
+            'averagePercentageSakitIzin' => $averagePercentageSakitIzin,
+            'averagePercentageAlfa' => $averagePercentageAlfa,
+            'summaryCounts' => $summaryCounts,
             'startDate' => $startDate,
             'endDate' => $endDate,
             'jurusans' => $jurusans
         ]);
     }
+
+
+
 
     private function getBusinessDaysCount($startDate, $endDate)
     {
@@ -218,9 +242,6 @@ class KesiswaanController extends Controller
             $startDate = Carbon::now()->startOfMonth()->toDateString();
             $endDate = Carbon::now()->endOfMonth()->toDateString();
         }
-
-        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
-
         // Fetch the search keyword for name or NIS
         $search = $request->input('search');
 
@@ -245,11 +266,11 @@ class KesiswaanController extends Controller
 
         $totalStudents = count($students);
         $attendanceCounts = [
-            'Hadir' => $siswaAbsensi->where('status', 'Hadir')->count(),
+            'Hadir' => $siswaAbsensi->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count(),
             'Sakit/Izin' => $siswaAbsensi->whereIn('status', ['Sakit', 'Izin'])->count(), // Combined status
             'Alfa' => $siswaAbsensi->where('status', 'Alfa')->count(),
-            'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
-            'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
+            // 'Terlambat' => $siswaAbsensi->where('status', 'Terlambat')->count(),
+            // 'TAP' => $siswaAbsensi->where('status', 'TAP')->count(),
         ];
 
         // Calculate the percentage of attendance for each student
@@ -258,6 +279,8 @@ class KesiswaanController extends Controller
         foreach ($students as $student) {
             // Get attendance records for the current student within the specified date range
             $studentAttendance = $siswaAbsensi->where('nis', $student->nis);
+
+            $effectiveBusinessDaysCount = $studentAttendance->unique('date')->count();
 
             // Initialize the student data
             $studentData = [
@@ -269,7 +292,10 @@ class KesiswaanController extends Controller
 
             // Count the status for this student
             foreach ($attendanceCounts as $status => $count) {
-                if ($status === 'Sakit/Izin') {
+                if ($status === 'Hadir') {
+                    // Count the combined status for 'Hadir'
+                    $studentStatusCount = $studentAttendance->whereIn('status', ['Hadir', 'Terlambat', 'TAP'])->count();
+                } elseif ($status === 'Sakit/Izin') {
                     // Calculate the count for combined status
                     $studentStatusCount = $studentAttendance->whereIn('status', ['Sakit', 'Izin'])->count();
                 } else {
@@ -280,8 +306,8 @@ class KesiswaanController extends Controller
                 $studentData['attendanceCounts'][$status] = $studentStatusCount; // Count for this status
 
                 // Calculate the percentage for this status
-                if ($businessDaysCount > 0) {
-                    $percentage = ($studentStatusCount / $businessDaysCount) * 100;
+                if ($effectiveBusinessDaysCount > 0) {
+                    $percentage = ($studentStatusCount / $effectiveBusinessDaysCount) * 100;
                     $studentData['attendancePercentages'][$status] = $percentage;
                 } else {
                     $studentData['attendancePercentages'][$status] = 0; // Set to 0 if no business days
@@ -353,22 +379,22 @@ class KesiswaanController extends Controller
         $totalRecords = $present->count();
 
         $attendanceCounts = [
-            'Hadir' => $present->where('status', 'Hadir')->count(),
+            'Hadir' => $present->where('status', 'Hadir')->count() + $present->where('status', 'Terlambat')->count() + $present->where('status', 'TAP')->count(),
             'Sakit/Izin' => $present->where('status', 'Sakit')->count() + $present->where('status', 'Izin')->count(),
             // 'Izin' => $present->where('status', 'Izin')->count(),
             'Alfa' => $present->where('status', 'Alfa')->count(),
-            'Terlambat' => $present->where('status', 'Terlambat')->count(),
-            'TAP' => $present->where('status', 'TAP')->count(),
+            // 'Terlambat' => $present->where('status', 'Terlambat')->count(),
+            // 'TAP' => $present->where('status', 'TAP')->count(),
         ];
 
-        $businessDaysCount = $this->getBusinessDaysCount($startDate, $endDate);
+        $effectiveBusinessDaysCount = $present->unique('date')->count();
 
         $attendancePercentage = [
-            'percentageHadir' => ($businessDaysCount > 0) ? ($attendanceCounts['Hadir'] / $businessDaysCount) * 100 : 0,
-            'percentageSakitIzin' => ($businessDaysCount > 0) ? ($attendanceCounts['Sakit/Izin'] / $businessDaysCount) * 100 : 0,
-            'percentageAlfa' => ($businessDaysCount > 0) ? ($attendanceCounts['Alfa'] / $businessDaysCount) * 100 : 0,
-            'percentageTerlambat' => ($businessDaysCount > 0) ? ($attendanceCounts['Terlambat'] / $businessDaysCount) * 100 : 0,
-            'percentageTAP' => ($businessDaysCount > 0) ? ($attendanceCounts['TAP'] / $businessDaysCount) * 100 : 0,
+            'percentageHadir' => ($effectiveBusinessDaysCount > 0) ? ($attendanceCounts['Hadir'] / $effectiveBusinessDaysCount) * 100 : 0,
+            'percentageSakitIzin' => ($effectiveBusinessDaysCount > 0) ? ($attendanceCounts['Sakit/Izin'] / $effectiveBusinessDaysCount) * 100 : 0,
+            'percentageAlfa' => ($effectiveBusinessDaysCount > 0) ? ($attendanceCounts['Alfa'] / $effectiveBusinessDaysCount) * 100 : 0,
+            // 'percentageTerlambat' => ($businessDaysCount > 0) ? ($attendanceCounts['Terlambat'] / $businessDaysCount) * 100 : 0,
+            // 'percentageTAP' => ($businessDaysCount > 0) ? ($attendanceCounts['TAP'] / $businessDaysCount) * 100 : 0,
         ];
 
         $presentDataCollection = collect($present);
@@ -393,6 +419,73 @@ class KesiswaanController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate
         ]);
+    }
+
+    public function profile()
+    {
+        return view("kesiswaan.profile");
+    }
+
+    public function editprofil(Request $r)
+    {
+        $f = false;
+        $p = false;
+        $u = false;
+
+        // password
+        if (strlen($r->password) > 0) {
+            if ($r->password !== $r->kPassword) {
+                return redirect()->back()->with('failed', 'Password Berbeda');
+            }
+
+            $p = User::where('id', $r->id)->update([
+                'password' => password_hash($r->password, PASSWORD_DEFAULT),
+            ]);
+        }
+
+        // foto
+        $fileName = '';
+        if ($r->profile) {
+            $f = User::where('id', $r->id)->update([
+                'foto' => $r->profile,
+            ]);
+        }
+
+        // email
+        if ($r->email) {
+            $u = User::where('id', $r->id)->update([
+                'email' => $r->email,
+            ]);
+        }
+
+        // Redirecting
+        if ($u || $f || $p) {
+            return redirect()->route('kesiswaan.index')->with('success', "Data Berhasil di Update");
+        } else {
+            // If update fails, delete uploaded photo if it exists
+            if ($fileName && Storage::disk('public')->exists("uploads/profile/{$fileName}")) {
+                Storage::disk('public')->delete("uploads/profile/{$fileName}");
+            }
+            return redirect()->back()->with('failed', "Data Gagal di Update");
+        }
+    }
+
+    public function photo_profile(Request $request)
+    {
+        $request->validate([
+            'profile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('profile')) {
+            $file = $request->file('profile');
+            $fileName = uniqid(true) . '-' . $file->getClientOriginalName();
+            $folderPath = "public/uploads/profile/";
+            $file->storeAs($folderPath, $fileName);
+
+            return $fileName;
+        }
+
+        return '';
     }
 
     /**

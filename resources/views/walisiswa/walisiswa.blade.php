@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="{{ asset('assets/dist/css/theme.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite('resources/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -80,7 +81,7 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('siswa-profile') }}"><i
+                                <a class="dropdown-item" href="{{ route('walsis-profile') }}"><i
                                         class="ik ik-user dropdown-icon"></i>
                                     Profile</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
@@ -100,6 +101,19 @@
         <div class="page-wrap">
             <!--=============== HOME ===============-->
             <div class="main-content" style="padding-left: 0px; padding-right: 0px">
+                @if (Session::has('success'))
+                    <script>
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: '{{ Session::get('success') }}',
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                            }
+                        });
+                    </script>
+                @endif
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body ml-3">
@@ -148,6 +162,10 @@
                                         <h2 class="border flex text-gray-700 justify-center px-auto py-10">
                                             {{ $siswa->statusAbsen }}
                                         </h2>
+                                    @elseif ($siswa->statusAbsen == 'Sudah Pulang')
+                                        <h2 class="border flex text-gray-700 justify-center px-auto py-10">
+                                            {{ $siswa->statusAbsen }}
+                                        </h2>
                                     @endif
                                 </div>
                                 <div class=" w-full">
@@ -168,7 +186,7 @@
                                         <div class="col-12">
                                             <div class="text-lg font-semibold pt-3">
                                                 Jumlah Kehadiran:
-                                                {{ $siswa->dataBulanIni['Hadir'] ?? 0 }}
+                                                {{ $siswa->dataBulanIni['Hadir/Terlambat/TAP'] ?? 0 }}
                                             </div>
                                             <div class="progress mt-2 !h-fit">
                                                 <div class="progress-bar bg-green text-lg" role="progressbar"
@@ -193,19 +211,6 @@
                                             </div>
 
                                             <div class="text-lg font-semibold pt-3">
-                                                Jumlah Terlambat:
-                                                {{ $siswa->dataBulanIni['Terlambat'] ?? 0 }}
-                                            </div>
-                                            <div class="progress mt-2 !h-fit">
-                                                <div class="progress-bar !bg-gray-700 text-lg" role="progressbar"
-                                                    style="width: {{ $siswa->persentaseTerlambatBulanIni }}%"
-                                                    aria-valuenow="{{ $siswa->persentaseTerlambatBulanIni }}"
-                                                    aria-valuemin="0" aria-valuemax="100">
-                                                    {{ $siswa->persentaseTerlambatBulanIni }}%
-                                                </div>
-                                            </div>
-
-                                            <div class="text-lg font-semibold pt-3">
                                                 Jumlah Alfa: {{ $siswa->dataBulanIni['Alfa'] ?? 0 }}
                                             </div>
                                             <div class="progress mt-2 !h-fit">
@@ -214,18 +219,6 @@
                                                     aria-valuenow="{{ $siswa->persentaseAlfaBulanIni }}"
                                                     aria-valuemin="0" aria-valuemax="100">
                                                     {{ $siswa->persentaseAlfaBulanIni }}%
-                                                </div>
-                                            </div>
-
-                                            <div class="text-lg font-semibold pt-3">
-                                                Jumlah TAP: {{ $siswa->dataBulanIni['TAP'] ?? 0 }}
-                                            </div>
-                                            <div class="progress mt-2 !h-fit">
-                                                <div class="progress-bar !bg-gray-900 text-lg" role="progressbar"
-                                                    style="width: {{ $siswa->persentaseTAPBulanIni }}%"
-                                                    aria-valuenow="{{ $siswa->persentaseTAPBulanIni }}"
-                                                    aria-valuemin="0" aria-valuemax="100">
-                                                    {{ $siswa->persentaseTAPBulanIni }}%
                                                 </div>
                                             </div>
                                             <div class="text-lg font-semibold pt-3">
@@ -263,19 +256,6 @@
                                             </div>
 
                                             <div class="text-lg font-semibold pt-3">
-                                                Jumlah Terlambat:
-                                                {{ $siswa->dataBulanSebelumnya['Terlambat'] ?? 0 }}
-                                            </div>
-                                            <div class="progress mt-2 !h-fit">
-                                                <div class="progress-bar !bg-gray-700 text-lg" role="progressbar"
-                                                    style="width: {{ $siswa->persentaseTerlambatBulanSebelumnya }}%"
-                                                    aria-valuenow="{{ $siswa->persentaseTerlambatBulanSebelumnya }}"
-                                                    aria-valuemin="0" aria-valuemax="100">
-                                                    {{ $siswa->persentaseTerlambatBulanSebelumnya }}%
-                                                </div>
-                                            </div>
-
-                                            <div class="text-lg font-semibold pt-3">
                                                 Jumlah Alfa: {{ $siswa->dataBulanSebelumnya['Alfa'] ?? 0 }}
                                             </div>
                                             <div class="progress mt-2 !h-fit">
@@ -284,18 +264,6 @@
                                                     aria-valuenow="{{ $siswa->persentaseAlfaBulanSebelumnya }}"
                                                     aria-valuemin="0" aria-valuemax="100">
                                                     {{ $siswa->persentaseAlfaBulanSebelumnya }}%
-                                                </div>
-                                            </div>
-
-                                            <div class="text-lg font-semibold pt-3">
-                                                Jumlah TAP: {{ $siswa->dataBulanSebelumnya['TAP'] ?? 0 }}
-                                            </div>
-                                            <div class="progress mt-2 !h-fit">
-                                                <div class="progress-bar !bg-gray-900 text-lg" role="progressbar"
-                                                    style="width: {{ $siswa->persentaseTAPBulanSebelumnya }}%"
-                                                    aria-valuenow="{{ $siswa->persentaseTAPBulanSebelumnya }}"
-                                                    aria-valuemin="0" aria-valuemax="100">
-                                                    {{ $siswa->persentaseTAPBulanSebelumnya }}%
                                                 </div>
                                             </div>
                                             <div class="text-lg font-semibold pt-3">

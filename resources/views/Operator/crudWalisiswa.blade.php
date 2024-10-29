@@ -60,10 +60,10 @@
                                 <div class="submenu-content">
                                     <a href="{{ route('data-wali') }}" class="menu-item"><i
                                             class="ik ik-users"></i><span>Tambah/Edit WaliKelas</span></a>
-                                    <a href="{{ route('data-kesiswaan') }}" class="menu-item active"><i
+                                    <a href="{{ route('data-kesiswaan') }}" class="menu-item"><i
                                             class="ik ik-users"></i><span>Tambah/Edit
                                             Kesiswaan</span></a>
-                                    <a href="{{ route('data-walsis') }}" class="menu-item"><i
+                                    <a href="{{ route('data-walsis') }}" class="menu-item active"><i
                                             class="ik ik-users"></i><span>Tambah/Edit WaliSiswa</span></a>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                             <div class="page-header-title">
                                 <i class="ik ik-inbox bg-blue"></i>
                                 <div class="d-inline">
-                                    <h5>List Kesiswaan</h5>
+                                    <h5>List Walikelas</h5>
                                 </div>
                             </div>
                         </div>
@@ -114,9 +114,9 @@
                                         <a href="../index.html"><i class="ik ik-home"></i></a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <a href="#">List Kesiswaan</a>
+                                        <a href="#">List Walikelas</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Tabel Kesiswaan</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Tabel Siswa</li>
                                 </ol>
                             </nav>
                         </div>
@@ -128,7 +128,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3>List Kesiswaan</h3>
+                                <h3>List Walikelas</h3>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-end mb-3">
@@ -140,95 +140,133 @@
                                             <path
                                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
                                         </svg> Tambah</button>
-                                </div>
-                                {{-- modal tambah --}}
-                                <div class="modal fade" id="tambah" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterLabel">Tambah Data</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <button type="button" class="btn btn-outline-primary btn-rounded"
+                                        data-toggle="modal" data-target="#import">Import</button>
+
+                                    {{-- modal tambah --}}
+                                    <div class="modal fade" id="tambah" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalCenterLabel">Tambah Data</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{{ route('store-walsis') }}" method="POST"
+                                                        class="forms-sample">
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">NIK</label>
+                                                            <input type="text" class="form-control" id="nik"
+                                                                name="nik" placeholder="NIK" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Nama</label>
+                                                            <input type="text" class="form-control" id="nama"
+                                                                name="name" placeholder="Nama" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputPassword1">Jenis Kelamin</label>
+                                                            <select class="form-control" id="jenis_kelamin"
+                                                                name="jenis_kelamin" required>
+                                                                <option value="" hidden>Pilih</option>
+                                                                <option value="1">laki laki
+                                                                </option>
+                                                                <option value="2">perempuan
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Alamat</label>
+                                                            <input type="text" class="form-control" id="alamat"
+                                                                name="alamat" placeholder="Alamat">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputConfirmPassword1">Email</label>
+                                                            <input type="email" class="form-control" id="email"
+                                                                name="email" placeholder="Email" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputConfirmPassword1">Password</label>
+                                                            <input type="text" class="form-control" id="password"
+                                                                name="password" placeholder="Password" required>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Tutup</button>
+                                                            <button type="submit" class="btn btn-primary">Tambah</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
                                             </div>
-                                            <div class="modal-body">
-                                                <form action="{{ route('tambah-kesiswaan') }}" method="POST"
-                                                    class="forms-sample">
+                                        </div>
+                                    </div>
+
+                                    {{-- modal import --}}
+                                    <div class="modal fade" id="import" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalCenterLabel">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                            aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                <form action="" method="POST" enctype="multipart/form-data">
                                                     @csrf
-                                                    <div class="form-group">
-                                                        <label for="exampleInputUsername1">Nama</label>
-                                                        <input type="text" class="form-control" id="nama"
-                                                            name="name" placeholder="Nama" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputUsername1">NIP</label>
-                                                        <input type="email" class="form-control" id="nip"
-                                                            name="nip" placeholder="nip" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputUsername1">nuptk</label>
-                                                        <input type="email" class="form-control" id="nuptk"
-                                                            name="nuptk" placeholder="nuptk" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputUsername1">Email</label>
-                                                        <input type="email" class="form-control" id="email"
-                                                            name="email" placeholder="Email">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputPassword1">Jenis Kelamin</label>
-                                                        <select class="form-control" id="jenis_kelamin"
-                                                            name="jenis_kelamin" required>
-                                                            <option value="" hidden>Pilih</option>
-                                                            <option value="1">laki laki
-                                                            </option>
-                                                            <option value="2">perempuan
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="exampleInputUsername1">Password</label>
-                                                        <input type="password" class="form-control" id="password"
-                                                            name="password" placeholder="Email" required>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputConfirmPassword1">File</label>
+                                                            <input type="file" class="form-control" id="password"
+                                                                name="import_file" required>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Tutup</button>
-                                                        <button type="submit" class="btn btn-primary">Tambah</button>
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Import</button>
                                                     </div>
                                                 </form>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
                                 <table id="data_table" class="table">
                                     <thead style="text-align: center;">
                                         <tr>
-                                            <th>NIP</th>
+                                            <th>NIK</th>
                                             <th>Nama</th>
-                                            <th>NUPTK</th>
+                                            <th>JK</th>
+                                            <th>Alamat</th>
+                                            <th>Email</th>
                                             <th class="nosort">&nbsp;</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($kesiswaan as $k)
+                                        @foreach ($walisiswa as $ws)
                                             <tr style="text-align: center;">
-                                                <td>{{ $k->wali->nip }}</td>
-                                                <td>{{ $k->nama }}</td>
-                                                <td>{{ $k->wali->nuptk }}</td>
+                                                <td>{{ $ws->nik }}</td>
+                                                <td>{{ $ws->user->nama }}</td>
+                                                <td>{{ $ws->jenis_kelamin }}</td>
+                                                <td>{{ $ws->alamat }}</td>
+                                                <td>{{ $ws->user ? $ws->user->email : 'N/A' }}</td>
                                                 <td>
                                                     <div class="table-actions">
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#edit{{ $k->id }}"><i
+                                                            data-target="#edit{{ $ws->id_user }}"><i
                                                                 class="ik ik-edit-2"></i></a>
                                                         <a href="#" data-toggle="modal"
-                                                            data-target="#hapus{{ $k->id }}"><i
+                                                            data-target="#hapus{{ $ws->id_user }}"><i
                                                                 class="ik ik-trash-2"></i></a>
                                                     </div>
-
                                                 </td>
-                                                @include('Operator.CRUDkesiswaanModal')
+                                                @include('Operator.CRUDwalsisModal')
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -16,21 +16,21 @@ class KelasSeeder extends Seeder
         kelas::create([
             'id_jurusan' => 'PPLG',
             'nomor_kelas' => 2,
-            'nuptk' => '1234567890123456',
+            'nip' => '198005052022011001',
             'tingkat' => '10',
         ]);
 
         kelas::create([
             'id_jurusan' => 'RPL',
             'nomor_kelas' => 1,
-            'nuptk' => '2345678901234567',
+            'nip' => '198107062022021002',
             'tingkat' => '11',
         ]);
 
         kelas::create([
             'id_jurusan' => 'RPL',
             'nomor_kelas' => 1,
-            'nuptk' => '3456789012345678',
+            'nip' => '198209072022031003',
             'tingkat' => '12',
         ]);
     }
