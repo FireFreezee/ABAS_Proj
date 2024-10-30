@@ -31,17 +31,17 @@ class KesiswaanController extends Controller
         // Calculate total counts and percentages for all classes
         $totalRecords = $totalAbsensi->count();
 
-        $countHadir = $totalAbsensi->where('status', 'Hadir')->count();
+        $countHadir = ($totalAbsensi->where('status', 'Hadir')->count()) + ($totalAbsensi->where('status', 'Terlambat')->count()) + ($totalAbsensi->where('status', 'TAP')->count());
         $countSakitIzin = ($totalAbsensi->where('status', 'Sakit')->count()) + ($totalAbsensi->where('status', 'Izin')->count());
         $countAlfa = $totalAbsensi->where('status', 'Alfa')->count();
-        $countTerlambat = $totalAbsensi->where('status', 'Terlambat')->count();
-        $countTAP = $totalAbsensi->where('status', 'TAP')->count();
+        // $countTerlambat = $totalAbsensi->where('status', 'Terlambat')->count();
+        // $countTAP = $totalAbsensi->where('status', 'TAP')->count();
 
         $percentageHadir = ($totalRecords > 0) ? ($countHadir / $totalRecords) * 100 : 0;
         $percentageSakitIzin = ($totalRecords > 0) ? ($countSakitIzin / $totalRecords) * 100 : 0;
         $percentageAlfa = ($totalRecords > 0) ? ($countAlfa / $totalRecords) * 100 : 0;
-        $percentageTerlambat = ($totalRecords > 0) ? ($countTerlambat / $totalRecords) * 100 : 0;
-        $percentageTAP = ($totalRecords > 0) ? ($countTAP / $totalRecords) * 100 : 0;
+        // $percentageTerlambat = ($totalRecords > 0) ? ($countTerlambat / $totalRecords) * 100 : 0;
+        // $percentageTAP = ($totalRecords > 0) ? ($countTAP / $totalRecords) * 100 : 0;
 
         $startDate = $request->input('start');
         $endDate = $request->input('end');
@@ -68,9 +68,18 @@ class KesiswaanController extends Controller
             });
 
             $tidakHadirCount = $statusCounts->get('Alfa', 0) + $statusCounts->get('Sakit', 0) + $statusCounts->get('Izin', 0);
+            $HadirCount = $statusCounts->get('Hadir', 0) + $statusCounts->get('Terlambat', 0) + $statusCounts->get('TAP', 0);
+
+            $statusCounts['Hadir'] = $HadirCount;
+            $percentages['Hadir'] = ($HadirCount > 0) ? number_format(($HadirCount / $totalCount) * 100, 2) : 0;
+
+            $statusCounts['TidakHadir'] = $tidakHadirCount;
             $percentages['TidakHadir'] = ($tidakHadirCount > 0) ? number_format(($tidakHadirCount / $totalCount) * 100, 2) : 0;
 
-            return $percentages; // Return the status percentages
+            return [
+                'count' => $statusCounts, 
+                'percentage' => $percentages
+            ]; 
         });
 
         return view('kesiswaan.kesiswaan', [
@@ -78,13 +87,9 @@ class KesiswaanController extends Controller
             'countHadir' => $countHadir,
             'countSakitIzin' => $countSakitIzin,
             'countAlfa' => $countAlfa,
-            'countTerlambat' => $countTerlambat,
-            'countTAP' => $countTAP,
             'percentageHadir' => $percentageHadir,
             'percentageSakitIzin' => $percentageSakitIzin,
             'percentageAlfa' => $percentageAlfa,
-            'percentageTerlambat' => $percentageTerlambat,
-            'percentageTAP' => $percentageTAP,
             'dailyStatusCounts' => $dailyStatusCounts,
             'startDate' => $startDate,
             'endDate' => $endDate

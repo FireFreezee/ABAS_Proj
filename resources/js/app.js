@@ -4,36 +4,34 @@ document.addEventListener("DOMContentLoaded", function () {
     // Format the data directly from Laravel
     function formatDataForChart(data) {
         const dates = Object.keys(data);
-        const statusTerlambat = [];
         const statusTidakHadir = [];
         const statusHadir = [];
+        const countTidakHadir = [];
+        const countHadir = [];
 
         dates.forEach(date => {
-            const percentage = data[date];
-            statusTerlambat.push(percentage.Terlambat || 0);
+            const { count, percentage } = data[date];
             statusTidakHadir.push(percentage.TidakHadir || 0);
             statusHadir.push(percentage.Hadir || 0);
+
+            countTidakHadir.push(count.TidakHadir || 0);
+            countHadir.push(count.Hadir || 0);
         });
 
-        return { dates, statusTerlambat, statusTidakHadir, statusHadir };
+        return { dates, statusTidakHadir, statusHadir, countTidakHadir, countHadir };
     }
 
     const chartData = formatDataForChart(dailyStatusCounts);
     initChart(chartData);
 
     // Initialize the chart
-    function initChart({ dates, statusTerlambat, statusTidakHadir, statusHadir }) {
+    function initChart({ dates, statusTidakHadir, statusHadir, countTidakHadir, countHadir }) {
         const options = {
             series: [
                 {
                     name: "Hadir",
                     data: statusHadir,
                     color: "#0e9f6e",
-                },
-                {
-                    name: "Terlambat",
-                    data: statusTerlambat,
-                    color: "#9ca3af",
                 },
                 {
                     name: "Tidak Hadir",
@@ -56,7 +54,14 @@ document.addEventListener("DOMContentLoaded", function () {
             tooltip: {
                 enabled: true,
                 x: {
-                    show: false,
+                    show: true,
+                },
+                y: {
+                    formatter: function(value, { seriesIndex, dataPointIndex }) {
+                        // Show counts in the tooltip
+                        const count = [countHadir[dataPointIndex], countTidakHadir[dataPointIndex]][seriesIndex];
+                        return ` ${count} (${value}%)`; // Show percentage and count
+                    }
                 },
             },
             legend: {
@@ -118,26 +123,22 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     function formatDataForChart(data) {
         const date = Object.keys(data);
-        const statusTerlambat = [];
         const statusTidakHadir = [];
         const statusHadir = [];
-        const countTerlambat = [];
         const countTidakHadir = [];
         const countHadir = [];
     
         date.forEach(date => {
             const { counts, percentages } = data[date];
-            statusTerlambat.push(percentages.Terlambat || 0);
             statusTidakHadir.push(percentages.TidakHadir || 0);
             statusHadir.push(percentages.Hadir || 0);
     
             // Push the actual counts
-            countTerlambat.push(counts.Terlambat || 0);
             countTidakHadir.push(counts.TidakHadir || 0);
             countHadir.push(counts.Hadir || 0);
         });
     
-        return { date, statusTerlambat, statusTidakHadir, statusHadir, countTerlambat, countTidakHadir, countHadir };
+        return { date, statusTidakHadir, statusHadir, countTidakHadir, countHadir };
     }
     
     const chartData = formatDataForChart(chartStatusCount);
@@ -151,11 +152,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     name: "Hadir",
                     data: statusHadir,
                     color: "#0e9f6e",
-                },
-                {
-                    name: "Terlambat",
-                    data: statusTerlambat,
-                    color: "#9ca3af",
                 },
                 {
                     name: "Tidak Hadir",
@@ -183,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 y: {
                     formatter: function(value, { seriesIndex, dataPointIndex }) {
                         // Show counts in the tooltip
-                        const count = [countHadir[dataPointIndex], countTerlambat[dataPointIndex], countTidakHadir[dataPointIndex]][seriesIndex];
+                        const count = [countHadir[dataPointIndex], countTidakHadir[dataPointIndex]][seriesIndex];
                         return ` ${count} (${value}%)`; // Show percentage and count
                     }
                 },

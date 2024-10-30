@@ -215,61 +215,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="card">
-                        <div class="card-body border-l-8 border-gray-400">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="state">
-                                    <h3 class="text-gray-400 text-lg">{{ $countTerlambat }} Siswa</h3>
-                                    <p class="card-subtitle text-muted fw-500 text-xl">Terlambat</p>
-                                </div>
-                                <div class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="size-6">
-                                        <path fill-rule="evenodd"
-                                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="progress mt-3 mb-1 !h-2 bg-gray-200" style="height: 6px;">
-                                <div class="progress-bar bg-gray-400" role="progressbar"
-                                    style="width: {{ $percentageTerlambat }}%;" aria-valuenow="25" aria-valuemin="0"
-                                    aria-valuemax="100">
-                                </div>
-                            </div>
-                            <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageTerlambat) }}%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body border-l-8 border-gray-900">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="state">
-                                    <h3 class="text-gray-900 text-lg">{{ $countTAP }} Siswa</h3>
-                                    <p class="card-subtitle text-muted fw-500 text-xl">TAP</p>
-                                </div>
-                                <div class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        class="size-6">
-                                        <path fill-rule="evenodd"
-                                            d="M16.5 3.75a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5V15a.75.75 0 0 0-1.5 0v3.75a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V5.25a3 3 0 0 0-3-3h-6a3 3 0 0 0-3 3V9A.75.75 0 1 0 9 9V5.25a1.5 1.5 0 0 1 1.5-1.5h6ZM5.78 8.47a.75.75 0 0 0-1.06 0l-3 3a.75.75 0 0 0 0 1.06l3 3a.75.75 0 0 0 1.06-1.06l-1.72-1.72H15a.75.75 0 0 0 0-1.5H4.06l1.72-1.72a.75.75 0 0 0 0-1.06Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="progress mt-3 mb-1 !h-2 bg-gray-300" style="height: 6px;">
-                                <div class="progress-bar bg-gray-900" role="progressbar"
-                                    style="width: {{ $percentageTAP }}%;" aria-valuenow="25" aria-valuemin="0"
-                                    aria-valuemax="100">
-                                </div>
-                            </div>
-                            <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageTAP) }}%</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="max-w-full w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
                     <div class="flex justify-between mb-5">

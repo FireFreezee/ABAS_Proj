@@ -43,18 +43,16 @@ class WalikelasController extends Controller
         $totalRecords = $totalAttendance->count();
 
         // Count attendance statuses
-        $countHadir = $totalAttendance->where('status', 'Hadir')->count();
+        $countHadir = $totalAttendance->where('status', 'Hadir')->count() + $totalAttendance->where('status', 'Terlambat')->count() + $totalAttendance->where('status', 'TAP')->count();
         $countSakitIzin = $totalAttendance->where('status', 'Sakit')->count() + $totalAttendance->where('status', 'Izin')->count();
         $countAlfa = $totalAttendance->where('status', 'Alfa')->count();
-        $countTerlambat = $totalAttendance->where('status', 'Terlambat')->count();
-        $countTAP = $totalAttendance->where('status', 'TAP')->count();
+        // $countTerlambat = $totalAttendance->where('status', 'Terlambat')->count();
+        // $countTAP = $totalAttendance->where('status', 'TAP')->count();
 
         // Calculate percentages based on total number of students
         $percentageHadir = ($totalStudents > 0) ? ($countHadir / $totalStudents) * 100 : 0;
         $percentageSakitIzin = ($totalStudents > 0) ? ($countSakitIzin / $totalStudents) * 100 : 0;
         $percentageAlfa = ($totalStudents > 0) ? ($countAlfa / $totalStudents) * 100 : 0;
-        $percentageTerlambat = ($totalStudents > 0) ? ($countTerlambat / $totalStudents) * 100 : 0;
-        $percentageTAP = ($totalStudents > 0) ? ($countTAP / $totalStudents) * 100 : 0;
 
         // Handle date range for the report
         $startDate = $request->input('start');
@@ -84,6 +82,10 @@ class WalikelasController extends Controller
 
             // Calculate the total 'Tidak Hadir' (absent) count
             $tidakHadirCount = $statusCounts->get('Alfa', 0) + $statusCounts->get('Sakit', 0) + $statusCounts->get('Izin', 0);
+            $HadirCount = $statusCounts->get('Hadir', 0) + $statusCounts->get('Terlambat', 0) + $statusCounts->get('TAP', 0);
+
+            $statusCounts['Hadir'] = $HadirCount;
+            $percentages['Hadir'] = ($HadirCount > 0) ? number_format(($HadirCount / $totalStudents) * 100, 2) : 0;            
 
             $statusCounts['TidakHadir'] = $tidakHadirCount;
             $percentages['TidakHadir'] = ($tidakHadirCount > 0) ? number_format(($tidakHadirCount / $totalStudents) * 100, 2) : 0;

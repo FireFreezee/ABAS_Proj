@@ -190,8 +190,8 @@
                                                             <option value="" hidden>Pilih</option>
                                                             @foreach ($waliSiswa as $wali)
                                                                 @if ($wali->jenis_kelamin == 'laki laki')
-                                                                    <option value="{{ $wali->nik_ayah }}">
-                                                                        {{ $wali->user->nama }}</option>
+                                                                    <option value="{{ $wali->nik }}">
+                                                                        {{ $wali->nik }}</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
@@ -203,19 +203,19 @@
                                                             <option value="" hidden>Pilih</option>
                                                             @foreach ($waliSiswa as $wali)
                                                                 @if ($wali->jenis_kelamin == 'perempuan')
-                                                                    <option value="{{ $wali->nik_ibu }}">
-                                                                        {{ $wali->user->nama }}</option>
+                                                                    <option value="{{ $wali->nik }}">
+                                                                        {{ $wali->nik }}</option>
                                                                 @endif
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="exampleInputPassword1">Nik Ibu</label>
-                                                        <select class="form-control" id="nik_ibu" name="nik_ibu">
+                                                        <label for="exampleInputPassword1">Nik Wali</label>
+                                                        <select class="form-control" id="nik_wali" name="nik_wali">
                                                             <option value="" hidden>Pilih</option>
                                                             @foreach ($waliSiswa as $wali)
-                                                                <option value="{{ $wali->nik_ibu }}">
-                                                                    {{ $wali->user->nama }}</option>
+                                                                <option value="{{ $wali->nik }}">
+                                                                    {{ $wali->nik }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
