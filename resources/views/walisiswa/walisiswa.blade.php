@@ -168,6 +168,34 @@
                                         </h2>
                                     @endif
                                 </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <div class="widget bg-blue card-keterangan">
+                                            <div class="widget-body ">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="state">
+                                                        <h6 class="text-[14px] sm:text-base !font-bold mb-2">Absen Masuk</h6>
+                                                        <h4 class="text-[13px] sm:text-base !mb-0">
+                                                            {{ $siswa->cek->jam_masuk ?? '00:00' }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="widget bg-red card-keterangan">
+                                            <div class="widget-body ">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="state">
+                                                        <h6 class="text-[14px] sm:text-base !font-bold mb-2">Absen Pulang</h6>
+                                                        <h4 class="text-[13px] sm:text-base !mb-0">
+                                                            {{ $siswa->cek->jam_pulang ?? '00:00' }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class=" w-full">
                                     <div class="nav-tabs grid grid-cols-2 mx-3 mt-3" id="nav-tab" role="tablist">
                                         <button class="nav-link active w-full" id="nav-home-tab" data-bs-toggle="tab"
@@ -231,7 +259,7 @@
                                         <div class="col-12">
                                             <div class="text-lg font-semibold pt-3">
                                                 Jumlah Kehadiran:
-                                                {{ $siswa->dataBulanSebelumnya['Hadir'] ?? 0 }}
+                                                {{ $siswa->dataBulanSebelumnya['Hadir/Terlambat/TAP'] ?? 0 }}
                                             </div>
                                             <div class="progress mt-2 !h-fit">
                                                 <div class="progress-bar bg-green text-lg" role="progressbar"

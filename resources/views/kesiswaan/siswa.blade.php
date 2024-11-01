@@ -187,7 +187,7 @@
                             </div>
                             <div class="text-muted f12">
                                 <span
-                                    class="float-right">{{ number_format($averageAttendancePercentages['Hadir']) }}%</span>
+                                    class="float-right">{{ number_format($averageAttendancePercentages['Hadir'], 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -216,7 +216,7 @@
                             </div>
                             <div class="text-muted f12">
                                 <span
-                                    class="float-right">{{ number_format($averageAttendancePercentages['Sakit/Izin']) }}%</span>
+                                    class="float-right">{{ number_format($averageAttendancePercentages['Sakit/Izin'], 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -245,7 +245,7 @@
                             </div>
                             <div class="text-muted f12">
                                 <span
-                                    class="float-right">{{ number_format($averageAttendancePercentages['Alfa']) }}%</span>
+                                    class="float-right">{{ number_format($averageAttendancePercentages['Alfa'], 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -290,7 +290,7 @@
                                             <div class="mt-2 w-full bg-gray-200 rounded-full h-6">
                                                 <div class="bg-green-500 rounded-full h-6 flex items-center justify-center text-white font-bold"
                                                     style="width: {{ number_format($student['attendancePercentages']['Hadir']) }}%;">
-                                                    Hadir {{ number_format($student['attendancePercentages']['Hadir']) }}%
+                                                    Hadir {{ number_format($student['attendancePercentages']['Hadir'], 2) }}%
                                                 </div>
                                             </div>
                                         </div>
@@ -338,7 +338,7 @@
                                                             </div>
                                                             <div class="text-muted f12">
                                                                 <span
-                                                                    class="float-right">{{ number_format($student['attendancePercentages']['Hadir']) }}%</span>
+                                                                    class="float-right">{{ number_format($student['attendancePercentages']['Hadir'], 2) }}%</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -373,7 +373,7 @@
                                                             </div>
                                                             <div class="text-muted f12">
                                                                 <span
-                                                                    class="float-right">{{ number_format($student['attendancePercentages']['Sakit/Izin']) }}%</span>
+                                                                    class="float-right">{{ number_format($student['attendancePercentages']['Sakit/Izin'], 2) }}%</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -407,7 +407,7 @@
                                                             </div>
                                                             <div class="text-muted f12">
                                                                 <span
-                                                                    class="float-right">{{ number_format($student['attendancePercentages']['Alfa']) }}%</span>
+                                                                    class="float-right">{{ number_format($student['attendancePercentages']['Alfa'], 2) }}%</span>
                                                             </div>
                                                         </div>
                                                     </div>

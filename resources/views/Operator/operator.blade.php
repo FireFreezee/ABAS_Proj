@@ -15,9 +15,12 @@
                             aria-haspopup="true" aria-expanded="false"><img class="avatar"
                                 src="{{ asset('assets/img/user.jpg') }}" alt=""></a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="{{ route('operator-profile') }}"><i
+                                    class="ik ik-user dropdown-icon"></i>
+                                Profile</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                                          document.getElementById('logout-form').submit();"><i
+                                                  document.getElementById('logout-form').submit();"><i
                                     class="ik ik-power dropdown-icon"></i>
                                 {{ __('Logout') }}</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

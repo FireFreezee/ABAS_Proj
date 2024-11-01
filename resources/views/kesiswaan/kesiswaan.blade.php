@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageHadir) }}%</span>
+                                <span class="float-right">{{ number_format($percentageHadir, 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -197,7 +197,7 @@
                                 </div>
                             </div>
                             <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageSakitIzin) }}%</span>
+                                <span class="float-right">{{ number_format($percentageSakitIzin, 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -225,7 +225,7 @@
                                 </div>
                             </div>
                             <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageAlfa) }}%</span>
+                                <span class="float-right">{{ number_format($percentageAlfa, 2) }}%</span>
                             </div>
                         </div>
                     </div>

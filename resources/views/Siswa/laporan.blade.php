@@ -365,7 +365,38 @@
                                                         class="status-row {{ $absen->status }}">
                                                         <td class="!text-[11px] sm:!text-base">{{ $absen->date }}
                                                         </td>
-                                                        <td class="!text-[11px] sm:!text-base">{{ $absen->status }}
+                                                        <td class="!text-[11px] sm:!text-base flex justify-center">
+                                                            @if ($absen->status == 'Hadir')
+                                                                <div
+                                                                    class="bg-green-500 h-fit w-14 p-1 rounded-md text-white">
+                                                                    {{ $absen->status }}
+                                                                </div>
+                                                            @elseif ($absen->status == 'Sakit')
+                                                                <div
+                                                                    class="bg-cyan-500 h-fit w-14 p-1 rounded-md text-white">
+                                                                    {{ $absen->status }}
+                                                                </div>
+                                                            @elseif ($absen->status == 'Izin')
+                                                                <div
+                                                                    class="bg-orange-400 h-fit w-14 p-1 rounded-md text-white">
+                                                                    {{ $absen->status }}
+                                                                </div>
+                                                            @elseif ($absen->status == 'Alfa')
+                                                                <div
+                                                                    class="bg-red-700 h-fit w-14 p-1 rounded-md text-white">
+                                                                    {{ $absen->status }}
+                                                                </div>
+                                                            @elseif ($absen->status == 'Terlambat')
+                                                                <div
+                                                                    class="bg-gray-400 h-fit w-25 p-1 rounded-md text-white">
+                                                                    {{ $absen->status }}
+                                                                </div>
+                                                            @elseif ($absen->status == 'TAP')
+                                                                <div
+                                                                    class="bg-gray-900 h-fit w-14 p-1 rounded-md text-white">
+                                                                    {{ $absen->status }}
+                                                                </div>
+                                                            @endif
                                                         </td>
                                                         <td class="!text-[11px] sm:!text-base">
                                                             <button

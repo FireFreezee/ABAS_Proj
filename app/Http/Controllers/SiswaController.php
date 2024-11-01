@@ -161,7 +161,7 @@ class SiswaController extends Controller
     {
         $user = Auth::user();
         $siswa = siswa::where('id_user', $user->id)->first();
-        $status = 'Hadir';
+        $status = 'Alfa';
         $date = date("Y-m-d");
         $jam = date("H:i:s");
 
@@ -209,7 +209,7 @@ class SiswaController extends Controller
         if ($faceConfidence < 0.90) { // Confidence threshold
             echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
         } else {
-            if ($status != "Alfa") {
+            if ($status == "Hadir" || $status == "Terlambat") {
                 $fileName = $formatPulang . ".png";
                 $file = $folderPath . $fileName;
                 $data_pulang = [

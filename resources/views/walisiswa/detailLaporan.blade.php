@@ -97,12 +97,13 @@
                             <div class="grid grid-cols-2 justify-center gap-2">
                                 <a href="{{ route('walsis-dashboard') }}"
                                     class="decoration-transparent items-center group lg:text-sm bg-slate-100 hover:bg-blue-600 font-semibold text-white rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                    <div class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">Dashboard</div>
+                                    <div
+                                        class="text-slate-900 text-[10px] lg:text-[15px] group-hover:text-white flex items-center">
+                                        Dashboard</div>
                                 </a>
                                 <a href="{{ route('detail-laporan') }}"
                                     class="decoration-transparent group items-center bg-blue-600 hover:bg-blue-600 text-white font-semibold p-[10px] rounded-lg flex justify-center w-[50px] h-[32px] lg:w-[80px] lg:h-[42px]">
-                                    <div
-                                        class=" text-[10px] lg:text-[15px] text-white flex items-center">
+                                    <div class=" text-[10px] lg:text-[15px] text-white flex items-center">
                                         Laporan</div>
                                 </a>
                             </div>
@@ -293,7 +294,39 @@
                                             @foreach ($studentAttendanceData[$siswa->nis] as $absen)
                                                 <tr>
                                                     <td class="!text-[11px] sm:!text-base">{{ $absen['date'] }}</td>
-                                                    <td class="!text-[11px] sm:!text-base">{{ $absen['status'] }}</td>
+                                                    <td class="!text-[11px] sm:!text-base flex justify-center">
+                                                        @if ($absen['status'] == 'Hadir')
+                                                            <div
+                                                                class="bg-green-500 h-fit w-14 p-1 rounded-md text-white">
+                                                                {{ $absen['status'] }}
+                                                            </div>
+                                                        @elseif ($absen['status'] == 'Sakit')
+                                                            <div
+                                                                class="bg-cyan-500 h-fit w-14 p-1 rounded-md text-white">
+                                                                {{ $absen['status'] }}
+                                                            </div>
+                                                        @elseif ($absen['status'] == 'Izin')
+                                                            <div
+                                                                class="bg-orange-400 h-fit w-14 p-1 rounded-md text-white">
+                                                                {{ $absen['status'] }}
+                                                            </div>
+                                                        @elseif ($absen['status'] == 'Alfa')
+                                                            <div
+                                                                class="bg-red-700 h-fit w-14 p-1 rounded-md text-white">
+                                                                {{ $absen['status'] }}
+                                                            </div>
+                                                        @elseif ($absen['status'] == 'Terlambat')
+                                                            <div
+                                                                class="bg-gray-400 h-fit w-25 p-1 rounded-md text-white">
+                                                                {{ $absen['status'] }}
+                                                            </div>
+                                                        @elseif ($absen['status'] == 'TAP')
+                                                            <div
+                                                                class="bg-gray-900 h-fit w-14 p-1 rounded-md text-white">
+                                                                {{ $absen['status'] }}
+                                                            </div>
+                                                        @endif
+                                                    </td>
                                                     <td class="!text-[11px] sm:!text-base">
                                                         <button
                                                             data-modal-target="default-modal-{{ $absen['id_absensi'] }}"
@@ -303,22 +336,26 @@
                                                 </tr>
 
                                                 <!-- Modal for each record -->
-                                                <div id="default-modal-{{ $absen['id_absensi'] }}" tabindex="-1" aria-hidden="true"
+                                                <div id="default-modal-{{ $absen['id_absensi'] }}" tabindex="-1"
+                                                    aria-hidden="true"
                                                     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                                     <div class="relative p-4 w-full max-w-md max-h-full">
-                                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 px-7 pb-7">
+                                                        <div
+                                                            class="relative bg-white rounded-lg shadow dark:bg-gray-700 px-7 pb-7">
                                                             <div
                                                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                                <h3
+                                                                    class="text-lg font-semibold text-gray-900 dark:text-white">
                                                                     Detail Absen</h3>
                                                                 <button type="button"
                                                                     data-modal-hide="default-modal-{{ $absen['id_absensi'] }}"
                                                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                                                     data-modal-hide="default-modal">
                                                                     <svg class="w-3 h-3" aria-hidden="true"
-                                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                        viewBox="0 0 14 14">
-                                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        fill="none" viewBox="0 0 14 14">
+                                                                        <path stroke="currentColor"
+                                                                            stroke-linecap="round"
                                                                             stroke-linejoin="round" stroke-width="2"
                                                                             d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                                                     </svg>
@@ -328,7 +365,8 @@
                                                             <div class="pt-3">
                                                                 <p><strong>Keterangan:</strong> {{ $absen['status'] }}
                                                                 </p>
-                                                                <p><strong>Tanggal Absen:</strong> {{ $absen['date'] }}</p>
+                                                                <p><strong>Tanggal Absen:</strong> {{ $absen['date'] }}
+                                                                </p>
                                                                 <p><strong>Jam Masuk:</strong>
                                                                     {{ $absen['jam_masuk'] }}</p>
                                                                 <p><strong>Jam Pulang:</strong>
@@ -377,7 +415,8 @@
 
                                     <!-- Pagination links -->
                                     <div class="pagination flex justify-end p-3 text-sm sm:text-lg ">
-                                        {{ $studentAttendanceData[$siswa->nis]->links('vendor.pagination.bootstrap-5') }} <!-- Display pagination links -->
+                                        {{ $studentAttendanceData[$siswa->nis]->links('vendor.pagination.bootstrap-5') }}
+                                        <!-- Display pagination links -->
                                     </div>
                                 </div>
                             </div>

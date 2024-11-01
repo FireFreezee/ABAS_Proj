@@ -193,7 +193,7 @@
                                 </div>
                                 <div class="text-muted f12">
                                     <span
-                                        class="float-right">{{ number_format($averagePercentageHadir) }}%</span>
+                                        class="float-right">{{ number_format($averagePercentageHadir, 2) }}%</span>
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                                 </div>
                                 <div class="text-muted f12">
                                     <span
-                                        class="float-right">{{ number_format($averagePercentageSakitIzin) }}%</span>
+                                        class="float-right">{{ number_format($averagePercentageSakitIzin, 2) }}%</span>
                                 </div>
                             </div>
                         </div>
@@ -261,7 +261,7 @@
                                 </div>
                                 <div class="text-muted f12">
                                     <span
-                                        class="float-right">{{ number_format($averagePercentageAlfa) }}%</span>
+                                        class="float-right">{{ number_format($averagePercentageAlfa, 2) }}%</span>
                                 </div>
                             </div>
                         </div>
@@ -270,7 +270,7 @@
                         <div class="progress-bar bg-green-500" role="progressbar"
                             style="width: {{ $averagePercentageHadir }}%;" aria-valuenow="25" aria-valuemin="0"
                             aria-valuemax="100">
-                            <div class="text-lg">Hadir {{ number_format($averagePercentageHadir) }}%</div>
+                            <div class="text-lg">Hadir {{ number_format($averagePercentageHadir, 2) }}%</div>
                         </div>
                     </div>
                 </div>
@@ -317,7 +317,7 @@
                                             <div class="mt-2 w-full bg-green-200 rounded-full h-6">
                                                 <div class="bg-green-500 rounded-full h-6 flex items-center justify-center text-white font-bold"
                                                     style="width: {{ number_format($kelas['percentageHadir']) }}%;">
-                                                    Hadir {{ number_format($kelas['percentageHadir']) }}%
+                                                    Hadir {{ number_format($kelas['percentageHadir'], 2) }}%
                                                 </div>
                                             </div>
                                         </div>
@@ -365,7 +365,7 @@
                                                             </div>
                                                             <div class="text-muted f12">
                                                                 <span
-                                                                    class="float-right">{{ number_format($kelas['percentageHadir']) }}%</span>
+                                                                    class="float-right">{{ number_format($kelas['percentageHadir'], 2) }}%</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -399,7 +399,7 @@
                                                             </div>
                                                             <div class="text-muted f12">
                                                                 <span
-                                                                    class="float-right">{{ number_format($kelas['percentageSakitIzin']) }}%</span>
+                                                                    class="float-right">{{ number_format($kelas['percentageSakitIzin'], 2) }}%</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -433,7 +433,7 @@
                                                             </div>
                                                             <div class="text-muted f12">
                                                                 <span
-                                                                    class="float-right">{{ number_format($kelas['percentageAlfa']) }}%</span>
+                                                                    class="float-right">{{ number_format($kelas['percentageAlfa'], 2) }}%</span>
                                                             </div>
                                                         </div>
                                                     </div>

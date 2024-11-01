@@ -103,14 +103,30 @@
             <div class="sidebar-content">
                 <div class="nav-container">
                     <nav id="main-menu-navigation" class="navigation-main">
-                        <div class="nav-lavel">Home</div>
+                        <div class="nav-lavel">Navigation</div>
                         <div class="nav-item">
-                            <a href="{{ route('walikelas-dashboard') }}"><i
-                                    class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
+                            <a href="{{ route('Dashboard') }}"><i class="ik ik-calendar"></i><span>Setting
+                                    Koordinat dan Waktu</span></a>
                         </div>
-                        <div class="nav-lavel">Laporan</div>
+                        <div class="nav-item has-sub">
+                            <a href="javascript:void(0)"><i class="ik ik-layers"></i><span>Data Pengguna</span></a>
+                            <div class="submenu-content">
+                                <a href="{{ route('data-wali') }}" class="menu-item"><i
+                                        class="ik ik-users"></i><span>Tambah/Edit WaliKelas</span></a>
+                                <a href="{{ route('data-kesiswaan') }}" class="menu-item"><i
+                                        class="ik ik-users"></i><span>Tambah/Edit
+                                        Kesiswaan</span></a>
+                                <a href="{{ route('data-walsis') }}" class="menu-item"><i
+                                        class="ik ik-users"></i><span>Tambah/Edit WaliSiswa</span></a>
+                            </div>
+                        </div>
                         <div class="nav-item">
-                            <a href="{{ route('list-siswa') }}"><i class="ik ik-inbox"></i><span>Laporan Absensi</span></a>
+                            <a href="{{ route('data-jurusan') }}"><i class="ik ik-award"></i><span>Tambah/Edit
+                                    Jurusan</span></a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="{{ route('data-kelas') }}"><i class="ik ik-book-open"></i><span>Tambah/Edit
+                                    Kelas</span></a>
                         </div>
                     </nav>
                 </div>

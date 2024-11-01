@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OperatorController extends Controller
@@ -502,6 +503,73 @@ class OperatorController extends Controller
         $u->delete();
 
         return redirect()->back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function profile()
+    {
+        return view("Operator.profile");
+    }
+
+    public function editprofil(Request $r)
+    {
+        $f = false;
+        $p = false;
+        $u = false;
+
+        // password
+        if (strlen($r->password) > 0) {
+            if ($r->password !== $r->kPassword) {
+                return redirect()->back()->with('failed', 'Password Berbeda');
+            }
+
+            $p = User::where('id', $r->id)->update([
+                'password' => password_hash($r->password, PASSWORD_DEFAULT),
+            ]);
+        }
+
+        // foto
+        $fileName = '';
+        if ($r->profile) {
+            $f = User::where('id', $r->id)->update([
+                'foto' => $r->profile,
+            ]);
+        }
+
+        // email
+        if ($r->email) {
+            $u = User::where('id', $r->id)->update([
+                'email' => $r->email,
+            ]);
+        }
+
+        // Redirecting
+        if ($u || $f || $p) {
+            return redirect()->route('Dashboard')->with('success', "Data Berhasil di Update");
+        } else {
+            // If update fails, delete uploaded photo if it exists
+            if ($fileName && Storage::disk('public')->exists("uploads/profile/{$fileName}")) {
+                Storage::disk('public')->delete("uploads/profile/{$fileName}");
+            }
+            return redirect()->back()->with('failed', "Data Gagal di Update");
+        }
+    }
+
+    public function photo_profile(Request $request)
+    {
+        $request->validate([
+            'profile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('profile')) {
+            $file = $request->file('profile');
+            $fileName = uniqid(true) . '-' . $file->getClientOriginalName();
+            $folderPath = "public/uploads/profile/";
+            $file->storeAs($folderPath, $fileName);
+
+            return $fileName;
+        }
+
+        return '';
     }
 
     /**

@@ -187,7 +187,7 @@
                             </div>
                             <div class="text-muted f12">
                                 <span
-                                    class="float-right">{{ number_format($attendancePercentage['percentageHadir']) }}%</span>
+                                    class="float-right">{{ number_format($attendancePercentage['percentageHadir'], 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -216,7 +216,7 @@
                             </div>
                             <div class="text-muted f12">
                                 <span
-                                    class="float-right">{{ number_format($attendancePercentage['percentageSakitIzin']) }}%</span>
+                                    class="float-right">{{ number_format($attendancePercentage['percentageSakitIzin'], 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -245,7 +245,7 @@
                             </div>
                             <div class="text-muted f12">
                                 <span
-                                    class="float-right">{{ number_format($attendancePercentage['percentageAlfa']) }}%</span>
+                                    class="float-right">{{ number_format($attendancePercentage['percentageAlfa'], 2) }}%</span>
                             </div>
                         </div>
                     </div>

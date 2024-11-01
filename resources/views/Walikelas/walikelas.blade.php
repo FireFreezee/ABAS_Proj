@@ -131,7 +131,7 @@
                 <h5 class="font-bold text-[20px] mb-4">
                     Kehadiran Seluruh Siswa Hari Ini
                 </h5>
-                <div class="grid grid-cols-5 gap-2">
+                <div class="grid grid-cols-3 gap-2">
                     <div class="card ">
                         <div class="card-body border-l-8 border-green-500">
                             <div class="d-flex justify-content-between align-items-center">
@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                             <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageHadir) }}%</span>
+                                <span class="float-right">{{ number_format($percentageHadir, 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -183,7 +183,7 @@
                                 </div>
                             </div>
                             <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageSakitIzin) }}%</span>
+                                <span class="float-right">{{ number_format($percentageSakitIzin, 2) }}%</span>
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                                 </div>
                             </div>
                             <div class="text-muted f12">
-                                <span class="float-right">{{ number_format($percentageAlfa) }}%</span>
+                                <span class="float-right">{{ number_format($percentageAlfa, 2) }}%</span>
                             </div>
                         </div>
                     </div>

@@ -85,6 +85,7 @@ class WalisiswaController extends Controller
             $siswa->setAttribute('statusAbsen', $statusAbsen);
             $siswa->setAttribute('late', $late);
             $siswa->setAttribute('late2', $late2);
+            $siswa->setAttribute('cek', $cek);
 
             // Get the number of effective business days for the current and previous months
             $effectiveDaysCurrentMonth = getEffectiveBusinessDays(date('Y'), date('m'), $nis);

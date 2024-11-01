@@ -139,6 +139,10 @@ Route::middleware(['auth', 'Operator:operator'])->group(function () {
 
     Route::post('/operator/updatelokasisekolah', [OperatorController::class, 'updatelokasisekolah'])->name('updatelokasi');
     Route::post('/operator/updatewaktu', [OperatorController::class, 'updatewaktu'])->name('updatewaktu');
+
+    Route::get('operator/profile', [OperatorController::class, 'profile'])->name('operator-profile');
+    Route::post('operator/editprofil', [OperatorController::class, 'editprofil'])->name('operator-edit-profil');
+    Route::post('operator/profile-update', [OperatorController::class, 'photo_profile'])->name('operator-update-profile');
 });
 
 Route::middleware(['auth', 'Kesiswaan:kesiswaan'])->group(function () {

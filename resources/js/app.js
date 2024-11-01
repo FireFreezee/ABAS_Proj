@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initChart(chartData);
     
     // Initialize the chart
-    function initChart({ date, statusTerlambat, statusTidakHadir, statusHadir, countTerlambat, countTidakHadir, countHadir }) {
+    function initChart({ date, statusTidakHadir, statusHadir, countTidakHadir, countHadir }) {
         const options = {
             series: [
                 {
