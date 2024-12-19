@@ -286,7 +286,9 @@
                                         <thead>
                                             <tr>
                                                 <th class="!text-[11px] sm:!text-base">Tanggal</th>
-                                                <th class="!text-[11px] sm:!text-base">Status</th>
+                                                <th class="!text-[11px] sm:!text-base">Keterangan</th>
+                                                <th class="!text-[11px] sm:!text-base">Jam Masuk</th>
+                                                <th class="!text-[11px] sm:!text-base">Jam Pulang</th>
                                                 <th class="!text-[11px] sm:!text-base">Detail Kehadiran</th>
                                             </tr>
                                         </thead>
@@ -328,6 +330,12 @@
                                                         @endif
                                                     </td>
                                                     <td class="!text-[11px] sm:!text-base">
+                                                        {{ $absen['jam_masuk'] }}
+                                                    </td>
+                                                    <td class="!text-[11px] sm:!text-base">
+                                                        {{ $absen['jam_pulang'] }}
+                                                    </td>
+                                                    <td class="!text-[11px] sm:!text-base">
                                                         <button
                                                             data-modal-target="default-modal-{{ $absen['id_absensi'] }}"
                                                             data-modal-toggle="default-modal-{{ $absen['id_absensi'] }}"
@@ -367,10 +375,10 @@
                                                                 </p>
                                                                 <p><strong>Tanggal Absen:</strong> {{ $absen['date'] }}
                                                                 </p>
-                                                                <p><strong>Jam Masuk:</strong>
+                                                                {{-- <p><strong>Jam Masuk:</strong>
                                                                     {{ $absen['jam_masuk'] }}</p>
                                                                 <p><strong>Jam Pulang:</strong>
-                                                                    {{ $absen['jam_pulang'] }}</p>
+                                                                    {{ $absen['jam_pulang'] }}</p> --}}
                                                                 @if ($absen['menit_keterlambatan'] > 0)
                                                                     <p><strong>Keterlambatan:</strong>
                                                                         {{ $absen['menit_keterlambatan'] }} Menit</p>

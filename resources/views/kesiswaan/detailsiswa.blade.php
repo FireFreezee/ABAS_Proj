@@ -264,13 +264,15 @@
                                     <tr class="text-center">
                                         <th>Tanggal</th>
                                         <th>Keterangan</th>
-                                        <th>Aksi</th>
+                                        <th>Jam Masuk</th>
+                                        <th>Jam Pulang</th>
+                                        <th>Detail Kehadiran</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($present as $absensi)
                                         <tr class="text-center">
-                                            <th>{{ $absensi->date }}</th>
+                                            <td>{{ $absensi->date }}</td>
                                             <td class="flex justify-center">
                                                 @if ($absensi->status == 'Hadir')
                                                     <div class="bg-green-500 h-fit w-14 p-1 rounded-md text-white">
@@ -297,6 +299,12 @@
                                                         {{ $absensi->status }}
                                                     </div>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                {{ $absensi->jam_masuk }}
+                                            </td>
+                                            <td>
+                                                {{ $absensi->jam_pulang }}
                                             </td>
                                             <td>
                                                 <button data-modal-target="default-modal-{{ $absensi->id_absensi }}"
