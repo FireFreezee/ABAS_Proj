@@ -45,7 +45,7 @@ class SiswaSeeder extends Seeder
 
         foreach($kelas as $k)
         {
-            for($i = 1; $i <= 30 ; $i++)
+            for($i = 1; $i <= 10 ; $i++)
             {
                 $random = rand(0, 1);
                 $no_absen = $i;
